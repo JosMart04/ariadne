@@ -115,6 +115,15 @@ images:
     raw: img/PIA02976_orig.jpg
     note: Untouched, resized to 1600 px wide.
 
+  img_e09_trench.webp:
+    title: Dodo-Goldilocks Trench Dug by Phoenix (PIA10903)
+    credit: NASA/JPL-Caltech/University of Arizona/Texas A&M University
+    license: Public domain
+    page: https://science.nasa.gov/photojournal/dodo-goldilocks-trench-dug-by-phoenix/
+    url: https://images-assets.nasa.gov/image/PIA10903/PIA10903~orig.jpg
+    raw: img/PIA10903_orig.jpg
+    note: Untouched; resized only. The June 13 photograph records the trench before the later disappearance comparison.
+
 textures:
   tex_tranquility_ground.webp:
     title: Ground of the Tranquility Base set

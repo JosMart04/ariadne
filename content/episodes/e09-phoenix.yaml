@@ -5,25 +5,84 @@ name: Phoenix
 title: The Ice That Vanished
 slate: { place: Vastitas Borealis, year: 2008 }
 launched: "2007-08-04"
-draft: true
 status: { badge: silent-damaged, where: "Arctic plains of Mars" }
 nssdca: [2007-034A]
 resource: phoenix-insight
-
+objectives:
+  - Explain how a robotic arm delivered soil to a laboratory.
+  - Distinguish visual evidence of ice from a chemical measurement.
+  - Explain how changing seasons reduced a lander's power.
 facts:
+  landing:
+    text: Phoenix launched on August 4, 2007, and landed in the arctic plains of Mars on May 25, 2008.
+    source: https://science.nasa.gov/mission/mars-phoenix/
+    note: "Checked Nov 15, 2026: Quick Facts gives launch, landing and Vastitas Borealis as the arctic landing site."
+  sampling:
+    text: Phoenix used camera range maps to choose digging sites. Its robotic arm delivered soil to small ovens for chemical analysis.
+    source: https://science.nasa.gov/mission/mars-phoenix/
+    note: "Checked Nov 15, 2026: Spacecraft and Science describes stereo range maps, robotic sampling and ovens that release gases for analysis."
   ice:
-    text: Bright chunks in Phoenix's trench vanished within four days, so they had to be water ice, not salt.
-    source: https://www.jpl.nasa.gov/news/bright-chunks-at-phoenix-landers-mars-site-must-have-been-ice
+    text: Bright pieces in a trench disappeared over four days. The team interpreted this change as evidence of water ice turning into vapor.
+    source: https://science.nasa.gov/mission/mars-phoenix/
+    note: "Checked Nov 15, 2026: Science Highlights reports the June 19 interpretation of bright material that had vaporized in four days."
+  water-test:
+    text: Phoenix heated a soil sample and measured the released vapor. This laboratory test identified water in the sample.
+    source: https://astrobiology.nasa.gov/news/phoenix-confirms-martian-water-mission-extended/
+    note: "Checked Nov 15, 2026: The July 31, 2008 release describes the robotic delivery and water identification by the Thermal and Evolved-Gas Analyzer."
+  perchlorate:
+    text: Phoenix also found perchlorate salts. Their presence alone neither confirmed nor ruled out life on Mars.
+    source: https://science.nasa.gov/mission/mars-phoenix/
+    note: "Checked Nov 15, 2026: The August 5 results paragraph explicitly says the perchlorates neither confirmed nor refuted life."
   last-contact:
-    text: Phoenix last communicated on Nov. 2, 2008. Orbital images later showed ice damage to a solar panel.
-    source: https://space.com/8477-nasa-declares-mars-lander-broken-dead.html
-    note: Secondary source. Look for the NASA/JPL release.
-  snow:
-    text: Phoenix observed snow falling from Martian clouds.
-    source: https://science.nasa.gov/mission/phoenix/
-    note: VERIFY (LIDAR observation, 2008 release).
-
+    text: Less daily sunlight left Phoenix unable to keep its batteries charged. Its last signal reached Earth through Mars Odyssey on November 2, 2008.
+    source: https://www.jpl.nasa.gov/news/nasa-finishes-listening-for-phoenix-mars-lander/
+    note: "Checked Nov 15, 2026: The Dec. 1, 2008 release gives declining sunshine, insufficient charging and the final signal relayed by Odyssey."
+  damage:
+    text: Contact attempts in 2010 received no reply. Orbital photographs showed changed shadows, consistent with winter ice damaging Phoenix's solar panels.
+    source: https://www.jpl.nasa.gov/news/phoenix-mars-lander-is-silent-new-image-shows-damage/
+    note: "Checked Nov 15, 2026: The May 24, 2010 release reports unsuccessful listening campaigns and shadow changes consistent with carbon-dioxide ice loading."
 arrival:
-  - { who: machine, tag: IMAGINED, text: "I came to the top of the world to dig." }
-
+  - { who: machine, tag: IMAGINED, text: "You may find a hidden answer just beneath your hand." }
+  - { who: ariadne, tag: REAL, fact: landing, text: "You arrive in the arctic plains of Mars with Phoenix on May 25, 2008." }
+operation:
+  title: Dig, heat and measure
+  explainer:
+    - { text: "You compare stereo camera views to choose a digging site. The arm collects soil within reach of the lander.", fact: sampling }
+    - { text: "You compare trench photographs taken four days apart. Bright pieces have vanished, supporting the team's interpretation of water ice.", fact: ice }
+    - { text: "You deliver soil to a small oven. The instrument heats it and measures the vapor that escapes.", fact: water-test }
+    - { text: "You identify water in the released vapor. The laboratory result adds a different kind of evidence to the photographs.", fact: water-test }
+discovery:
+  headline: { text: "A heated soil sample revealed water.", fact: water-test }
+  story:
+    text: >-
+      You first see bright material disappear from a trench.
+      Later, an instrument identifies water released from a heated soil sample.
+      Phoenix also finds perchlorate salts.
+      That finding alone does not settle whether Mars has life.
+    facts: [ice, water-test, perchlorate]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: last-contact, text: "Daily sunlight fades. Phoenix can no longer collect enough energy to keep its batteries charged." }
+    - { who: ariadne, tag: REAL, fact: last-contact, text: "You receive the final signal through Mars Odyssey on November 2, 2008." }
+  last: { who: machine, tag: IMAGINED, text: "What vanished from your picture became part of your answer." }
+statusNow:
+  text: "Phoenix rests on the arctic plains. Attempts to contact it in 2010 failed; orbital images showed signs of winter damage."
+  fact: damage
+# Poems (1890), Nature XXIX, Beclouded; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "The sky is low, the clouds are mean,\nA travelling flake of snow"
+  author: Emily Dickinson
+  work: Poems
+  year: 1890
+set:
+  scene: diorama
+  image: trench
+  labels: [artistic-view]
+images:
+  trench:
+    file: img_e09_trench.webp
+    alt: "Phoenix's color photograph shows the Dodo-Goldilocks trench, with pale material near its upper edge and reddish soil below."
+    credit: NASA/JPL-Caltech/University of Arizona/Texas A&M University
+    source: https://science.nasa.gov/photojournal/dodo-goldilocks-trench-dug-by-phoenix/
 crossThreads: [e05-viking]

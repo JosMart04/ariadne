@@ -24,6 +24,7 @@ Data & imagery: NASA. This project is not affiliated with or endorsed by NASA. N
 - [Apollo 11: Second Look (PIA12909)](https://images.nasa.gov/details/PIA12909) · NASA/GSFC/Arizona State University · Public domain · `img_e02_site_labels.webp`
 - [Opportunity After the Dust Storm (PIA22549)](https://images.nasa.gov/details/PIA22549) · NASA/JPL-Caltech/Univ. of Arizona · Public domain · `img_e08_after_storm.webp`
 - [Surveyor 1 Shadow (PIA02976)](https://images.nasa.gov/details/PIA02976) · NASA/JPL · Public domain · `img_e01_surveyor1_shadow.webp`
+- [Dodo-Goldilocks Trench Dug by Phoenix (PIA10903)](https://science.nasa.gov/photojournal/dodo-goldilocks-trench-dug-by-phoenix/) · NASA/JPL-Caltech/University of Arizona/Texas A&M University · Public domain · `img_e09_trench.webp`
 
 ## Textures
 
