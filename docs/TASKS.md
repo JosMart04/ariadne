@@ -179,7 +179,7 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
   and Earth textures are already in `public/assets/tex/`), every machine marked, orbit, zoom, select → episode,
   "Visible scale / True scale" with its label, list view as the Accessible equivalent. It replaces the card map
   (`MapScreen` in `src/screens/screens.tsx`), which stays as the list view. (FR-70 to FR-73, AC-18)
-- [ ] A-25 Credits screen and `CREDITS.md` generated from data: `assets-src/manifest.yaml` already lists every image,
+- [x] A-25 (Sun 16:06: screen and `CREDITS.md` are generated; an asset without a manifest row fails the build) Credits screen and `CREDITS.md` generated from data: `assets-src/manifest.yaml` already lists every image,
   model and texture with credit and licence. (NFR-08, CR-11)
 - [ ] A-13 Accessibility pass on the Thread: keyboard only, one button, 200% text, high contrast, reduced motion
   (`npm run capture -- <name> reduce`), screen reader labels, mobile layout of the cinema lower third. (AC-04, AC-06, AC-11)

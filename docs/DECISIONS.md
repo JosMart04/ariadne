@@ -211,6 +211,12 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   scene). Why: both were found by an outside review and confirmed in the code; the first broke pillar 3. Measured after
   the fix: a set that held 14 geometries and 3 textures holds 0 and 0 after the player leaves it.
 
+- **F-D15 · Credits are generated, never written by hand.** The compiler reads `assets-src/manifest.yaml` and
+  `content/voices.yaml` into `content.credits`; the Credits screen and `CREDITS.md` are printed from it. A model or image
+  that content names without a manifest row fails the build, and so does a row without title, credit or licence.
+  Why: with several agents adding assets, a hand-written credits page would fall behind, and an uncredited NASA asset
+  or an undeclared generated voice is a contest risk (CR-11, R-08).
+
 ## Pending team confirmation (defaults in use)
 
 - ARIADNE acronym: "Archive for Robotic Instruments And Dormant Network Explorers" (not shown in the game yet).

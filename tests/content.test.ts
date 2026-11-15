@@ -82,3 +82,22 @@ describe('the whole cast is present (M6, AC-07)', () => {
   // Becomes a hard gate at the end of iteration 2, when all 16 files are complete.
   it.todo('no episode is still a draft (AC-07)');
 });
+
+describe('credits', () => {
+  it('every model and image that content names has a credit and a licence (NFR-08, CR-11)', () => {
+    const credited = new Set([...content.credits.models, ...content.credits.images].map((c) => c.file));
+    for (const owner of [...content.episodes, content.prologue, content.finale]) {
+      for (const m of Object.values(owner.models)) expect(credited, `${owner.id}: ${m.file}`).toContain(m.file);
+      for (const i of Object.values(owner.images)) expect(credited, `${owner.id}: ${i.file}`).toContain(i.file);
+    }
+    for (const c of [...content.credits.models, ...content.credits.images, ...content.credits.textures]) {
+      expect(c.credit.length, c.file).toBeGreaterThan(2);
+      expect(c.license.length, c.file).toBeGreaterThan(2);
+    }
+  });
+
+  it('names the stock voices, so generated voices are declared (R-08)', () => {
+    expect(content.credits.voices.length).toBeGreaterThan(0);
+    for (const v of content.credits.voices) expect(v.name.length).toBeGreaterThan(1);
+  });
+});

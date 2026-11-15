@@ -23,6 +23,7 @@ import {
   Scene,
   UiStrings,
   type Content,
+  type CreditC,
   type EpisodeC,
   type FactC,
   type LineT,
@@ -31,6 +32,7 @@ import {
 } from '../src/content/schema.ts';
 import { puzzleProblems } from '../src/engine/fsm.ts';
 import { SIM_OUTCOMES, isSim } from '../src/sim/outcomes.ts';
+import { creditsMarkdown } from './credits-md.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = join(ROOT, 'content');
@@ -253,6 +255,29 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
   const ui = validate(UiStrings, load('ui.yaml'), problems) ?? {};
   const glossary = validate(Glossary, load('glossary.yaml'), problems) ?? {};
 
+  // ---------- Credits: generated, so they can never fall behind what the game serves (NFR-08, CR-11) ----------
+  type Row = { title?: string; credit?: string; license?: string; page?: string };
+  const manifest = parse(readFileSync(join(ROOT, 'assets-src', 'manifest.yaml'), 'utf8')) as Record<'models' | 'images' | 'textures' | 'code', Record<string, Row> | undefined>;
+  const rows = (kind: 'models' | 'images' | 'textures' | 'code'): CreditC[] =>
+    Object.entries(manifest[kind] ?? {}).map(([file, r]) => {
+      if (!r.title || !r.credit || !r.license) problems.push(`assets-src/manifest.yaml: ${kind}.${file} needs title, credit and license`);
+      return { file, title: r.title ?? file, credit: r.credit ?? '', license: r.license ?? '', ...(r.page ? { page: r.page } : {}) };
+    });
+  // Whatever content names must be in the manifest, or it would be served without a credit.
+  for (const owner of [...episodes, prologue, finale]) {
+    if (!owner) continue;
+    for (const m of Object.values(owner.models)) if (!manifest.models?.[m.file]) problems.push(`${owner.id}: ${m.file} has no row in assets-src/manifest.yaml (credit and licence)`);
+    for (const im of Object.values(owner.images)) if (!manifest.images?.[im.file]) problems.push(`${owner.id}: ${im.file} has no row in assets-src/manifest.yaml (credit and licence)`);
+  }
+  const cast = parse(readFileSync(join(CONTENT, 'voices.yaml'), 'utf8')) as { voices: Record<string, { name: string }> };
+  const credits = {
+    models: rows('models'),
+    images: rows('images'),
+    textures: rows('textures'),
+    code: rows('code'),
+    voices: Object.entries(cast.voices).map(([role, v]) => ({ role, name: v.name })),
+  };
+
   if (problems.length || !prologue || !finale) {
     throw new Error(`Content has ${problems.length} problem(s):\n  - ${problems.join('\n  - ')}`);
   }
@@ -278,11 +303,18 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     ui,
     glossary,
     voiced: existsSync(VOICES) ? readdirSync(VOICES).flatMap((f) => /^vo_(.+)_en\.mp3$/.exec(f)?.[1] ?? []).sort() : [],
+    credits,
     stats,
   };
 
   mkdirSync(dirname(OUT), { recursive: true });
   writeFileSync(OUT, JSON.stringify(content));
+  // CREDITS.md follows the same data. It is only rewritten when it changes, and never from the dev server or the tests.
+  if (!opts.quiet) {
+    const file = join(ROOT, 'CREDITS.md');
+    const md = creditsMarkdown(content);
+    if (!existsSync(file) || readFileSync(file, 'utf8') !== md) writeFileSync(file, md);
+  }
 
   if (!opts.quiet) {
     console.log(

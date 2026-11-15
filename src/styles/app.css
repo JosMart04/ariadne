@@ -1021,3 +1021,16 @@ div:focus > .clew {
     width: 100%;
   }
 }
+
+/* Credits generated from assets-src/manifest.yaml */
+.credits__assets {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem;
+  display: grid;
+  gap: 0.35rem;
+}
+.credits__by {
+  color: var(--dim);
+  font-size: 0.92em;
+}

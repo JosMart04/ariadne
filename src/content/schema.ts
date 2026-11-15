@@ -323,6 +323,9 @@ export type ContentStats = {
   puzzles: number;
 };
 
+/** One line of the credits: an external asset, who made it, and its licence. Generated from assets-src/manifest.yaml. */
+export type CreditC = { file: string; title: string; credit: string; license: string; page?: string };
+
 export type Content = {
   episodes: EpisodeC[];
   /** Episode ids in chronological launch order: the path of the golden thread. */
@@ -333,5 +336,7 @@ export type Content = {
   glossary: Record<string, { def: string }>;
   /** Ids of the lines that have a voice file in public/assets/vo/. The others are read by the browser's own speech. */
   voiced: string[];
+  /** Every external asset the game serves, by kind, and the stock voices that speak (NFR-08, CR-11, R-08). */
+  credits: { models: CreditC[]; images: CreditC[]; textures: CreditC[]; code: CreditC[]; voices: { role: string; name: string }[] };
   stats: ContentStats;
 };

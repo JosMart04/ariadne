@@ -329,6 +329,34 @@ export function Credits() {
       <p>{t('credits.nasa')}</p>
       <p>{t('credits.ai')}</p>
       <p>{t('credits.title.allusion')}</p>
+      {(['models', 'images', 'textures', 'code'] as const).map((kind) =>
+        content.credits[kind].length ? (
+          <section key={kind} aria-labelledby={`credits-${kind}`}>
+            <h2 id={`credits-${kind}`}>{t(`credits.${kind}`)}</h2>
+            <ul className="credits__assets">
+              {content.credits[kind].map((c) => (
+                <li key={c.file}>
+                  {c.page ? (
+                    <a className="source" href={c.page} target="_blank" rel="noopener noreferrer">
+                      {c.title}
+                    </a>
+                  ) : (
+                    c.title
+                  )}
+                  <span className="credits__by">
+                    {' '}
+                    · {c.credit} · {c.license}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null,
+      )}
+      <h2>{t('credits.voices')}</h2>
+      <p>{t('credits.voices.note', { names: content.credits.voices.map((v) => v.name).join(', ') })}</p>
+      <h2>{t('credits.fonts')}</h2>
+      <p>{t('credits.fonts.note')}</p>
       <h2>{t('source.button')}</h2>
       <ul className="credits__hosts">
         {hosts.map((h) => (

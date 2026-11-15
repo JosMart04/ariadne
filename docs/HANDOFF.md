@@ -18,7 +18,7 @@ lifecycle defects are fixed. All of it is pushed and deployed.
 
 | Lane | Works on now | Must not touch |
 |---|---|---|
-| **Fable · Thread and core** | Next, in this order: A-13 accessibility pass on the Thread, A-25 credits from the manifest, fixes that the team's playtest asks for (T-13b, T-15) | the 13 non-Thread episode files |
+| **Fable · Thread and core** | Next, in this order: A-13 accessibility pass on the Thread, fixes that the team's playtest asks for (T-13b, T-15) | the 13 non-Thread episode files |
 | **Fable · diorama** | Done (F-01, F-04). Nothing is open in this lane; its files went back to "Fable · Thread and core" | |
 | **Astra · content** (GPT Astra) | X-01 `docs/submission/`, X-02 text and facts of the 13 files, X-05 put the 11 remaining files on stage (recipe below), X-04 link check | anything under `src/`, `tests/`, `scripts/` (except `check-links.ts`), `content/ui.yaml`, the Thread content |
 
@@ -286,7 +286,7 @@ Did: the lanes and start prompts; E08 in 3D in both modes (simulation, set, plan
 voices); voices for E16; the Thread check from a clean start; the diorama contract with two proving files; the explainer as
 captions; the two lifecycle fixes with their check. Every step was pushed with its captures and deployed.
 Left undone: everything a person must do (section "Team"), the 11 files still off stage, the text of the 13 files, the
-accessibility pass (A-13), the credits from the manifest (A-25), the submission texts (X-01).
+accessibility pass (A-13), the submission texts (X-01). Also done at 16:06: credits generated from the manifest (A-25).
 
 ### Team (humans)
 
