@@ -199,13 +199,14 @@ flight.m: m
 flight.ms: m/s
 flight.s: s
 puzzle.choose: Choose a place
-play.title: How will you play?
+play.title: Way to play
 play.explorer: Explorer
 play.explorer.help: Fly, turn and press the real controls. Mouse, keyboard, touch or gamepad.
 play.hands: Hands
 play.hands.help: Use your hands in front of the camera. Pinch to press. Make a fist to steer.
 play.accessible: Accessible
 play.accessible.help: Point and choose, with a mouse, a keyboard or one button. Same scenes, same ending.
+play.soon: Coming soon.
 evidence.photo: Photographed from orbit
 story.sources: Sources for this story
 story.part: "{n} of {total}"

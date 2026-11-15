@@ -62,7 +62,7 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
 - [x] B-22 `src/audio/bus.ts` + procedural effects; Sound and Mono toggles. (FR-33, FR-34)
 
 **I1c (07:30–09:30)**
-- [ ] B-23 **Finale telescope.** `src/scenes/telescope/` (the Moon in the eyepiece, then the real orbital image
+- [~] (B, started Sun 07:40) B-23 **Finale telescope.** `src/scenes/telescope/` (the Moon in the eyepiece, then the real orbital image
   `img_e02_site_noon.webp` as the aiming map, labelled as an orbiter image) + `src/consoles/TelescopeConsole.tsx` (slew,
   zoom, focus, hold to fire) + `src/sim/ranging.ts` (outcomes already declared in `outcomes.ts`: `on-mirror`, `on-stage`,
   `on-ground`). Update `content/finale.yaml`: add `set`, cues, `sim: ranging` with `when`/`target` on the `aim` state, and
@@ -113,7 +113,7 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
 
 ## Lane A · Cosmos, station, shell
 
-- [ ] A-23 **Setup screen:** Explorer / Hands / Accessible first (strings `play.*` are already in `content/ui.yaml`, the
+- [x] A-23 **Setup screen:** Explorer / Hands / Accessible first (strings `play.*` are already in `content/ui.yaml`, the
   setting is `settings.play`), then the options. Hands is offered only when B-25 exists. Accessible keeps the input
   method radios. (AX-01)
 - [ ] A-28 **Prologue on the telescope console** (after B-23 is pushed): `content/prologue.yaml` gets `set: telescope`,

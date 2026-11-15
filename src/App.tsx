@@ -43,7 +43,7 @@ export function App() {
   const set = useGame((s) => s.set);
 
   // One-button mode. Escape always returns to mouse and keyboard, so nobody can get trapped in it.
-  const scanning = settings.input === 'switch';
+  const scanning = settings.play === 'accessible' && settings.input === 'switch';
   const leaveScanning = useCallback(() => {
     set({ input: 'pointer' });
     announce(t('scan.left'));

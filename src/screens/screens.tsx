@@ -6,7 +6,7 @@ import { ACTS } from '../content/schema';
 import { ScenePlayer } from '../episode/ScenePlayer';
 import { announce } from '../engine/announce';
 import { go } from '../engine/router';
-import { finaleOpen, nextKeyEpisode, useGame, type InputMode } from '../engine/store';
+import { finaleOpen, nextKeyEpisode, useGame, type InputMode, type PlayMode } from '../engine/store';
 import { Badge, Btn, useFocusOn } from '../ui/parts';
 
 // ---------------------------------------------------------------- Title
@@ -39,6 +39,9 @@ export function Title() {
 
 // ---------------------------------------------------------------- Setup (AX-01)
 
+/** Three ways to play the same scenes and the same ending (section 8.0). Hands arrives with src/hands. */
+const PLAYS: PlayMode[] = ['explorer', 'hands', 'accessible'];
+const PLAY_READY: Record<PlayMode, boolean> = { explorer: true, hands: false, accessible: true };
 const INPUTS: InputMode[] = ['pointer', 'keyboard', 'switch', 'head'];
 const SCALES = [1, 1.25, 1.5, 2];
 /** Seconds per target in one-button scanning (AX-14: 0.8 to 3 s). Radios, so the choice never needs a drag. */
@@ -76,6 +79,33 @@ export function Setup() {
       <p className="note">{t('setup.intro')}</p>
 
       <fieldset>
+        <legend>{t('play.title')}</legend>
+        <div className="options">
+          {PLAYS.map((m) => (
+            <label key={m} className={`option option--play${PLAY_READY[m] ? '' : ' option--soon'}`}>
+              <input
+                type="radio"
+                name="play"
+                value={m}
+                checked={settings.play === m}
+                disabled={!PLAY_READY[m]}
+                // One-button scanning belongs to Accessible: leaving Accessible returns to mouse and keyboard.
+                onChange={() => set({ play: m, input: m === 'accessible' ? settings.input : 'pointer' })}
+              />
+              <span className="option__label">
+                {t(`play.${m}`)}
+                <span className="option__help">
+                  {t(`play.${m}.help`)}
+                  {!PLAY_READY[m] && ` ${t('play.soon')}`}
+                </span>
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      {settings.play === 'accessible' && (
+      <fieldset>
         <legend>{t('setup.input')}</legend>
         <div className="options">
           {INPUTS.map((m) => (
@@ -89,8 +119,9 @@ export function Setup() {
           ))}
         </div>
       </fieldset>
+      )}
 
-      {settings.input === 'switch' && (
+      {settings.play === 'accessible' && settings.input === 'switch' && (
         <fieldset>
           <legend>{t('setup.scanSpeed')}</legend>
           <div className="options options--row">

@@ -121,7 +121,10 @@ export const useGame = create<{ settings: Settings; progress: Progress } & Actio
       // Saves from an older build lack the newer settings: fill them with defaults.
       merge: (saved, current) => {
         const p = (saved ?? {}) as Partial<{ settings: Settings; progress: Progress }>;
-        return { ...current, settings: { ...current.settings, ...p.settings }, progress: { ...current.progress, ...p.progress } };
+        const settings = { ...current.settings, ...p.settings };
+        // A save from before the play modes existed, made with one button: that player needs Accessible.
+        if (p.settings && !p.settings.play && p.settings.input === 'switch') settings.play = 'accessible';
+        return { ...current, settings, progress: { ...current.progress, ...p.progress } };
       },
     },
   ),
