@@ -39,6 +39,14 @@ models:
     url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ingenuity%20Mars%20Helicopter/Ingenuity%20Mars%20Helicopter.glb
     raw: models/ingenuity.glb
 
+  mdl_viking.glb:
+    title: Viking Lander
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Viking%20Lander
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Viking%20Lander/Viking%20Lander.glb
+    raw: models/viking.glb
+
 images:
   img_e02_site_noon.webp:
     title: High Noon at Tranquility Base (PIA12925)

@@ -5,26 +5,87 @@ name: Viking 1 & 2
 title: The First Question
 slate: { place: "Chryse and Utopia Planitia", year: 1976 }
 launched: "1975-08-20"
-draft: true
 status: { badge: silent-intact, where: "Chryse Planitia and Utopia Planitia, Mars" }
 nssdca: [1975-075C, 1975-083C]
 resource: viking
-
+objectives:
+  - Explain how orbiters helped choose the Viking landing sites.
+  - Describe how robotic arms delivered soil to onboard experiments.
+  - Distinguish a chemical response from confirmed evidence of life.
 facts:
   landings:
-    text: Viking 1 landed on Mars on July 20, 1976, and Viking 2 on Sept. 3, 1976.
+    text: Viking 1 launched on August 20, 1975. It landed at Chryse Planitia on July 20, 1976; Viking 2 reached Utopia Planitia on September 3.
+    source: https://nssdc.gsfc.nasa.gov/planetary/viking.html
+    note: "Checked Nov 15, 2026: The mission summary gives both launch and landing dates and both landing plains."
+  survey:
+    text: Each Viking mission paired an orbiter with a lander. Images from orbit helped the team select landing sites.
+    source: https://nssdc.gsfc.nasa.gov/planetary/viking.html
+    note: "Checked Nov 15, 2026: The opening paragraphs describe each orbiter-lander pair and the first month of orbital imaging to find suitable sites."
+  sampling:
+    text: Viking 1's robotic arm collected soil and delivered it to onboard experiments. Its instruments also photographed the surface and measured weather.
     source: https://science.nasa.gov/mission/viking-1/
+    note: "Checked Nov 15, 2026: Instruments lists cameras, the biological laboratory, weather instruments and sampler arm. Results describes the July 28 soil collection and delivery."
   life-search:
-    text: Viking was the first US mission to search for life on Mars. Its results are still debated.
+    text: Viking's biology experiments produced no definitive evidence of life at either landing site.
     source: https://nssdc.gsfc.nasa.gov/planetary/viking.html
-  lost-contact:
-    text: Viking 1 lost contact in November 1982 after a faulty command overwrote its antenna-pointing data.
+    note: "Checked Nov 15, 2026: The results paragraph explicitly says the biology experiment produced no definitive evidence of life at either site."
+  mixed-results:
+    text: Some Viking 1 soil results could suggest life, but its search for organic compounds gave negative results.
+    source: https://science.nasa.gov/mission/viking-1/
+    note: "Checked Nov 15, 2026: Results describes a possible weak positive interpretation and a negative gas-chromatograph search for organic compounds."
+  contact:
+    text: Viking 2's lander stopped communicating in April 1980. Viking 1's lander fell silent in November 1982.
     source: https://nssdc.gsfc.nasa.gov/planetary/viking.html
-    note: VERIFY wording.
-
+    note: "Checked Nov 15, 2026: NSSDCA gives Apr. 11 and Nov. 13; NASA Science gives Apr. 12 and Nov. 11. Only the agreed months and years are shown."
+  command:
+    text: A faulty command from Earth interrupted Viking 1's communications in November 1982. Attempts to restore contact failed.
+    source: https://science.nasa.gov/mission/viking-1/
+    note: "Checked Nov 15, 2026: The final Results paragraphs describe the faulty command and unsuccessful recovery. The claim about overwritten antenna data was removed."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "Seven years to the day after the first footstep on the Moon, I opened my eyes on Mars and asked the oldest question: is anyone here?"
-
+  - { who: machine, tag: IMAGINED, text: "You brought a question all this way. Let us ask the soil." }
+  - { who: ariadne, tag: REAL, fact: landings, text: "You meet two landers from 1976. Viking 1 reached Chryse Planitia; Viking 2 reached Utopia Planitia." }
+operation:
+  title: A laboratory on another world
+  explainer:
+    - { text: "You begin above Mars. Orbiter images help the team choose where the lander should touch down.", fact: survey }
+    - { text: "A robotic arm collects soil. Viking 1 delivers samples to instruments carried on the lander.", fact: sampling }
+    - { text: "You compare results from different experiments. A possible biological signal must also fit the chemical evidence.", fact: mixed-results }
+    - { text: "You also receive photographs and weather measurements. The lander studies a place as well as a sample.", fact: sampling }
+discovery:
+  headline: { text: "Viking's experiments did not establish that life existed at either site.", fact: life-search }
+  story:
+    text: >-
+      You cannot turn an uncertain result into a discovery of life.
+      Some soil responses could be read as a weak positive.
+      Yet the search for organic compounds gave negative results.
+      You must keep those results together.
+      Viking's experiments left no definitive evidence of life at either landing site.
+    facts: [mixed-results, life-search]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: contact, text: "Viking 2 stopped communicating in April 1980. Viking 1 kept working until November 1982." }
+    - { who: ariadne, tag: REAL, fact: command, text: "A faulty command interrupted Viking 1's communications. Attempts to restore contact failed." }
+  last: { who: machine, tag: IMAGINED, text: "Keep asking. You do not need me to answer every question today." }
+statusNow:
+  text: "The landers are silent. Their contact records end in April 1980 and November 1982; you can still study the measurements they returned."
+  fact: contact
+# Poems, Third Series (1896), Life XLIII, The Brain; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "The brain is wider than the sky,"
+  author: Emily Dickinson
+  work: Poems, Third Series
+  year: 1896
+set:
+  scene: diorama
+  model: lander
+  alt: "NASA's Viking lander model shows a low body on three legs, a dish antenna and instruments mounted across its deck."
+  labels: [artistic-view]
+  options: { size: 1.1, yaw: 20 }
+models:
+  lander:
+    file: mdl_viking.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Viking%20Lander
+    license: Public domain (NASA 3D Resources)
 crossThreads: [e09-phoenix]

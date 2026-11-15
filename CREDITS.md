@@ -11,6 +11,7 @@ Data & imagery: NASA. This project is not affiliated with or endorsed by NASA. N
 - [Voyager Probe (A)](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Voyager%20Probe%20(A)) · NASA · Public domain (NASA 3D Resources) · `mdl_voyager.glb`
 - [Mars Exploration Rover - Opportunity (MER-B)](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)) · NASA · Public domain (NASA 3D Resources) · `mdl_mer_b.glb`
 - [Ingenuity Mars Helicopter](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ingenuity%20Mars%20Helicopter) · NASA · Public domain (NASA 3D Resources) · `mdl_ingenuity.glb`
+- [Viking Lander](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Viking%20Lander) · NASA · Public domain (NASA 3D Resources) · `mdl_viking.glb`
 
 ## Photographs
 
