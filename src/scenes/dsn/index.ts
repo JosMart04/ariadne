@@ -26,8 +26,8 @@ const SHOTS: Record<string, Shot> = {
   passage: { place: 'space', pos: [60, 14, 90], look: [0, 0, 0], fov: 30, orbit: 0.01 },
   voyager: { place: 'space', pos: [9, 3.5, 13], look: [0, 0.6, 0], fov: 36, orbit: 0.05 },
   dish: { place: 'earth', pos: [120, 9, 150], look: [0, 36, 0], fov: 42, orbit: 0.012 },
-  aim: { place: 'earth', pos: [64, 12, -128], look: [-58, 88, 86], fov: 64, targets: true },
-  listen: { place: 'earth', pos: [64, 12, -128], look: [-58, 88, 86], fov: 64 },
+  aim: { place: 'earth', pos: [70, 8, -150], look: [10, 108, -20], fov: 84, targets: true },
+  listen: { place: 'earth', pos: [70, 8, -150], look: [10, 108, -20], fov: 84 },
   portrait: { place: 'portrait', pos: [0, 0, 60], look: [0, 0, 0], fov: 30 },
   clew: { place: 'space', pos: [22, 5, 30], look: [0, 0, 0], fov: 30, orbit: 0.03 },
   status: { place: 'space', pos: [-10, 2.5, 12], look: [0, 0.6, 0], fov: 36, orbit: -0.04 },
@@ -129,9 +129,9 @@ export async function create(host: SceneHost): Promise<SetController> {
   const sunStar = dot(0xfff6e0, 0.05);
   sunStar.position.copy(toSun).multiplyScalar(20000);
   space.add(sunStar);
-  const sunlight = new THREE.DirectionalLight(0xfff2dc, 2.4);
+  const sunlight = new THREE.DirectionalLight(0xfff2dc, 5.5);
   sunlight.position.copy(toSun).multiplyScalar(100);
-  space.add(sunlight, sunlight.target, new THREE.AmbientLight(0x30364a, 0.55));
+  space.add(sunlight, sunlight.target, new THREE.AmbientLight(0x8a93b0, 1.5));
 
   // ---------- The portrait: looking back toward home ----------
   const portrait = new THREE.Group();

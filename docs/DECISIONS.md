@@ -128,6 +128,20 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   Why: captures, AC-16 measurements by the team, and tests that fly like a player. No secret is exposed.
 - **B-D11 · Eagle faces west, the Sun is 10.8° above the east, the Earth is 1.9° wide and high in the west, there are
   no stars on the surface.** Why: "accuracy is important throughout"; each of these is how it was on July 20, 1969.
+- **B-D14 · The landing was rebuilt after the team's playtest (Sun 09:40): "I always lose, even at 0.3 m/s".** A touchdown
+  failed on forward speed while the message blamed the descent, and the starting descent was already over the limit.
+  Now every hands-on task follows one rule: **state the goal, show every limit all the time, say what to do next, and let a
+  player who does nothing wrong win.** Limits are 3.5 m/s down and 2.5 m/s forward; a coach line, a three-step brief, a
+  labelled landing ring, a miss message with the player's own numbers, a retry from higher up, and guided choices offered
+  from the start. A steadying assist cancels the last of the drift when the stick is released; it is declared `IMAGINED`
+  because Armstrong did that by hand. Each console has a `Brief` (`src/consoles/index.tsx`).
+- **B-D15 · A new clew is revealed in the lower third, without a box** (`ClewReveal`), so the picture stays in view; the
+  Logbook keeps the card. Words that somebody says, real or imagined, are set in Cormorant Garamond italic (OFL);
+  narration and records stay in Atkinson Hyperlegible. Why: the team found the box ugly and in the way.
+- **B-D16 · E16 is operated the only way Voyager is operated: by pointing an antenna on Earth.** The player matches the
+  predicted azimuth and elevation and listens; the coordinates are illustrative and say so, the distance and light time
+  are NASA's. The puzzle is the real 2023 to 2024 chip fault. Its last question (how long until you know?) is clew III.
+  `src/sim/dsn.ts` also gives the light time for any date, for copy that works before and after Nov. 18, 2026 (A-D14).
 - **B-D13 · Voice has two layers.** A line with a file in `public/assets/vo/` plays that file. A line without one is read
   aloud by the browser's own speech, on the device (AX-33), with pitch and pace per speaker. The compiler lists the files
   that exist (`content.voiced`), so the game never requests a missing file. Why: the ElevenLabs key had 50 credits left

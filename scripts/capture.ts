@@ -22,10 +22,10 @@ import puppeteer, { type Browser, type Page } from 'puppeteer-core';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
-const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'finale'].includes(a)) ?? 'latest';
+const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e16', 'finale'].includes(a)) ?? 'latest';
 const reduce = args.includes('reduce');
 const route = ['explorer', 'accessible'].find((r) => args.includes(r));
-const SCENES = ['prologue', 'e02', 'finale'] as const;
+const SCENES = ['prologue', 'e02', 'e16', 'finale'] as const;
 const wanted = SCENES.filter((s) => args.includes(s));
 const scenes = wanted.length ? wanted : [...SCENES];
 const BASE = process.env.CAPTURE_URL ?? 'http://localhost:5173/';
@@ -202,6 +202,95 @@ async function e02Explorer(page: Page) {
   await shot('touchdown');
 }
 
+// ------------------------------------------------------------------ E16 Voyager 1
+
+/** Every beat, with one wrong answer at each of the three decisions. */
+async function e16Accessible(page: Page) {
+  const shot = shooter(page, 'e16-accessible');
+  await open(page, 'e16-voyager1');
+  await shot('passage', 2500);
+  await press(page, 'Continue');
+  await shot('arrival', 2500);
+  await press(page, 'Continue');
+  await press(page, 'Continue');
+  await shot('arrival-dish', 3500);
+  await press(page, 'Continue');
+  await shot('where-to-point', 3000);
+  await press(page, 'The bright planet');
+  await shot('dish-turns', 2000);
+  await waitFor(page, 'Continue');
+  await shot('planet-teaches');
+  await press(page, 'Continue');
+  await press(page, 'The predicted position');
+  await waitFor(page, 'Move the lost code');
+  await shot('heard-the-glitch', 1500);
+  await press(page, 'Send someone to repair it');
+  await shot('no-repair-teaches', 2500);
+  await press(page, 'Continue');
+  await press(page, 'Move the lost code');
+  await shot('command-leaves', 3000);
+  await press(page, 'In about 22 hours');
+  await shot('one-way-teaches', 2500);
+  await press(page, 'Continue');
+  await press(page, 'In about 45 hours');
+  await shot('answered', 3000);
+  await press(page, 'Continue');
+  await shot('discovery', 3000);
+  await press(page, 'Tell me more');
+  for (let i = 1; i <= 8; i++) {
+    const done = await page.evaluate(() => !document.querySelector('.line__count'));
+    if (done) break;
+    await shot(`discovery-story-${i}`, 2600);
+    await press(page, 'Continue');
+  }
+  await shot('silence-portrait', 3500);
+  await press(page, 'Continue');
+  await shot('silence-one-dot', 2500);
+  await press(page, 'Continue');
+  await shot('silence-last-message', 3000);
+  await press(page, 'Catch it');
+  await shot('silence-caught', 2500);
+  await press(page, 'Continue');
+  await shot('clew', 3000);
+  await press(page, 'Continue');
+  await shot('status-now', 3500);
+  await press(page, 'Open the Field File');
+  await shot('field-file', 3500);
+}
+
+/** The operator's own hands on the antenna: drag the scene until the numbers match, then listen. */
+async function e16Explorer(page: Page) {
+  const shot = shooter(page, 'e16-explorer');
+  await open(page, 'e16-voyager1');
+  for (let i = 0; i < 4; i++) await press(page, 'Continue');
+  await shot('take-the-controls', 3000);
+  await press(page, 'Take the controls');
+  await shot('console', 1500);
+  // Listen at once, without pointing: only noise. Failing teaches.
+  await press(page, 'Listen');
+  await waitFor(page, 'Continue');
+  await shot('noise-teaches');
+  await press(page, 'Continue');
+  await press(page, 'Take the controls');
+  await sleep(500);
+  const state = () => page.evaluate(`window.__stage.getState().set.act('state')`) as Promise<{ az: number; el: number; want: { az: number; el: number } }>;
+  for (let i = 0; i < 6; i++) {
+    const s = await state();
+    const dx = Math.max(-300, Math.min(300, (s.want.az - s.az) / 0.12));
+    const dy = Math.max(-200, Math.min(200, -(s.want.el - s.el) / 0.1));
+    if (Math.abs(dx) < 4 && Math.abs(dy) < 4) break;
+    await page.mouse.move(640, 300);
+    await page.mouse.down();
+    await page.mouse.move(640 + dx, 300 + dy, { steps: 12 });
+    await page.mouse.up();
+    await sleep(250);
+  }
+  await shot('dish-on-target', 4500);
+  await press(page, 'Listen');
+  await waitFor(page, 'Move the lost code');
+  await shot('heard', 1500);
+}
+
 // ------------------------------------------------------------------ Finale
 
 /** Every beat of the finale; one wrong answer at each of the three decisions. */
@@ -302,6 +391,7 @@ async function finaleExplorer(page: Page) {
 const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Page) => Promise<void>>>> = {
   prologue: { accessible: prologue },
   e02: { accessible: e02Accessible, explorer: e02Explorer },
+  e16: { accessible: e16Accessible, explorer: e16Explorer },
   finale: { accessible: finaleAccessible, explorer: finaleExplorer },
 };
 

@@ -3,8 +3,8 @@
 Status: `[ ]` open · `[~]` in progress (add who) · `[x]` done.
 IDs in brackets are requirement ids from the requirements document (v1.1).
 
-**Re-based on Sun Nov 15, 07:30 UTC−5** (`docs/DECISIONS.md`, B-D12). The vertical slice E02 is deployed; the finale,
-E16, E08, the Orrery and the 13 files are not started. Read `docs/HANDOFF.md` before taking a task.
+**State on Sun Nov 15, 10:10 UTC−5:** prologue, E02, E16 and the finale are done in 3D. **E08 in 3D (B-27) is the next task.**
+Account A leads the whole project from here: follow the iteration table from I3. Read `docs/HANDOFF.md` first.
 
 ## Iterations (UTC−5)
 
@@ -15,9 +15,9 @@ Each iteration ends deployed, with the gate green, captures committed and `docs/
 | I0 | done | Machine ready, decision and plan recorded | ✓ |
 | I1a | done 02:55 | 3D core, Tranquility Base set, cinema layout, E02 complete in Accessible | ✓ 36 captures |
 | I1b | done 07:22 | E02 flown by hand in Explorer, lunar module panel, dust, rain of light, sound, voice ids | ✓ 36 captures |
-| I1c | 07:30–09:30 | **Finale in 3D:** telescope console on the real orbital image, laser photons, measurement, monologue. Voices for ARIADNE (E02 + finale). Explorer / Hands / Accessible on the Setup screen | AC-13 on the finale |
-| I2 | 09:30–11:30 | **E16 Voyager 1:** content complete + DSN antenna set + "Pale Blue Dot" shot. **Prologue** restaged on the telescope console (no "Tune the station") | captures |
-| I3 | 11:30–13:00 | **E08 in 3D:** planning station on Meridiani, real light delay. Thread route complete | **13:00 cut rule** |
+| I1c | done 09:55 | **Finale in 3D:** telescope console on the real orbital image, laser photons, measurement, monologue. Voices for ARIADNE (E02 + finale). Explorer / Hands / Accessible on the Setup screen | AC-13 on the finale |
+| I2 | done 10:05 | **E16 Voyager 1:** content complete + DSN antenna set + "Pale Blue Dot" shot. **Prologue** restaged on the telescope console (no "Tune the station") | captures |
+| I3 | **now**–13:00 | **E08 in 3D:** planning station on Meridiani, real light delay. Thread route complete | **13:00 cut rule** |
 | I4 | 13:00–14:00 | Submission build: credits, README, AI disclosure, `docs/submission/`, accessibility pass on the Thread | **14:00 first submission** |
 | I5 | 14:00–17:00 | Orrery as the map (today's real positions) · the 13 files with a model or real image on stage (text by **15:00**) · Hands basics · Look Up only if the Thread passed the cut rule | **17:00 feature freeze** |
 | I6 | 17:00–22:30 | Fixes only: performance on real hardware, final captures, video support | **22:30 final submission** |
@@ -71,9 +71,8 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
   the scene has a `set` (today it is still the text layout). (5.4, AC-13)
 - [x] B-24 Finale staging: revelation facts as captions, the monologue, the "Daisy Bell" hum that slows down (synthesise
   it: public domain, 1892; never the 1961 recording), the final pulse, the closing line. (5.4, 15.3)
-- [~] (B) B-04 **Voices. BLOCKED on quota (Sun 07:46): the ElevenLabs key has 50 credits left of 10,000.** The script
-  and the casting are done and tested up to the API call: `npx tsx scripts/gen-voices.ts --dry-run prologue e02-apollo11 finale`
-  lists 54 lines, 4,763 characters. With a key that has quota, drop `--dry-run`. Until then the browser reads aloud (B-D13).
+- [x] B-04 **Voices** for the prologue, E02 and the finale: 44 files in `public/assets/vo/` (the team added credits).
+  **Still to make: E16** (`npx tsx scripts/gen-voices.ts e16-voyager1`, then `npm run content`) **and E08** when its text is final.
   Original task: `content/voices.yaml` (speaker → ElevenLabs stock voice id) + `scripts/gen-voices.ts`: reads
   `voiceLines(content, only)` from `src/content/voice.ts`, `--dry-run` prints the character count, cache by text hash,
   writes `public/assets/vo/vo_<id>_en.mp3`. Read the key from `.env`; never print it. Check the current ElevenLabs API
@@ -83,7 +82,7 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
 - [~] B-19 The DSKY graphic for the 1202 alarm decision, with the guarded ABORT. Only if I1c closes early. (10.6.2)
 
 **I2 (09:30–11:30)**
-- [ ] B-28 **E16 Voyager 1.** Content first: `content/episodes/e16-voyager1.yaml` is a draft with 3 facts, two from
+- [x] B-28 **E16 Voyager 1** (done Sun 10:05; the "Pale Blue Dot" shot is the `portrait` cue; no `?date=` override yet). Content first: `content/episodes/e16-voyager1.yaml` is a draft with 3 facts, two from
   secondary sources. Find NASA/JPL sources, write the seven beats, the puzzle "The Glitch" (archetype F+I), `clew-3`
   "Distance is time". Then `src/scenes/dsn/` (official `Deep Space Network 70-meter.glb`, 1.9 MB, and
   `Voyager Probe (A).glb`, 286 KB) + `src/consoles/DsnConsole.tsx` (azimuth, elevation, lock, send a command) +
@@ -119,7 +118,7 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
 - [x] A-23 **Setup screen:** Explorer / Hands / Accessible first (strings `play.*` are already in `content/ui.yaml`, the
   setting is `settings.play`), then the options. Hands is offered only when B-25 exists. Accessible keeps the input
   method radios. (AX-01)
-- [ ] A-28 **Prologue on the telescope console** (after B-23 is pushed): `content/prologue.yaml` gets `set: telescope`,
+- [x] A-28 **Prologue on the telescope console** (after B-23 is pushed): `content/prologue.yaml` gets `set: telescope`,
   the "Tune the station" puzzle is replaced by sending the midnight pulse with the same console the finale uses.
   88 rival projects tune a radio: do not. (5.3)
 - [ ] A-20 `src/scenes/orrery/`: solar system with today's real positions (`npm i astronomy-engine`, lazy chunk; Moon
@@ -151,9 +150,7 @@ A-27 Gaze (no time; it stays in the pitch as the next step).
 - [ ] T-02 Rewrite and approve all text in your own voice. Text freeze Sunday 15:00. E02 is ready for you now. (R-09)
 - [ ] T-03 Verify every REAL fact against its source and sign `verified: <initials>` in the YAML. E02 has a `note:` on
   each fact saying what was checked and where. Anything unverified at 15:00 is reworded as IMAGINED or removed. (CR-12)
-- [ ] T-04b **ElevenLabs quota.** The key in `.env` has 50 credits left of 10,000. The Thread needs about 4,800 characters
-  (prologue, E02, finale) and about 3,000 more for E08 and E16. Put a key with quota in `.env` (a key that can only do
-  text to speech is enough), or decide to ship with the browser's own read-aloud voice, which already works.
+- [x] T-04b ElevenLabs quota: the team added 30,000 credits on Sun 09:40. About 4,800 were used; E16 and E08 need about 4,000 more.
 - [ ] T-04 Listen to the generated voices once B-04 lands. To change one, edit `content/voices.yaml`. Adult stock voices only. (R-05)
 - [ ] T-06 Timed playtest of the Thread with 3 adults (never minors). Record the median. (AC-01, M1)
 - [ ] T-07 **Submit the form at 14:00 Sunday** with the build of that moment; resubmit the final at 22:30. (R-01)
@@ -162,6 +159,7 @@ A-27 Gaze (no time; it stays in the pitch as the next step).
 - [ ] T-10 Open the public URL in a private window, on another network and on a phone. (AC-08)
 - [ ] T-11 Test Hands with a real laptop webcam once B-25 is deployed. Claude cannot test a camera. (AC-14)
 - [ ] T-12 Test Look Up on a phone before 18:00, if it was built. (FR-51 to FR-54)
+- [ ] T-13b **Replay the landing of E02** after the fixes of Sun 09:55 and say if the goal and the controls are clear now.
 - [ ] T-13 **Play E02 now** on a laptop with an integrated GPU: https://josmart04.github.io/ariadne/?fps#e02-apollo11 and
   write the frame rate here. Fly the landing by hand (W / S, R / F). Say what felt wrong. (AC-16)
-- [ ] T-14 Review the 36 captures in `docs/captures/i1b/` against the screenshot rule. (AC-15)
+- [ ] T-14 Review the captures in `docs/captures/i1d/` and `docs/captures/i1e/` against the screenshot rule. (AC-15)

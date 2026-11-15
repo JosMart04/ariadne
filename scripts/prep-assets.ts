@@ -47,6 +47,8 @@ async function main() {
     await sharp(raw('img/earth_2k.png')).resize(1024, 512).webp({ quality: 82 }).toFile(join(OUT, 'tex', 'tex_earth_1k.webp'));
 
   copyFileSync(raw('models/apollo_lm.glb'), join(OUT, 'models', 'mdl_apollo_lm.glb'));
+  for (const [from, to] of [['dsn_70m', 'mdl_dsn_70m'], ['voyager', 'mdl_voyager']])
+    if (existsSync(raw(`models/${from}.glb`))) copyFileSync(raw(`models/${from}.glb`), join(OUT, 'models', `${to}.glb`));
 
   const draco = join(ROOT, 'node_modules', 'three', 'examples', 'jsm', 'libs', 'draco', 'gltf');
   for (const f of ['draco_decoder.js', 'draco_decoder.wasm', 'draco_wasm_wrapper.js']) copyFileSync(join(draco, f), join(ROOT, 'public', 'draco', f));

@@ -10,6 +10,20 @@ models:
     page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Apollo%20Lunar%20Module
     url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Lunar%20Module/Apollo%20Lunar%20Module.glb
     raw: models/apollo_lm.glb
+  mdl_dsn_70m.glb:
+    title: Deep Space Network 70-meter antenna
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Space%20Network%2070-meter
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2070-meter/Deep%20Space%20Network%2070-meter.glb
+    raw: models/dsn_70m.glb
+  mdl_voyager.glb:
+    title: Voyager Probe (A)
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Voyager%20Probe%20(A)
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(A)/Voyager%20Probe%20(A).glb
+    raw: models/voyager.glb
 
 images:
   img_e02_site_noon.webp:

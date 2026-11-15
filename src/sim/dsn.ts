@@ -17,7 +17,7 @@ export type Pointing = { az: number; el: number };
 /** The predicted position of Voyager 1 in tonight's sky of the game. */
 export const VOYAGER: Pointing = { az: 214, el: 38 };
 /** A bright planet: easy to see, and silent on Voyager's frequency. */
-export const PLANET: Pointing = { az: 148, el: 54 };
+export const PLANET: Pointing = { az: 160, el: 46 };
 /** Where the dish rests when the operator sits down. */
 export const POINT_START: Pointing = { az: 180, el: 72 };
 /** How close the dish must point to hear Voyager, degrees. The real beam is far narrower; this is a game tolerance. */
@@ -58,7 +58,7 @@ export function listen(p: Pointing): OutcomeOf<'dsn'> {
 export const POINTINGS: Record<OutcomeOf<'dsn'>, Pointing> = {
   'on-voyager': VOYAGER,
   'on-planet': PLANET,
-  'on-empty': { az: 262, el: 64 },
+  'on-empty': { az: 250, el: 50 },
 };
 
 // ---------- Distance is time ----------

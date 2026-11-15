@@ -282,3 +282,27 @@ brief.ranging.zoom.title: Zoom in.
 brief.ranging.zoom: Use the wheel or the zoom keys. The mirror is the small dot just south of Eagle.
 brief.ranging.fire.title: Fire.
 brief.ranging.fire: Put the crosshair on it and press Fire.
+sim.dsn.take: Take the controls
+sim.dsn.retry: Point again
+sim.dsn.skip: Skip
+sim.dsn.auto: The dish turns to your choice.
+sim.dsn.miss: Point again.
+dsn.az: Azimuth
+dsn.el: Elevation
+dsn.predicted: predicted
+dsn.signal: Signal
+dsn.locked: locked
+dsn.searching: searching
+dsn.receiver: Receiver
+dsn.listen: Listen
+dsn.up: Tip the dish up
+dsn.down: Tip the dish down
+dsn.left: Turn the dish left
+dsn.right: Turn the dish right
+dsn.keys: "Drag the scene, or use the arrows, to turn the dish"
+brief.dsn.point.title: Point.
+brief.dsn.point: Turn the dish until azimuth and elevation match the predicted numbers.
+brief.dsn.signal.title: Watch the signal.
+brief.dsn.signal: The bar fills as you get closer. A check mark means it is locked.
+brief.dsn.listen.title: Listen.
+brief.dsn.listen: Press Listen. What you hear left Voyager almost a day ago.

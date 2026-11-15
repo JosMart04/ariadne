@@ -1280,3 +1280,29 @@ kbd {
   background: var(--amber);
   border-radius: 50%;
 }
+
+/* ---------- Deep Space Network console ---------- */
+.meter {
+  display: block;
+  width: 9rem;
+  height: 1.1rem;
+  margin: 0.35rem 0 0.2rem;
+  border: 0.0625rem solid #b9b09c;
+  background: #050505;
+}
+.meter__fill {
+  display: block;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, var(--amber) 0 0.4rem, #7a5216 0.4rem 0.5rem);
+}
+.tape--ok .meter__fill {
+  background: repeating-linear-gradient(90deg, var(--real) 0 0.4rem, #2f7a52 0.4rem 0.5rem);
+}
+.fire--listen {
+  color: #1a1206;
+  background: radial-gradient(circle at 40% 30%, #ffe3ac, var(--amber) 60%, #a86a12);
+  border-color: #2a1c06;
+  outline-color: #ffe3ac;
+  box-shadow: 0 0 1.6rem rgba(255, 182, 72, 0.55);
+  font-size: 0.95rem;
+}
