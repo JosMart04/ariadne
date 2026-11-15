@@ -183,7 +183,7 @@ label.not-to-scale: Sizes and distances not to scale
 label.time-compressed: Time compressed
 label.simulation: "SIMULATION: the real machine never worked like this"
 set.loading: Restoring the memory…
-set.look: Drag to look around
+set.look: "Drag, or press ← →, to look around"
 set.lost: The 3D view stopped.
 set.restart: Restart 3D
 set.textOnly: Continue in text
@@ -192,8 +192,8 @@ set.scene: Scene
 flight.skip: Skip the flight
 flight.auto: The machine is flying your choice.
 flight.alt: Altitude
-flight.sink: Descent
-flight.speed: Speed
+flight.sink: Descent rate
+flight.speed: Forward speed
 flight.fuel: Fuel
 flight.m: m
 flight.ms: m/s
@@ -212,15 +212,15 @@ story.sources: Sources for this story
 story.part: "{n} of {total}"
 flight.take: Take control
 flight.retry: Try again from higher up
-flight.guided: Switch to guided choices
+flight.guided: Choose a place instead
 flight.hard: Too hard for the landing legs. Come down more slowly, then try again.
 flight.keys: "W / S tilt · R / F descent rate"
 flight.stick: Hand controller
-flight.stick.fwd: Forward
-flight.stick.back: Brake
+flight.stick.fwd: speed up
+flight.stick.back: brake
 flight.rod: Descent rate
-flight.rod.slower: Slower
-flight.rod.faster: Faster
+flight.rod.slower: fall slower
+flight.rod.faster: fall faster
 flight.contact: Contact light
 flight.call60: "60 seconds."
 flight.call30: "30 seconds."
@@ -232,7 +232,9 @@ sim.descent.take: Take control
 sim.descent.retry: Try again from higher up
 sim.descent.skip: Skip the flight
 sim.descent.auto: The machine is flying your choice.
-sim.descent.miss: Too hard for the landing legs. Come down more slowly, then try again.
+sim.descent.miss: That touchdown was too hard for the landing legs. Try again.
+sim.descent.miss.sink: "You came down at {sink} m/s. The legs can take 3.5. Press R to fall slower, then try again."
+sim.descent.miss.drift: "A soft descent, but you were still moving forward at {drift} m/s. Brake first: hold S until the forward speed is under 2.5."
 sim.ranging.take: Use the telescope
 sim.ranging.retry: Aim again
 sim.ranging.skip: Skip
@@ -252,3 +254,31 @@ scope.laser: Laser
 scope.fire: Fire
 scope.keys: "Drag the map to move · wheel or + / − to zoom · arrows also move"
 scene.station: Knossos Station
+flight.ok: ready to land
+flight.toofast: too fast to land
+flight.limit: "under {n}"
+flight.zone: Land here
+flight.togo: "{n} m to the ring"
+flight.past: "{n} m past the ring"
+coach.label: Now
+coach.flyon: Fly on. The crater and its rocks are under you.
+coach.climb: You are low over the rocks. Press R to stop falling.
+coach.brake: Smooth ground. Brake now. Hold S.
+coach.backwards: You are going backwards. Let go of S.
+coach.smallcrater: A small crater is under you. Tap W to move past it.
+coach.down: Steady. Now come down. Press F to fall faster, R to fall slower.
+coach.gentle: Almost there. Keep the descent under 3.5.
+coach.slowfall: Too fast down. Press R.
+coach.fuel: Fuel is low. Land now, gently.
+brief.descent.goal.title: Goal.
+brief.descent.goal: Fly past the crater and land inside the gold ring.
+brief.descent.brake.title: Brake.
+brief.descent.brake: "Past the crater, hold the brake until forward speed is under {n} m/s. Then let go: the computer steadies you."
+brief.descent.down.title: Come down.
+brief.descent.down: "Touch down slower than {n} m/s. Fall faster or slower with"
+brief.ranging.find.title: Find it.
+brief.ranging.find: Drag the map until the bright dot of Eagle is under the crosshair.
+brief.ranging.zoom.title: Zoom in.
+brief.ranging.zoom: Use the wheel or the zoom keys. The mirror is the small dot just south of Eagle.
+brief.ranging.fire.title: Fire.
+brief.ranging.fire: Put the crosshair on it and press Fire.

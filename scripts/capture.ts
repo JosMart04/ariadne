@@ -4,7 +4,7 @@
  *
  *   npm run dev                            (in another terminal)
  *   npm run capture -- i1c                 -> every scene, both routes, into docs/captures/i1c/
- *   npm run capture -- i1c finale          -> only the finale (also: e02)
+ *   npm run capture -- i1c finale          -> only the finale (also: prologue, e02)
  *   npm run capture -- i1c explorer        -> only the Explorer route (also: accessible)
  *   npm run capture -- i1c reduce          -> reduced motion, into docs/captures/i1c-reduce/
  *
@@ -22,10 +22,10 @@ import puppeteer, { type Browser, type Page } from 'puppeteer-core';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
-const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'e02', 'finale'].includes(a)) ?? 'latest';
+const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'finale'].includes(a)) ?? 'latest';
 const reduce = args.includes('reduce');
 const route = ['explorer', 'accessible'].find((r) => args.includes(r));
-const SCENES = ['e02', 'finale'] as const;
+const SCENES = ['prologue', 'e02', 'finale'] as const;
 const wanted = SCENES.filter((s) => args.includes(s));
 const scenes = wanted.length ? wanted : [...SCENES];
 const BASE = process.env.CAPTURE_URL ?? 'http://localhost:5173/';
@@ -73,6 +73,30 @@ async function open(page: Page, hash: string) {
   await page.waitForSelector('.set3d--ready', { timeout: 60_000 });
   // One real click, so the page may start its sound (browsers require a gesture) and audio code is exercised too.
   await page.mouse.click(640, 250);
+}
+
+// ------------------------------------------------------------------ Prologue
+
+/** The last night: the note, the midnight pulse, the first clew, the thread. One mode: there is nothing to fly yet. */
+async function prologue(page: Page) {
+  const shot = shooter(page, 'prologue');
+  await open(page, 'prologue');
+  await shot('last-night', 2500);
+  await press(page, 'Continue');
+  await shot('the-note');
+  await press(page, 'Continue');
+  await shot('how-to-listen');
+  await press(page, 'Read captions');
+  await shot('the-old-coordinates');
+  await press(page, 'Send the pulse');
+  await shot('pulse-leaves', 900);
+  await shot('something-answers', 2400);
+  await press(page, 'Continue');
+  await shot('clew-0');
+  await press(page, 'Continue');
+  await shot('the-old-machines-remember');
+  await press(page, 'Continue');
+  await shot('the-thread');
 }
 
 // ------------------------------------------------------------------ E02 Apollo 11
@@ -141,17 +165,17 @@ async function e02Accessible(page: Page) {
  */
 const FLY_BY_HAND = `(function (plan) {
   clearInterval(window.__hand);
-  var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
   window.__hand = setInterval(function () {
     var s = window.__stage.getState().set.act('state');
     if (!s.flying) return clearInterval(window.__hand);
-    var ahead = Math.abs(s.x);
-    var wantVx = -Math.sign(s.x) * Math.min(14, 0.075 * ahead);
-    window.__controls.setPitch('stick', clamp(-(wantVx - s.vx) * 0.55, -1, 1));
-    var arrived = ahead < 5 && Math.abs(s.vx) < 0.9;
-    var wantSink = plan === 'drop' ? 6 : arrived ? 0.9 : clamp((s.agl - Math.min(150, 7 + 0.21 * ahead)) * 0.4, -1.2, 4);
-    if (wantSink - s.sink > 0.16) window.__controls.click(1);
-    else if (wantSink - s.sink < -0.16) window.__controls.click(-1);
+    if (plan === 'drop') {
+      // A player who only holds "fall faster".
+      if (s.sink < 5.8) window.__controls.click(1);
+      return;
+    }
+    // A beginner who reads the coach: never touches the descent rate, holds the brake past the crater, lets go.
+    var brake = s.x < 300 && Math.abs(s.vx) > 2.8;
+    window.__controls.setPitch('stick', brake ? -1 : 0);
   }, 200);
 })`;
 
@@ -169,10 +193,11 @@ async function e02Explorer(page: Page) {
   await waitFor(page, 'Try again');
   await shot('hard-touchdown-teaches', 400);
   await press(page, 'Try again');
-  await page.evaluate(`${FLY_BY_HAND}('land')`);
-  await shot('retry-from-nearby', 3000);
-  await shot('over-the-crater', 22_000);
-  await shot('final-approach', 30_000);
+  await page.evaluate(`${FLY_BY_HAND}('beginner')`);
+  await shot('retry-from-higher-up', 3000);
+  await shot('coach-fly-on', 14_000);
+  await shot('coach-brake', 20_000);
+  await shot('coach-come-down', 14_000);
   await waitFor(page, 'Continue');
   await shot('touchdown');
 }
@@ -274,7 +299,8 @@ async function finaleExplorer(page: Page) {
 
 // ------------------------------------------------------------------
 
-const ROUTES: Record<string, Record<'accessible' | 'explorer', (page: Page) => Promise<void>>> = {
+const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Page) => Promise<void>>>> = {
+  prologue: { accessible: prologue },
   e02: { accessible: e02Accessible, explorer: e02Explorer },
   finale: { accessible: finaleAccessible, explorer: finaleExplorer },
 };
@@ -292,14 +318,15 @@ async function run(browser: Browser, play: 'accessible' | 'explorer', scene: str
       if (sessionStorage.getItem('capture')) return;
       sessionStorage.setItem('capture', '1');
       const done = { 'e02-apollo11': { assisted: false }, 'e08-opportunity': { assisted: false }, 'e16-voyager1': { assisted: false } };
-      const progress = { prologueDone: true, done, clews: ['clew-0', 'clew-1', 'clew-2', 'clew-3'], finaleDone: false };
+      const fresh = location.hash === '#prologue';
+      const progress = fresh ? {} : { prologueDone: true, done, clews: ['clew-0', 'clew-1', 'clew-2', 'clew-3'], finaleDone: false };
       localStorage.setItem('ariadne-v1', JSON.stringify({ state: { settings: { setupDone: true, reduceMotion, play: mode }, progress }, version: 0 }));
     },
     reduce,
     play,
   );
   for (const f of readdirSync(OUT)) if (f.startsWith(`${scene}-${play}-`)) rmSync(join(OUT, f));
-  await ROUTES[scene][play](page);
+  await ROUTES[scene][play]!(page);
   await page.close();
 }
 
@@ -313,9 +340,9 @@ async function main() {
   });
   console.log(`capturing ${scenes.join(', ')} into ${OUT.slice(ROOT.length + 1)} (${reduce ? 'reduced motion' : 'full motion'})`);
   for (const scene of scenes) {
-    if (route !== 'explorer') await run(browser, 'accessible', scene);
+    if (route !== 'explorer' && ROUTES[scene].accessible) await run(browser, 'accessible', scene);
     // With reduced motion the scripted runs are skipped, so the Explorer route is only captured in full motion.
-    if (route !== 'accessible' && !reduce) await run(browser, 'explorer', scene);
+    if (route !== 'accessible' && !reduce && ROUTES[scene].explorer) await run(browser, 'explorer', scene);
   }
   await browser.close();
 

@@ -162,6 +162,10 @@ console:
       label: Descent rate
       tag: IMAGINED
       does: Asks the computer to sink faster or slower. Our switch is a simple stand-in for the real one.
+    steady:
+      label: Steady assist
+      tag: IMAGINED
+      does: At low speed, when you let go of the controller, the computer cancels the last of your drift. Armstrong did that by hand.
 
 arrival:
   - { who: machine, tag: IMAGINED, cue: arrival, text: "I am Eagle. Two men ride inside me. Below us is a sea with no water." }

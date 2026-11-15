@@ -13,6 +13,8 @@ export const SIM_OUTCOMES = {
   descent: ['landed-safe', 'rough-ground', 'out-of-fuel'],
   /** Lunar laser ranging: what the laser was pointed at when it fired. */
   ranging: ['on-mirror', 'on-stage', 'on-ground'],
+  /** Deep Space Network: what the 70-metre dish was pointed at when the operator listened. */
+  dsn: ['on-voyager', 'on-planet', 'on-empty'],
 } as const satisfies Record<string, readonly string[]>;
 
 export type SimId = keyof typeof SIM_OUTCOMES;

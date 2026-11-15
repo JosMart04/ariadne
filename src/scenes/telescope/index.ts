@@ -23,7 +23,7 @@ type Place = 'sky' | 'map' | 'beam';
 type Shot = {
   place: Place;
   /** Sky shots: what the camera looks at, and how wide. */
-  look?: 'wide' | 'moon';
+  look?: 'wide' | 'moon' | 'console';
   fov: number;
   /** Field of view the shot slowly moves to, degrees. */
   fovTo?: number;
@@ -43,7 +43,14 @@ const SHOTS: Record<string, Shot> = {
   monologue: { place: 'sky', look: 'moon', fov: 3.4, fovTo: 1.3 },
   dim: { place: 'sky', look: 'wide', fov: 54, dim: true },
   pulse: { place: 'sky', look: 'wide', fov: 54, pulse: true },
+  // The prologue: the camera looks at the machine, not at what it points at. Nobody knows yet who answers.
+  console: { place: 'sky', look: 'console', fov: 50 },
+  'pulse-blind': { place: 'sky', look: 'console', fov: 50, pulse: true },
 };
+
+/** Where the operator stands in the prologue, and what they look at: the telescope's mount. */
+const DESK_EYE = new THREE.Vector3(-1.9, 1.75, 2.6);
+const DESK_LOOK = new THREE.Vector3(0.95, 1.55, -0.9);
 
 const EYE = new THREE.Vector3(0, 1.7, 0);
 const toMoon = new THREE.Vector3(0.3, 0.6, -0.74).normalize();
@@ -166,7 +173,12 @@ export async function create(host: SceneHost): Promise<SetController> {
   wall.position.y = 0.58;
   const floor = new THREE.Mesh(new THREE.CircleGeometry(7, 28), dark);
   floor.rotation.x = -Math.PI / 2;
-  station.add(tube, mount, wall, floor);
+  const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 12), new THREE.MeshBasicMaterial({ color: 0x3a2a10 }));
+  lamp.position.set(0.95 - 0.56, 1.25, -0.9 + 0.56);
+  const desk = solid(new THREE.BoxGeometry(1.5, 0.9, 0.6));
+  desk.position.set(-0.6, 0.45, 0.2);
+  desk.rotation.y = 0.5;
+  station.add(tube, mount, wall, floor, lamp, desk);
   sky.add(station);
 
   // ---------- The aiming map ----------
@@ -287,6 +299,23 @@ export async function create(host: SceneHost): Promise<SetController> {
     e.preventDefault();
     aim = zoomTo(aim, aim.zoom * (e.deltaY > 0 ? 0.87 : 1.15));
   };
+  // Left and right arrows (or A and D) look around the sky. At the console they move the aim instead (TelescopeConsole).
+  let turning = 0;
+  let pan = 0;
+  const TURN: Record<string, number> = { arrowleft: -1, a: -1, arrowright: 1, d: 1 };
+  const heldKeys = new Set<string>();
+  const onKeyDown = (e: KeyboardEvent) => {
+    const k = e.key.toLowerCase();
+    if (!(k in TURN) || player || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    heldKeys.add(k);
+    turning = [...heldKeys].reduce((n, key) => n + TURN[key], 0);
+  };
+  const onKeyUp = (e: KeyboardEvent) => {
+    if (heldKeys.delete(e.key.toLowerCase())) turning = [...heldKeys].reduce((n, key) => n + TURN[key], 0);
+  };
+  addEventListener('keydown', onKeyDown);
+  addEventListener('keyup', onKeyUp);
   el.addEventListener('pointerdown', onDown);
   el.addEventListener('pointermove', onMove);
   el.addEventListener('pointerup', onUp);
@@ -302,6 +331,7 @@ export async function create(host: SceneHost): Promise<SetController> {
       shot = SHOTS[next];
       if (same && !instant) return;
       cueTime = 0;
+      pan = 0;
       // Moving between the sky, the map and the beam is a cut: they are different places.
       // Inside the sky the telescope really turns and zooms.
       cut = !!instant || host.reduceMotion || moved || cut;
@@ -346,7 +376,14 @@ export async function create(host: SceneHost): Promise<SetController> {
       beam.visible = shot.place === 'beam';
 
       if (shot.place === 'sky') {
-        wantDir.copy(shot.look === 'moon' ? toMoon : toWide);
+        const atDesk = shot.look === 'console';
+        if (atDesk) wantDir.copy(DESK_LOOK).sub(DESK_EYE).normalize();
+        else wantDir.copy(shot.look === 'moon' ? toMoon : toWide);
+        // Looking around: only in the wide views; the eyepiece stays on the Moon.
+        if (shot.look !== 'moon') {
+          pan = clamp(pan + turning * dt * 0.9, -0.9, 0.9);
+          wantDir.applyAxisAngle(up, -pan);
+        }
         const wantFov = shot.fovTo && !still ? shot.fov + (shot.fovTo - shot.fov) * clamp(cueTime / 40, 0, 1) : (shot.fovTo ?? shot.fov);
         if (cut) {
           camDir.copy(wantDir);
@@ -357,9 +394,9 @@ export async function create(host: SceneHost): Promise<SetController> {
           // Zoom is felt in ratios, so the field of view moves on a log scale.
           camFov = Math.exp(damp(Math.log(camFov), Math.log(wantFov), 1.6, dt));
         }
-        camera.position.copy(EYE);
+        camera.position.copy(atDesk ? DESK_EYE : EYE);
         camera.up.set(0, 1, 0);
-        camera.lookAt(tmp.copy(EYE).add(camDir));
+        camera.lookAt(tmp.copy(camera.position).add(camDir));
         camera.near = 0.2;
         camera.far = 70000;
 
@@ -381,14 +418,22 @@ export async function create(host: SceneHost): Promise<SetController> {
           const t = still ? 0 : cueTime % 9;
           const out = Math.max(0, 1 - Math.abs(t - 0.8) * 4);
           const back = Math.max(0, 1 - Math.abs(t - 0.8 - ROUND_TRIP) * 3.2) * 0.75;
+          // In the prologue the answer is only a lamp on the mount: the operator sees that light came back, not from where.
+          (lamp.material as THREE.MeshBasicMaterial).color.setHex(back > 0.05 ? 0xffd27a : 0x3a2a10);
           if (out > back) {
             flash.position.copy(tube.position).addScaledVector(toMoon, 2.4);
             flash.scale.setScalar(0.12 * out);
+          } else if (atDesk) {
+            flash.position.copy(lamp.position);
+            flash.scale.setScalar(0.07 * back);
           } else {
             flash.position.copy(moonCentre);
             flash.scale.setScalar(0.05 * back);
           }
-        } else flash.scale.setScalar(0);
+        } else {
+          flash.scale.setScalar(0);
+          (lamp.material as THREE.MeshBasicMaterial).color.setHex(0x3a2a10);
+        }
       } else if (shot.place === 'map') {
         const h = MAP_HEIGHT / aim.zoom;
         camera.position.set(MAP_AT.x + aim.x, MAP_AT.y + h, MAP_AT.z + aim.z);
@@ -503,6 +548,8 @@ export async function create(host: SceneHost): Promise<SetController> {
       el.removeEventListener('pointerup', onUp);
       el.removeEventListener('pointercancel', onUp);
       el.removeEventListener('wheel', onWheel);
+      removeEventListener('keydown', onKeyDown);
+      removeEventListener('keyup', onKeyUp);
       camera.up.set(0, 1, 0);
       scene.remove(root);
     },

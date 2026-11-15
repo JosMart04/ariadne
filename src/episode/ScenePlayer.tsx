@@ -11,7 +11,7 @@ import type { BeatT, SceneC } from '../content/schema';
 import { voiceId } from '../content/voice';
 import { announce } from '../engine/announce';
 import { useGame } from '../engine/store';
-import { Btn, ClewCard, FactView, LineView, useFocusOn } from '../ui/parts';
+import { Btn, ClewCard, ClewReveal, FactView, LineView, useFocusOn } from '../ui/parts';
 import { BeatFrame, FactsBeat, LinesBeat } from './beats';
 import { PuzzleRunner } from './PuzzleRunner';
 import { Set3D, SetLabels } from './Set3D';
@@ -116,7 +116,7 @@ function ClewBeat({ beat, onNext, onClew }: { beat: Extract<BeatT, { kind: 'clew
   return (
     <>
       <div className="beat__body" ref={region} tabIndex={-1}>
-        <ClewCard clew={beat.clew} />
+        <ClewReveal clew={beat.clew} />
       </div>
       <div className="actions">
         <Btn

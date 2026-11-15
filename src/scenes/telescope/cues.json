@@ -8,6 +8,8 @@
     "found": "The Moon fills the view again. A small gold ring marks Tranquility Base, in the Sea of Tranquility.",
     "monologue": "The Moon, alone in the dark, very slowly growing in the view.",
     "dim": "The lights of the station console go down, one by one.",
+    "console": "Inside Knossos Station at night. A telescope on a heavy mount, drawn in amber lines, points up and out of sight. A small lamp on the mount is dark.",
+    "pulse-blind": "A flash of light leaves the telescope and is gone. Two and a half seconds later, the small lamp on the mount lights up.",
     "pulse": "The sky above the station. A flash leaves the telescope. Two and a half seconds later, a faint flash answers from the Moon."
   },
   "hotspots": ["mars", "satellite", "moon", "mirror", "stage", "ground", "base"]

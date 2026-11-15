@@ -18,7 +18,7 @@ import { clamp, damp } from '../../three/util';
 import { controls, playerPilot } from '../../input/controls';
 import { PILOTS, START, altitude, outcome, step as simStep, type DescentState, type Pilot } from '../../sim/descent';
 import type { OutcomeOf } from '../../sim/outcomes';
-import { SITE, trackZ } from '../../sim/tranquility';
+import { SITE, groundOnTrack, trackZ } from '../../sim/tranquility';
 import { buildEagle, buildFlag, buildLrrr, buildMarker, buildPsep } from './props';
 import { buildTerrain, height } from './terrain';
 
@@ -60,7 +60,7 @@ const SHOTS: Record<string, Shot> = {
   psep: { pos: [psep.x + 3.1, 1.5, psep.z + 3.2], look: [psep.x, 0.42, psep.z], fov: 36, orbit: -0.03, eagle: 'landed', flag: 'up', gear: true },
   liftoff: { pos: [23, 2.2, 20], look: [0, 7, 0], fov: 46, eagle: 'landed', flag: 'up', gear: true, liftoff: true },
   desolation: { pos: [19, 2.4, 22], look: [0, 2.3, 0], fov: 40, drift: [0.2, 0.03, 0.25], eagle: 'stage', flag: 'down', gear: true },
-  clew: { pos: [lrrr.x - 1.35, 0.95, lrrr.z + 1.0], look: [lrrr.x, 0.32, lrrr.z], fov: 32, orbit: 0.04, eagle: 'stage', flag: 'down', gear: true },
+  clew: { pos: [lrrr.x - 1.75, 1.25, lrrr.z + 1.35], look: [lrrr.x, -0.28, lrrr.z], fov: 34, orbit: 0.03, eagle: 'stage', flag: 'down', gear: true },
   status: { pos: [70, 620, 30.5], look: [70, 0, 30], fov: 38, drift: [0, -6, 0], eagle: 'stage', flag: 'down', gear: true },
   file: { pos: [11, 3.4, 11], look: [0, 1.9, 0], fov: 36, orbit: 0.12, shift: 0.2, eagle: 'stage', flag: 'down', gear: true },
 };
@@ -77,7 +77,14 @@ const toEarth = new THREE.Vector3(-Math.sin(0.41), Math.cos(0.41), 0.02).normali
 const ASCENT_RISE = 150;
 
 /** How a flight ended: the outcome the puzzle understands, or null for a touchdown that was too hard (retry). */
-export type FlightEnd = { state: DescentState; outcome: OutcomeOf<'descent'> | null };
+export type FlightEnd = {
+  state: DescentState;
+  outcome: OutcomeOf<'descent'> | null;
+  /** When there is no outcome: what went wrong, and the two speeds at contact, so the game can say it plainly. */
+  miss?: string;
+  sink?: string;
+  drift?: string;
+};
 
 export async function create(host: SceneHost): Promise<SetController> {
   const { scene, camera } = host;
@@ -129,6 +136,7 @@ export async function create(host: SceneHost): Promise<SetController> {
   for (const [name, x] of Object.entries(ZONES)) {
     const z = trackZ(x);
     const m = buildMarker(name === 'beyond' ? 30 : 26, 0xffb648);
+    m.name = name;
     (m.material as THREE.MeshBasicMaterial).depthTest = false;
     m.position.set(x, groundY(x, z) + 1, z);
     markers.add(m);
@@ -158,8 +166,7 @@ export async function create(host: SceneHost): Promise<SetController> {
   let cut = true;
   let flight: { pilot: Pilot; state: DescentState; done?: (end: FlightEnd) => void; hold: number } | null = null;
   let rest: DescentState = START;
-  /** States saved every few seconds of a player's flight, so a hard touchdown retries from a point nearby (FR-29a). */
-  let trail: DescentState[] = [];
+  /** Where a retry starts after a touchdown that was too hard (FR-29a). */
   let retryFrom: DescentState = START;
   /** 0 = Eagle whole, 1 = the ascent stage has left. */
   let lift = 0;
@@ -199,6 +206,27 @@ export async function create(host: SceneHost): Promise<SetController> {
     e.preventDefault();
     view.zoom = clamp(view.zoom * (e.deltaY > 0 ? 1.1 : 0.9), 0.45, 2.2);
   };
+  let turning = 0;
+  const TURN: Record<string, number> = { arrowleft: -1, a: -1, arrowright: 1, d: 1 };
+  const held = new Set<string>();
+  const typing = (e: KeyboardEvent) => e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement;
+  const onKeyDown = (e: KeyboardEvent) => {
+    const k = e.key.toLowerCase();
+    if (!(k in TURN) || typing(e) || e.ctrlKey || e.metaKey || e.altKey) return;
+    e.preventDefault();
+    held.add(k);
+    turning = [...held].reduce((n, key) => n + TURN[key], 0);
+  };
+  const onKeyUp = (e: KeyboardEvent) => {
+    if (held.delete(e.key.toLowerCase())) turning = [...held].reduce((n, key) => n + TURN[key], 0);
+  };
+  const onBlur = () => {
+    held.clear();
+    turning = 0;
+  };
+  addEventListener('keydown', onKeyDown);
+  addEventListener('keyup', onKeyUp);
+  addEventListener('blur', onBlur);
   el.addEventListener('pointerdown', onDown);
   el.addEventListener('pointermove', onMove);
   el.addEventListener('pointerup', onUp);
@@ -232,7 +260,9 @@ export async function create(host: SceneHost): Promise<SetController> {
     flag.root.visible = !!shot.flag;
     const down = shot.flag === 'down' ? 1 : flagDown;
     flag.pivot.rotation.z = -down * 1.46;
-    markers.visible = !!shot.markers;
+    const inFlight = cue === 'flight';
+    markers.visible = !!shot.markers || inFlight;
+    for (const m of markers.children) m.visible = !inFlight || m.name === 'beyond';
   }
 
   const controller: SetController = {
@@ -260,11 +290,12 @@ export async function create(host: SceneHost): Promise<SetController> {
       if (flight && flight.state.phase === 'flying') {
         const before = flight.state;
         flight.state = simStep(before, flight.pilot(before), dt);
-        if (Math.floor(flight.state.t / 4) !== Math.floor(before.t / 4)) trail.push(before);
         if (flight.state.phase !== 'flying') {
           flight.hold = 1.4;
-          // Go back about ten seconds, to a moment when there was still height to work with.
-          retryFrom = [...trail].reverse().find((s) => s.t <= before.t - 9 && altitude(s) > 25) ?? START;
+          // "Try again from higher up": a quarter of a kilometre before the touchdown, 80 m above the ground, falling
+          // slowly, with fuel to work with. From there a beginner has time to brake (FR-29a).
+          const x = Math.min(START.x, Math.max(flight.state.x + 250, 300));
+          retryFrom = { ...START, x, y: groundOnTrack(x) + 80, fuel: Math.max(flight.state.fuel, 70) };
         }
       } else if (flight && flight.done) {
         flight.hold -= dt;
@@ -272,7 +303,8 @@ export async function create(host: SceneHost): Promise<SetController> {
           const done = flight.done;
           flight.done = undefined;
           host.timeScale = 1;
-          done({ state: flight.state, outcome: outcome(flight.state) });
+          const end = flight.state;
+          done({ state: end, outcome: outcome(end), miss: end.miss || undefined, sink: end.hitSink.toFixed(1), drift: end.hitDrift.toFixed(1) });
         }
       }
       if (shot.liftoff && cueTime > 1.6) {
@@ -310,7 +342,8 @@ export async function create(host: SceneHost): Promise<SetController> {
       }
       // The camera tilts up to follow the ascent stage for a while, then lets it go.
       if (shot.liftoff) wantLook.y += Math.min(lift * lift * ASCENT_RISE * 0.75, 38);
-      // Orbit: the documentary camera circles slowly; the player's drag adds to it.
+      if (turning) view.yaw = clamp(view.yaw + turning * dt * 1.3, -2.6, 2.6);
+      // Orbit: the documentary camera circles slowly; the player's drag or arrow keys add to it.
       offset.copy(wantPos).sub(wantLook);
       spherical.setFromVector3(offset);
       spherical.theta += (shot.orbit ?? 0) * t + view.yaw;
@@ -368,7 +401,6 @@ export async function create(host: SceneHost): Promise<SetController> {
         host.timeScale = o.player || host.reduceMotion ? 1 : (o.speed ?? 1);
         controller.setCue('flight');
         if (o.player) controls.reset();
-        trail = [];
         return new Promise<FlightEnd>((resolve) => {
           flight = { pilot, state: o.player && o.retry ? retryFrom : START, done: resolve, hold: 0 };
           if (host.reduceMotion && !o.player) controller.act!('skip');
@@ -404,6 +436,9 @@ export async function create(host: SceneHost): Promise<SetController> {
       el.removeEventListener('pointerup', onUp);
       el.removeEventListener('pointercancel', onUp);
       el.removeEventListener('wheel', onWheel);
+      removeEventListener('keydown', onKeyDown);
+      removeEventListener('keyup', onKeyUp);
+      removeEventListener('blur', onBlur);
       camera.clearViewOffset();
       scene.remove(root);
     },

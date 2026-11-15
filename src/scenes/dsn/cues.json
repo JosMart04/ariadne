@@ -1,0 +1,14 @@
+{
+  "cues": {
+    "passage": "Black space, full of stars. Far away, one star is a little brighter than the rest: the Sun.",
+    "voyager": "Voyager 1 drifts in the dark: a white dish as wide as a car is long, a long thin arm, a small body. Behind it, the Sun is only a bright star.",
+    "dish": "Night on Earth. A white antenna dish, 70 meters wide, stands as tall as a twenty-story building against the stars.",
+    "aim": "The same dish, seen from behind. In the sky ahead: a bright planet, a small ring where the computer predicts Voyager 1, and empty sky.",
+    "listen": "The great dish has turned. It points at one place in the sky and does not move.",
+    "portrait": "The view from Voyager 1, looking back. The Sun is a bright star. Near it, a few faint dots in a line are the planets. One of them, pale and blue, is the Earth.",
+    "clew": "Voyager 1 again, very small, with the Sun behind it.",
+    "status": "Voyager 1 from the front. Its dish points back at a star that is our Sun.",
+    "file": "Voyager 1 turns slowly so you can see every side."
+  },
+  "hotspots": ["voyager", "planet", "empty", "earth"]
+}

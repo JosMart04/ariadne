@@ -93,7 +93,7 @@ export function buildLrrr(toEarth: THREE.Vector3): THREE.Group {
   tray.add(new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.05, 0.46), metal(0xd9d9d4, 0.35, 0.8)));
   // 10 x 10 mirrors, drawn as one instanced set of small dark glass discs.
   const mirror = new THREE.CylinderGeometry(0.017, 0.017, 0.012, 12);
-  const glass = new THREE.MeshStandardMaterial({ color: 0x9fb6c9, roughness: 0.18, metalness: 0.35, emissive: 0x0b1420 });
+  const glass = new THREE.MeshStandardMaterial({ color: 0x9fb6c9, roughness: 0.18, metalness: 0.35, emissive: 0x1b2e44 });
   const mirrors = new THREE.InstancedMesh(mirror, glass, 100);
   const m = new THREE.Matrix4();
   for (let i = 0; i < 100; i++) {

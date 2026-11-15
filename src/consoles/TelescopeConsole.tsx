@@ -128,3 +128,29 @@ export function TelescopeConsole({ def }: { def?: ConsoleT; facts: Record<string
     </div>
   );
 }
+
+/** Before the player takes over: what to find, and how to move, zoom and fire. */
+export function TelescopeBrief() {
+  return (
+    <ol className="brief">
+      <li>
+        <span className="brief__n">1</span>
+        <span>
+          <strong>{t('brief.ranging.find.title')}</strong> {t('brief.ranging.find')}
+        </span>
+      </li>
+      <li>
+        <span className="brief__n">2</span>
+        <span>
+          <strong>{t('brief.ranging.zoom.title')}</strong> {t('brief.ranging.zoom')}
+        </span>
+      </li>
+      <li>
+        <span className="brief__n">3</span>
+        <span>
+          <strong>{t('brief.ranging.fire.title')}</strong> {t('brief.ranging.fire')}
+        </span>
+      </li>
+    </ol>
+  );
+}

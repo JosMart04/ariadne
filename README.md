@@ -64,7 +64,7 @@ The concept, the puzzle design decisions and the final choice of facts belong to
 ## Credits
 
 Data & imagery: NASA. NASA does not endorse this project, and no NASA logo is used.
-Fonts (SIL Open Font License): Cinzel, Atkinson Hyperlegible, IBM Plex Mono.
+Fonts (SIL Open Font License): Cinzel, Atkinson Hyperlegible, IBM Plex Mono, Cormorant Garamond.
 Poetry epigraphs are in the public domain. The title alludes to a famous line of cinema; no material from that work is used.
 
 Code is released under the MIT License (see `LICENSE`).

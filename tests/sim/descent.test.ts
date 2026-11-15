@@ -3,7 +3,7 @@
  * (FR-21, FR-29, NFR-05). The same scripted pilots fly the Accessible view and "Let the machine show you".
  */
 import { describe, expect, it } from 'vitest';
-import { DT, MAX_DRIFT, MAX_SINK, PILOTS, START, altitude, fly, outcome, step, type DescentState } from '../../src/sim/descent';
+import { DT, MAX_DRIFT, MAX_SINK, PILOTS, START, STEADY_BELOW, altitude, fly, outcome, step, type DescentState } from '../../src/sim/descent';
 import { SIM_OUTCOMES } from '../../src/sim/outcomes';
 import { groundAt, isRough } from '../../src/sim/tranquility';
 
@@ -29,7 +29,7 @@ describe('descent simulation', () => {
     expect(Math.abs(end.x)).toBeLessThan(12);
     expect(isRough(end.x)).toBe(false);
     expect(end.fuel).toBeGreaterThan(15);
-    expect(end.fuel).toBeLessThan(45);
+    expect(end.fuel).toBeLessThan(80);
     expect(end.t).toBeGreaterThan(40);
     expect(end.t).toBeLessThan(95);
   });
@@ -49,7 +49,31 @@ describe('descent simulation', () => {
     let s: DescentState = { ...START, sink: 6, vy: -6 };
     while (s.phase === 'flying') s = step(s, { pitch: 0, rod: 1 }, DT);
     expect(s.phase).toBe('hard');
+    expect(s.miss).toBe('sink');
+    expect(s.hitSink).toBeGreaterThan(MAX_SINK);
     expect(outcome(s)).toBeNull();
+  });
+
+  it('says why: soft but still moving over the ground is "drift", not "sink"', () => {
+    // The player who does nothing at all: a gentle descent, but 14 m/s forward.
+    let s: DescentState = START;
+    while (s.phase === 'flying') s = step(s, { pitch: 0, rod: 0 }, DT);
+    expect(s.phase).toBe('hard');
+    expect(s.miss).toBe('drift');
+    expect(s.hitSink).toBeLessThanOrEqual(MAX_SINK);
+  });
+
+  it('can be won by a beginner: wait past the crater, hold the brake, let go', () => {
+    // No descent-rate clicks at all. Brake only when the smooth ground is ahead; the computer steadies the rest.
+    let s: DescentState = START;
+    while (s.phase === 'flying') s = step(s, { pitch: s.x < 300 && Math.abs(s.vx) > STEADY_BELOW - 0.4 ? -1 : 0, rod: 0 }, DT);
+    expect(s.phase).toBe('landed');
+    expect(outcome(s)).toBe('landed-safe');
+  });
+
+  it('the starting descent is inside the limit: doing nothing never breaks the legs by itself', () => {
+    expect(START.sink).toBeLessThan(MAX_SINK);
+    expect(-START.vy).toBeLessThan(MAX_SINK);
   });
 
   it('starts high above the ground, east of West Crater', () => {

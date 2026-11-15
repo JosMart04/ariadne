@@ -16,7 +16,7 @@ import type { EpisodeC, LineT } from '../content/schema';
 import { announce } from '../engine/announce';
 import { go } from '../engine/router';
 import { useGame } from '../engine/store';
-import { Badge, Btn, ClewCard, EpigraphView, FactView, LineView, Rich, useFocusOn } from '../ui/parts';
+import { Badge, Btn, ClewReveal, EpigraphView, FactView, LineView, Rich, useFocusOn } from '../ui/parts';
 import { LinesBeat } from './beats';
 import { PuzzleRunner } from './PuzzleRunner';
 import { RainOfLight } from './RainOfLight';
@@ -130,7 +130,7 @@ export function CinemaEpisode({ ep }: { ep: EpisodeC }) {
               next();
             }}
           >
-            <ClewCard clew={ep.clew!} />
+            <ClewReveal clew={ep.clew!} />
           </Frame>
         )}
 

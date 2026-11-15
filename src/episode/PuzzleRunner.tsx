@@ -16,7 +16,7 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { audio } from '../audio/bus';
-import { SimConsole, SimHud, hasConsole } from '../consoles';
+import { SimBrief, SimConsole, SimHud, hasConsole } from '../consoles';
 import { t } from '../content';
 import type { ChoiceT, ConsoleT, FactC, PuzzleT } from '../content/schema';
 import { voiceId } from '../content/voice';
@@ -42,7 +42,7 @@ type Props = {
   voice?: string;
 };
 
-type FlightEnd = { outcome: string | null };
+type FlightEnd = { outcome: string | null; miss?: string; sink?: string; drift?: string };
 
 export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, consoleDef, voice }: Props) {
   const storyMode = useGame((s) => s.settings.storyMode);
@@ -59,11 +59,11 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
   const [flying, setFlying] = useState<null | 'player' | 'machine'>(null);
   /** "Switch to guided choices": this puzzle goes on in the Accessible view; the global mode is untouched (FR-29a). */
   const [guided, setGuided] = useState(false);
-  /** A skill failure that is not an outcome (a touchdown that was too hard): teach, then retry from nearby. */
-  const [miss, setMiss] = useState(false);
+  /** A skill failure that is not an outcome (a touchdown that was too hard): say exactly why, then retry from nearby. */
+  const [miss, setMiss] = useState<FlightEnd | null>(null);
 
   const state = puzzle.states[cur];
-  const region = useFocusOn<HTMLDivElement>(`${cur}-${flying}-${miss}`);
+  const region = useFocusOn<HTMLDivElement>(`${cur}-${flying}-${!!miss}`);
   /** This decision is played by hand, on its console. */
   const byHand = scene && stage3d && play !== 'accessible' && !guided && hasConsole(state?.sim);
 
@@ -80,7 +80,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
     if (!scene || !state) return;
     const named = state.stage?.kind === 'scene' ? (state.stage as { cue?: string }).cue : undefined;
     if (state.sim) act('reset');
-    setMiss(false);
+    setMiss(null);
     showCue(named ?? cue);
   }, [scene, cur, state, cue, stage3d]);
 
@@ -139,7 +139,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
 
   /** Explorer and Hands: the player flies. The simulation's outcome is the choice (FR-29). */
   async function takeControl(retry = false) {
-    setMiss(false);
+    setMiss(null);
     audio.stopVoice();
     setFlying('player');
     let end: FlightEnd | undefined;
@@ -152,9 +152,9 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
     if (c) return move(c.to);
     // Not an outcome of the puzzle: the state does not change. Teach, count it for help, offer a retry.
     setErrors((e) => e + 1);
-    setMiss(true);
+    setMiss(end ?? { outcome: null });
     audio.play('wrong');
-    announce(t(`sim.${state?.sim}.miss`));
+    announce(missText(end ?? { outcome: null }));
   }
 
   /** "Let the machine show you": the scripted pilot flies the way that reaches SOLVED. Recorded without penalty. */
@@ -165,6 +165,12 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
     const path = shortestPath(puzzle, cur);
     const c = path && state.choices.find((x) => x.to === path[0]);
     if (c) void choose(c);
+  }
+
+  /** Why the attempt did not count, in plain words and with the player's own numbers. */
+  function missText(end: FlightEnd) {
+    const key = `sim.${state?.sim}.miss${end.miss ? `.${end.miss}` : ''}`;
+    return t(key, { sink: end.sink ?? '', drift: end.drift ?? '' });
   }
 
   if (!state) return null;
@@ -180,18 +186,19 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
       <div className="puzzle__view" ref={region} tabIndex={-1} role="group" aria-label={t('beat.operation')} aria-live="polite">
         {state.forced && <p className="puzzle__forced">{t('puzzle.forced')}</p>}
         <Stage stage={state.stage} />
-        {showText && miss && <p className="puzzle__say puzzle__say--wrong">{t(`sim.${state.sim}.miss`)}</p>}
+        {showText && miss && <p className="puzzle__say puzzle__say--wrong">{missText(miss)}</p>}
         {showText && !miss && state.say && (
           <p className={`puzzle__say${state.wrong ? ' puzzle__say--wrong' : ''}`}>
             <Rich text={state.say} />
           </p>
         )}
         {showText && !miss && fact && <Source fact={fact} />}
-        {showText && state.prompt && (
+        {showText && state.prompt && !miss && (
           <p className="puzzle__prompt">
             <Rich text={state.prompt} />
           </p>
         )}
+        {showText && byHand && state.sim && state.choices && <SimBrief sim={state.sim} />}
         {flying === 'machine' && state.sim && <SimHud sim={state.sim} />}
         {flying === 'player' && state.sim && <SimConsole sim={state.sim} def={consoleDef} facts={facts} />}
       </div>
@@ -204,17 +211,15 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
         </div>
       ) : flying === 'player' ? null : byHand && state.choices ? (
         <div className="actions">
-          <Btn onClick={() => takeControl(miss)}>{t(`sim.${state.sim}.${miss ? 'retry' : 'take'}`)}</Btn>
+          <Btn onClick={() => takeControl(!!miss)}>{t(`sim.${state.sim}.${miss ? 'retry' : 'take'}`)}</Btn>
           {level >= 3 && !assist && (
             <Btn kind="ghost" onClick={showMe}>
               {t('puzzle.showMe')}
             </Btn>
           )}
-          {(errors >= 2 || storyMode) && (
-            <Btn kind="ghost" onClick={() => setGuided(true)}>
-              {t('flight.guided')}
-            </Btn>
-          )}
+          <Btn kind="ghost" onClick={() => setGuided(true)}>
+            {t('flight.guided')}
+          </Btn>
         </div>
       ) : state.choices ? (
         <ul className={inScene ? 'targets' : scene ? 'keys' : 'choices'} aria-label={inScene ? t('puzzle.choose') : t('puzzle.options')}>

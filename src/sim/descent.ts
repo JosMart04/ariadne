@@ -19,12 +19,21 @@ export const DT = 1 / 60;
 export const G = 1.62;
 /** One click of the Rate Of Descent switch: 1 ft/s. */
 export const ROD_CLICK = 0.3048;
-const MAX_PITCH = (18 * Math.PI) / 180;
+const MAX_PITCH = (26 * Math.PI) / 180;
 /** The lunar module turns slowly: radians per second. */
-const PITCH_RATE = (10 * Math.PI) / 180;
-/** Gentle enough for the landing legs: metres per second. */
-export const MAX_SINK = 3;
-export const MAX_DRIFT = 2;
+const PITCH_RATE = (14 * Math.PI) / 180;
+/**
+ * The two limits of a good touchdown, metres per second. They are the rules of this game, shown to the player
+ * all the time: come down slower than MAX_SINK, and move over the ground slower than MAX_DRIFT.
+ */
+export const MAX_SINK = 3.5;
+export const MAX_DRIFT = 2.5;
+/**
+ * Steadying assist (a game aid, labelled IMAGINED in content): below this ground speed, when the pilot lets go
+ * of the hand controller, the computer cancels the rest of the drift. Armstrong did that by hand; later lunar
+ * modules had an automatic mode for it.
+ */
+export const STEADY_BELOW = 3.2;
 
 export type DescentControls = {
   /** -1 brakes (tilt back), +1 speeds up along the track (tilt forward). */
@@ -55,6 +64,11 @@ export type DescentState = {
   /** thrust as a fraction of hover thrust, for the plume, the sound and the dust */
   thrust: number;
   phase: DescentPhase;
+  /** Why a touchdown was too hard: too fast down, or still moving over the ground. Empty otherwise. */
+  miss: '' | 'sink' | 'drift';
+  /** Speeds at the moment of contact, m/s: downward, and over the ground. Zero while flying. */
+  hitSink: number;
+  hitDrift: number;
 };
 
 export const START: DescentState = {
@@ -62,12 +76,15 @@ export const START: DescentState = {
   x: 790,
   y: 150,
   vx: -14,
-  vy: -3.4,
+  vy: -1.5,
   pitch: 0,
-  sink: 3.4,
-  fuel: 112,
+  sink: 1.5,
+  fuel: 130,
   thrust: 1,
   phase: 'flying',
+  miss: '',
+  hitSink: 0,
+  hitDrift: 0,
 };
 
 /** Height above the ground right below the lander. */
@@ -79,7 +96,9 @@ export function step(s: DescentState, c: DescentControls, dt = DT): DescentState
   if (s.phase !== 'flying') return s;
 
   const sink = clamp(s.sink + c.rod * ROD_CLICK, -1.5, 6);
-  const want = clamp(c.pitch, -1, 1) * MAX_PITCH;
+  // Hands off at low speed: the computer steadies the lander (see STEADY_BELOW).
+  const steady = Math.abs(c.pitch) < 0.05 && Math.abs(s.vx) < STEADY_BELOW;
+  const want = (steady ? clamp(s.vx * 0.5, -1, 1) : clamp(c.pitch, -1, 1)) * MAX_PITCH;
   const pitch = s.pitch + clamp(want - s.pitch, -PITCH_RATE * dt, PITCH_RATE * dt);
 
   // The computer holds the commanded sink rate with the throttle.
@@ -93,14 +112,21 @@ export function step(s: DescentState, c: DescentControls, dt = DT): DescentState
   const x = s.x + vx * dt;
   const y = s.y + vy * dt;
   const fuel = s.fuel - thrust * dt;
-  const next: DescentState = { t: s.t + dt, x, y, vx, vy, pitch, sink, fuel, thrust, phase: 'flying' };
+  const next: DescentState = { t: s.t + dt, x, y, vx, vy, pitch, sink, fuel, thrust, phase: 'flying', miss: '', hitSink: 0, hitDrift: 0 };
 
   const ground = groundOnTrack(x);
   if (y <= ground) {
     next.y = ground;
     next.thrust = 0;
-    if (-vy > MAX_SINK || Math.abs(vx) > MAX_DRIFT) next.phase = 'hard';
-    else next.phase = isRough(x) ? 'rough' : 'landed';
+    next.hitSink = Math.max(0, -vy);
+    next.hitDrift = Math.abs(vx);
+    if (-vy > MAX_SINK) {
+      next.phase = 'hard';
+      next.miss = 'sink';
+    } else if (Math.abs(vx) > MAX_DRIFT) {
+      next.phase = 'hard';
+      next.miss = 'drift';
+    } else next.phase = isRough(x) ? 'rough' : 'landed';
     next.vx = 0;
     next.vy = 0;
     return next;

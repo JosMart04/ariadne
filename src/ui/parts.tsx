@@ -78,10 +78,13 @@ export function speakerName(who: string, machineName?: string): string {
   return content.ui[key] ?? who;
 }
 
+/** Words that somebody says, real or imagined, are set in the quote face. Narration and records are not. */
+const QUOTED = (line: LineT) => line.tag === 'IMAGINED' || !['ariadne', 'narrator', 'record'].includes(line.who);
+
 export function LineView({ line, facts, machineName }: { line: LineT; facts: Record<string, FactC>; machineName?: string }) {
   const fact = line.fact ? facts[line.fact] : undefined;
   return (
-    <div className={`line line--${line.tag.toLowerCase()}`}>
+    <div className={`line line--${line.tag.toLowerCase()}${QUOTED(line) ? ' line--quote' : ''}`}>
       <div className="line__head">
         <span className="line__who">{speakerName(line.who, machineName)}</span>
         <TagChip tag={line.tag} />
@@ -163,6 +166,37 @@ export function ClewCard({ clew }: { clew: ClewT }) {
         <dd>{clew.teaches}</dd>
         <dt>{t('clew.rulesOut')}</dt>
         <dd>{clew.rulesOut}</dd>
+      </dl>
+    </div>
+  );
+}
+
+const CLEW_NUMERAL: Record<string, string> = { 'clew-0': '0', 'clew-1': 'I', 'clew-2': 'II', 'clew-3': 'III' };
+
+/**
+ * A new clew, as it appears inside a 3D scene: no box, so the picture stays in view. The title, the line as a quote,
+ * and what it tells us and rules out side by side. The Logbook keeps the card (ClewCard).
+ */
+export function ClewReveal({ clew }: { clew: ClewT }) {
+  return (
+    <div className="reveal">
+      <p className="reveal__eyebrow">
+        <span aria-hidden="true">◆ </span>
+        {t('clew.new')} {CLEW_NUMERAL[clew.id] ?? ''}
+      </p>
+      <h2 className="reveal__title">{clew.title}</h2>
+      <p className="reveal__line">
+        <Rich text={clew.line} />
+      </p>
+      <dl className="reveal__facts">
+        <div>
+          <dt>{t('clew.teaches')}</dt>
+          <dd>{clew.teaches}</dd>
+        </div>
+        <div>
+          <dt>{t('clew.rulesOut')}</dt>
+          <dd>{clew.rulesOut}</dd>
+        </div>
       </dl>
     </div>
   );
