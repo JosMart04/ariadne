@@ -91,7 +91,7 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
   For each, in this order, one file per commit: facts opened and noted → seven beats of text → on stage (recipe in
   `docs/HANDOFF.md`, section 0) → `draft: true` removed → `npm run check` → `npm run capture -- x<n> e<NN>` → push.
   **Push E11 first and say so in "Requests": lane a checks it on the diorama before the rest.**
-- [~] X-04 (Astra) `scripts/check-links.ts`: report every source URL in `content/` that does not answer 200. After the files.
+- [x] X-04 (Astra) `scripts/check-links.ts`: reports every literal content URL, including standalone poetry citations. 75/85 returned 200; ten JPL URLs returned 403. The ALSEP 404 was repaired. Results: `docs/submission/link-report.json`.
 - Rules of this lane: never `src/`, `tests/`, `content/ui.yaml`, the Thread files or voices. A fact with no source is
   narrowed or removed. New text stops at 20:00.
 

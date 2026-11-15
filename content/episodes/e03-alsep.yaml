@@ -31,12 +31,12 @@ facts:
     note: "Checked Nov 15, 2026: The timeline lists crew transfer to the CM, ascent-stage jettison, deorbit burn and impact at 22:17 GMT on November 20."
   vibration:
     text: The ascent-stage impact produced a seismic signal lasting about 55 minutes. Its strength rose gradually before fading into the background.
-    source: https://www.nasa.gov/wp-content/uploads/static/history/alsj/a12/as12psr.pdf
-    note: "Checked Nov 15, 2026: Apollo 12 Preliminary Science Report, printed p. 44, reports the approximately seven-minute rise and 55-minute total signal."
+    source: https://www.apollojournals.org/alsj/a12/as12psr.pdf
+    note: "Checked Nov 15, 2026: Apollo 12 Preliminary Science Report, printed p. 44, reports the approximately seven-minute rise and 55-minute total signal. The link audit found the old NASA path returned 404; this is the same report at the relocated journal."
   interpretation:
     text: The long signal suggested that seismic waves lost little energy while traveling through lunar material. Scientists also investigated how uneven rock could scatter waves.
-    source: https://www.nasa.gov/wp-content/uploads/static/history/alsj/a12/as12psr.pdf
-    note: "Checked Nov 15, 2026: Printed pp. 49-51 discuss low attenuation and scattering; p. 50 explicitly says the model fit does not verify the scattering hypothesis."
+    source: https://www.apollojournals.org/alsj/a12/as12psr.pdf
+    note: "Checked Nov 15, 2026: Printed pp. 49-51 discuss low attenuation and scattering; p. 50 explicitly says the model fit does not verify the scattering hypothesis. Reopened at the relocated journal after the old NASA path returned 404."
   switched-off:
     text: Apollo 12's station was switched on November 19, 1969, and commanded off September 30, 1977. It had been designed for one year.
     source: https://www.nasa.gov/wp-content/uploads/static/history/SP-4029/Apollo_18-31_ALSEP_Arrays_and_Status.htm

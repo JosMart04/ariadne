@@ -1,70 +1,74 @@
 # ARIADNE: Tears in the Rain
 
-> Tonight is the last night of an old listening station. Its archive mind, ARIADNE, has until dawn to weave the
-> last memories of every machine humanity left on the Moon, on Mars and beyond into a single thread, before they
-> are lost like tears in the rain. Every puzzle is real engineering. Every fact is real and sourced.
+[Play ARIADNE](https://josmart04.github.io/ariadne/)
 
-**Play it:** https://josmart04.github.io/ariadne/
+A browser documentary made for NASA Space Apps 2026 and its challenge, *Abandoned but not Forgotten*.
+You follow an imagined archive guide through the records of machines left on the Moon, on Mars and beyond.
 
-A guided interactive documentary for the browser, made for the **NASA Space Apps Challenge 2026**,
-challenge *"Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on the Moon and Mars"*.
+## What you can play
 
-## What you do
+The Thread connects a telescope prologue, Apollo 11, Opportunity and Voyager 1 to a lunar laser finale.
+You guide a landing, send a rover plan from Earth, point a deep-space antenna and aim at a reflector.
+These are simplified teaching simulations, with reconstruction and timing limits labelled on screen.
 
-You are the last Operator of Knossos Station. Every night at midnight the station sends a pulse of light, and
-2.5 seconds later something answers. Nobody ever found out what. To solve it, you restore the memories of the
-machines NASA left behind. In each one you:
+Thirteen additional mission files are complete. Each has seven beats: Passage, Arrival, Operation, Discovery,
+Silence, Status Now and Field File. Sourced captions explain the engineering over an official NASA model or photograph.
+These archive files use explanations rather than dedicated control simulations.
 
-1. watch it arrive;
-2. **perform its real operation** as a short puzzle (plan Opportunity's power, land the Eagle, repair Voyager 1);
-3. discover what we learned because of it;
-4. live its final silence, and catch its last message;
-5. see where it is today.
+The title and map share an Orrery with dated, approximate positions. Labels identify compressed distances,
+illustrative sizes and estimated spacecraft locations. The map also has a list view.
 
-Each restored memory adds to a golden thread that runs through a labyrinth, in the order the machines were launched.
-Three of them give you the clews to deduce who answers at midnight.
+## Evidence and access
 
-## Principles
+Historical statements carry REAL labels and source links. Fictional dialogue carries IMAGINED labels.
+AI source checks are recorded in the YAML notes; human signatures belong in `verified` and remain pending.
+Source links and automated validation do not by themselves establish historical accuracy.
 
-- **The voices are imagined. Every fact is real.** Every line is tagged `REAL` (with a link to its source) or
-  `IMAGINED`. The build fails if a real statement has no source.
-- **A labyrinth, not a maze.** No puzzle can leave you stuck. An automated test walks every puzzle graph on every build.
-- **Touch the engineering.** Each machine is operated the way it really was: Apollo is flown by hand, Mars rovers get
-  command sequences from Earth with the real light delay, deep-space probes are reached through the Deep Space Network.
-- **For every body, cutting nobody.** Three ways to play the same 3D scenes: Explorer (direct control), Hands (webcam
-  gestures) and Accessible (point and choose with a mouse, a keyboard or a single button, with no dragging, typing,
-  reflexes or time limits). Captions, text scaling, reduced motion and high contrast are built in.
-- **No accounts, no tracking, no cookies.** Progress is saved only on your device.
+Explorer and Accessible modes are available. They use the same puzzle graphs and reach the same ending.
+Captions, text scaling, contrast options, reduced motion and a text fallback are implemented.
+Hands, gaze input and sky AR are not delivered. Human testing with assistive technology, phones and integrated
+graphics remains necessary. A timed audience playtest, the postcard and final Voyager coda are still pending.
 
-## Run it locally
+Progress is saved in browser storage. No account is required.
+
+## Run and check
 
 ```bash
-npm install
+npm ci
+npm run check
 npm run dev
 ```
 
-`npm run check` runs the full gate: content validation, type check, tests, build and a scan that proves no secret
-reached the bundle.
+`npm run check` validates content and source references, checks types and puzzle reachability, runs tests,
+builds the site and scans the bundle for recognized secret patterns.
 
-Content lives in `content/*.yaml`, separate from code. See `CLAUDE.md` for the architecture and the content contract.
+With the dev server running, capture an archive file and inspect its images:
 
-## Use of AI (declared)
+```bash
+npm run capture -- x-review e11
+npm run capture -- x-review e11 reduce
+```
 
-The NASA Space Apps rules call AI "SI" and ask teams to declare it:
+Check source reachability separately; this requires network access and reports non-200 responses:
 
-- **Code:** written with AI assistance (Claude) and reviewed by the team. Commits carry a `Co-Authored-By` trailer.
-- **Research and text:** AI helped organise NASA sources and produce first drafts. The team reviews the text and
-  verifies every fact against its source.
-- **Voices:** any machine or narrator voice is AI-generated speech from a stock voice (no cloned voices, no minors).
-  Files are labelled as AI-generated in their metadata and in the credits.
-- **Images:** no AI-generated images. Photos are NASA originals with their credit lines.
+```bash
+npx tsx scripts/check-links.ts --json docs/submission/link-report.json
+```
 
-The concept, the puzzle design decisions and the final choice of facts belong to the team.
+The checker follows redirects and distinguishes HTTP errors from timeouts or connection failures.
+A 200 response does not establish that a page supports a claim. See the [reference inventory](docs/submission/references.md).
+Content is authored in `content/`. Repository ownership and contribution rules are in [CLAUDE.md](CLAUDE.md).
 
-## Credits
+## AI assistance and credits
 
-Data & imagery: NASA. NASA does not endorse this project, and no NASA logo is used.
-Fonts (SIL Open Font License): Cinzel, Atkinson Hyperlegible, IBM Plex Mono, Cormorant Garamond.
-Poetry epigraphs are in the public domain. The title alludes to a famous line of cinema; no material from that work is used.
+Claude and OpenAI Codex assisted implementation, research, writing and validation. The team owns final review and submission.
+ElevenLabs generated fictional narration using stock voices; generated files carry an AI declaration in their metadata and credits.
+Browser speech synthesis reads lines without a recorded voice file. No real person's voice was cloned.
 
-Code is released under the MIT License (see `LICENSE`).
+The project uses NASA photographs and official models, with individual credits. Scenery and the Orrery are labelled artistic views.
+There are no AI-generated images of real machines or places. Effects are synthesized; poetry excerpts were published before 1929.
+
+Data & imagery: NASA. NASA does not endorse this project. No NASA logo is used.
+Fonts: Cinzel, Atkinson Hyperlegible, IBM Plex Mono and Cormorant Garamond, under the SIL Open Font License.
+See [CREDITS.md](CREDITS.md), [AI disclosure](docs/submission/ai-disclosure.md) and the [submission description](docs/submission/description.md).
+Code is released under the [MIT License](LICENSE).

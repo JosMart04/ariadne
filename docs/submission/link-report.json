@@ -1,0 +1,858 @@
+{
+  "checkedAt": "2026-11-15T22:59:06.795Z",
+  "method": "GET",
+  "timeoutMs": 15000,
+  "results": [
+    {
+      "url": "https://apollojournals.org/alsj/a11/a11.landing.html",
+      "locations": [
+        "episodes/e02-apollo11.yaml.facts.abort-buttons.source",
+        "episodes/e02-apollo11.yaml.facts.alarm.source",
+        "episodes/e02-apollo11.yaml.facts.boulders.source",
+        "episodes/e02-apollo11.yaml.facts.contact.source",
+        "episodes/e02-apollo11.yaml.facts.dsky.source",
+        "episodes/e02-apollo11.yaml.facts.fuel.source",
+        "episodes/e02-apollo11.yaml.facts.lpd.source",
+        "episodes/e02-apollo11.yaml.facts.manual.source",
+        "episodes/e02-apollo11.yaml.facts.spring-loaded.source",
+        "episodes/e02-apollo11.yaml.facts.window-scale.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://apollojournals.org/alsj/a11/a11.landing.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://apollojournals.org/alsj/a11/a11.step.html",
+      "locations": [
+        "episodes/e02-apollo11.yaml.facts.desolation.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://apollojournals.org/alsj/a11/a11.step.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://apollojournals.org/alsj/a17/A17NewFender.html",
+      "locations": [
+        "episodes/e04-lrv.yaml.facts.fender.source",
+        "episodes/e04-lrv.yaml.facts.parking.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://apollojournals.org/alsj/a17/A17NewFender.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://apollojournals.org/alsj/ApolloFlags-Condition.html",
+      "locations": [
+        "episodes/e02-apollo11.yaml.facts.flag.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://apollojournals.org/alsj/ApolloFlags-Condition.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://arxiv.org/abs/1604.06140",
+      "locations": [
+        "episodes/e14-kepler.yaml.facts.checks.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://arxiv.org/abs/1604.06140",
+      "attempts": 1
+    },
+    {
+      "url": "https://astrobiology.nasa.gov/news/check-type-living-on-mars-time/",
+      "locations": [
+        "episodes/e07-spirit.yaml.facts.planning.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://astrobiology.nasa.gov/news/check-type-living-on-mars-time/",
+      "attempts": 1
+    },
+    {
+      "url": "https://astrobiology.nasa.gov/news/phoenix-confirms-martian-water-mission-extended/",
+      "locations": [
+        "episodes/e09-phoenix.yaml.facts.water-test.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://astrobiology.nasa.gov/news/phoenix-confirms-martian-water-mission-extended/",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Apollo%20Lunar%20Module",
+      "locations": [
+        "episodes/e02-apollo11.yaml.models.eagle.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Apollo%20Lunar%20Module",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Dawn",
+      "locations": [
+        "episodes/e15-dawn.yaml.models.orbiter.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Dawn",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Space%20Network%2070-meter",
+      "locations": [
+        "episodes/e16-voyager1.yaml.models.dish.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Space%20Network%2070-meter",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ingenuity%20Mars%20Helicopter",
+      "locations": [
+        "episodes/e11-ingenuity.yaml.models.helicopter.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ingenuity%20Mars%20Helicopter",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "locations": [
+        "episodes/e10-insight.yaml.models.lander.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)",
+      "locations": [
+        "episodes/e07-spirit.yaml.models.twin.source",
+        "episodes/e08-opportunity.yaml.models.rover.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/NEAR%20Shoemaker",
+      "locations": [
+        "episodes/e13-near.yaml.models.probe.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/NEAR%20Shoemaker",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Pioneer%2010",
+      "locations": [
+        "episodes/e12-pioneer.yaml.models.probe.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Pioneer%2010",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Viking%20Lander",
+      "locations": [
+        "episodes/e05-viking.yaml.models.lander.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Viking%20Lander",
+      "attempts": 1
+    },
+    {
+      "url": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Voyager%20Probe%20(A)",
+      "locations": [
+        "episodes/e16-voyager1.yaml.models.voyager.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Voyager%20Probe%20(A)",
+      "attempts": 1
+    },
+    {
+      "url": "https://images.nasa.gov/details/as12-47-6918",
+      "locations": [
+        "episodes/e03-alsep.yaml.images.station.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://images.nasa.gov/details/as12-47-6918",
+      "attempts": 1
+    },
+    {
+      "url": "https://images.nasa.gov/details/as17-146-22367",
+      "locations": [
+        "episodes/e04-lrv.yaml.images.rover.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://images.nasa.gov/details/as17-146-22367",
+      "attempts": 1
+    },
+    {
+      "url": "https://images.nasa.gov/details/PIA15275",
+      "locations": [
+        "episodes/e08-opportunity.yaml.facts.haven.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://images.nasa.gov/details/PIA15275",
+      "attempts": 1
+    },
+    {
+      "url": "https://images.nasa.gov/details/PIA18079",
+      "locations": [
+        "episodes/e08-opportunity.yaml.facts.cleaning.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://images.nasa.gov/details/PIA18079",
+      "attempts": 1
+    },
+    {
+      "url": "https://images.nasa.gov/details/PIA18885",
+      "locations": [
+        "episodes/e08-opportunity.yaml.facts.blueberries.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://images.nasa.gov/details/PIA18885",
+      "attempts": 1
+    },
+    {
+      "url": "https://images.nasa.gov/details/PIA22549",
+      "locations": [
+        "episodes/e08-opportunity.yaml.facts.orbit-photo.source",
+        "episodes/e08-opportunity.yaml.images.after-storm.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://images.nasa.gov/details/PIA22549",
+      "attempts": 1
+    },
+    {
+      "url": "https://images.nasa.gov/details/PIA22930",
+      "locations": [
+        "episodes/e08-opportunity.yaml.facts.last-images.source",
+        "episodes/e08-opportunity.yaml.facts.tau.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://images.nasa.gov/details/PIA22930",
+      "attempts": 1
+    },
+    {
+      "url": "https://johnkeats.uvic.ca/1819-10-11.html",
+      "locations": [
+        "episodes/e14-kepler.yaml.comment:72"
+      ],
+      "status": 200,
+      "finalUrl": "https://johnkeats.uvic.ca/1819-10-11.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/experiment/display.action?id=1969-059C-04",
+      "locations": [
+        "episodes/e02-apollo11.yaml.facts.retroreflector.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://nssdc.gsfc.nasa.gov/nmc/experiment/display.action?id=1969-059C-04",
+      "attempts": 1
+    },
+    {
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C",
+      "locations": [
+        "episodes/e02-apollo11.yaml.facts.descent-stage.source",
+        "episodes/e02-apollo11.yaml.facts.eagle-landed.source",
+        "episodes/e02-apollo11.yaml.facts.landing.source",
+        "episodes/e02-apollo11.yaml.facts.left-behind.source",
+        "episodes/e02-apollo11.yaml.facts.samples.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C",
+      "attempts": 1
+    },
+    {
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+      "locations": [
+        "episodes/e04-lrv.yaml.facts.controls.source",
+        "episodes/e04-lrv.yaml.facts.drive.source",
+        "episodes/e04-lrv.yaml.facts.journeys.source",
+        "episodes/e04-lrv.yaml.facts.navigation.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/surveyor.html",
+      "locations": [
+        "episodes/e01-surveyor.yaml.facts.first-landing.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://nssdc.gsfc.nasa.gov/planetary/lunar/surveyor.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/mission/near/near_science.html",
+      "locations": [
+        "episodes/e13-near.yaml.facts.minerals.source",
+        "episodes/e13-near.yaml.facts.ranging.source",
+        "episodes/e13-near.yaml.facts.surface.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://nssdc.gsfc.nasa.gov/planetary/mission/near/near_science.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/viking.html",
+      "locations": [
+        "episodes/e05-viking.yaml.facts.contact.source",
+        "episodes/e05-viking.yaml.facts.landings.source",
+        "episodes/e05-viking.yaml.facts.life-search.source",
+        "episodes/e05-viking.yaml.facts.survey.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://nssdc.gsfc.nasa.gov/planetary/viking.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://ntrs.nasa.gov/citations/19740060914",
+      "locations": [
+        "episodes/e12-pioneer.yaml.facts.imaging.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://ntrs.nasa.gov/citations/19740060914",
+      "attempts": 1
+    },
+    {
+      "url": "https://pds.nasa.gov/ds-view/pds/viewContext.jsp?identifier=urn:nasa:pds:context:instrument:pse.a12a",
+      "locations": [
+        "episodes/e03-alsep.yaml.facts.seismometer.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://pds.nasa.gov/ds-view/pds/viewContext.jsp?identifier=urn:nasa:pds:context:instrument:pse.a12a",
+      "attempts": 1
+    },
+    {
+      "url": "https://photojournal.jpl.nasa.gov/catalog/PIA12909",
+      "locations": [
+        "episodes/e02-apollo11.yaml.facts.seen-from-orbit.source",
+        "episodes/e02-apollo11.yaml.images.site-labels.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/photojournal/apollo-11-second-look/",
+      "attempts": 1
+    },
+    {
+      "url": "https://photojournal.jpl.nasa.gov/catalog/PIA12925",
+      "locations": [
+        "episodes/e02-apollo11.yaml.images.site-noon.source",
+        "finale.yaml.images.site-noon.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/photojournal/high-noon-at-tranquility-base/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/3d-resources/kepler-a/",
+      "locations": [
+        "episodes/e14-kepler.yaml.models.telescope.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/3d-resources/kepler-a/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/blogs/voyager/2024/04/22/nasas-voyager-1-resumes-sending-engineering-updates-to-earth/",
+      "locations": [
+        "episodes/e16-voyager1.yaml.facts.chip.source",
+        "episodes/e16-voyager1.yaml.facts.moved-code.source",
+        "episodes/e16-voyager1.yaml.facts.round-trip.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/blogs/voyager/2024/04/22/nasas-voyager-1-resumes-sending-engineering-updates-to-earth/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/dawn/",
+      "locations": [
+        "episodes/e15-dawn.yaml.facts.journey.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/dawn/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/dawn/science/ceres/",
+      "locations": [
+        "episodes/e15-dawn.yaml.facts.salts.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/dawn/science/ceres/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/dawn/technology/ion-propulsion/",
+      "locations": [
+        "episodes/e15-dawn.yaml.facts.ions.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/dawn/technology/ion-propulsion/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/dawn/technology/science-payload/",
+      "locations": [
+        "episodes/e15-dawn.yaml.facts.instruments.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/dawn/technology/science-payload/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/insight/",
+      "locations": [
+        "episodes/e10-insight.yaml.facts.landing.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/insight/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/kepler/",
+      "locations": [
+        "episodes/e14-kepler.yaml.facts.k2.source",
+        "episodes/e14-kepler.yaml.facts.planets.source",
+        "episodes/e14-kepler.yaml.facts.survey.source",
+        "episodes/e14-kepler.yaml.facts.transit.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/kepler/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+      "locations": [
+        "episodes/e11-ingenuity.yaml.facts.build.source",
+        "episodes/e11-ingenuity.yaml.facts.flights.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/mars-pathfinder/",
+      "locations": [
+        "episodes/e06-sojourner.yaml.facts.airbags.source",
+        "episodes/e06-sojourner.yaml.facts.landing.source",
+        "episodes/e06-sojourner.yaml.facts.water-history.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/mars-pathfinder/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/mars-phoenix/",
+      "locations": [
+        "episodes/e09-phoenix.yaml.facts.ice.source",
+        "episodes/e09-phoenix.yaml.facts.landing.source",
+        "episodes/e09-phoenix.yaml.facts.perchlorate.source",
+        "episodes/e09-phoenix.yaml.facts.sampling.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/mars-phoenix/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/mer-spirit/",
+      "locations": [
+        "episodes/e07-spirit.yaml.facts.mission.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/mer-spirit/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/near-shoemaker/",
+      "locations": [
+        "episodes/e13-near.yaml.facts.descent.source",
+        "episodes/e13-near.yaml.facts.last-contact.source",
+        "episodes/e13-near.yaml.facts.orbit-landing.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/near-shoemaker/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/pioneer-10/",
+      "locations": [
+        "episodes/e12-pioneer.yaml.facts.firsts.source",
+        "episodes/e12-pioneer.yaml.facts.plaque.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/pioneer-10/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/pioneer-11/",
+      "locations": [
+        "episodes/e12-pioneer.yaml.facts.saturn.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/pioneer-11/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/surveyor-1/",
+      "locations": [
+        "episodes/e01-surveyor.yaml.facts.contact-one.source",
+        "episodes/e01-surveyor.yaml.facts.feet.source",
+        "episodes/e01-surveyor.yaml.facts.radar.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/surveyor-1/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/surveyor-3/",
+      "locations": [
+        "episodes/e01-surveyor.yaml.facts.apollo12-visit.source",
+        "episodes/e01-surveyor.yaml.facts.contact-three.source",
+        "episodes/e01-surveyor.yaml.facts.ground.source",
+        "episodes/e01-surveyor.yaml.facts.surveyor3.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/surveyor-3/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/viking-1/",
+      "locations": [
+        "episodes/e05-viking.yaml.facts.command.source",
+        "episodes/e05-viking.yaml.facts.mixed-results.source",
+        "episodes/e05-viking.yaml.facts.sampling.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/viking-1/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/voyager/",
+      "locations": [
+        "episodes/e16-voyager1.yaml.facts.heliosphere.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/voyager/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/voyager/voyager-1/",
+      "locations": [
+        "episodes/e16-voyager1.yaml.facts.farthest.source",
+        "episodes/e16-voyager1.yaml.facts.portrait.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/voyager/voyager-1/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/mission/voyager/where-are-voyager-1-and-voyager-2-now/",
+      "locations": [
+        "episodes/e16-voyager1.yaml.facts.light-day.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/mission/voyager/where-are-voyager-1-and-voyager-2-now/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/",
+      "locations": [
+        "episodes/e12-pioneer.yaml.facts.direction.source",
+        "episodes/e12-pioneer.yaml.facts.last-signal.source",
+        "episodes/e12-pioneer.yaml.facts.measurements.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/photojournal/dodo-goldilocks-trench-dug-by-phoenix/",
+      "locations": [
+        "episodes/e09-phoenix.yaml.images.trench.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/photojournal/dodo-goldilocks-trench-dug-by-phoenix/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/resource/sojourner-does-a-wheelie-on-yogi/",
+      "locations": [
+        "episodes/e06-sojourner.yaml.facts.chemistry.source",
+        "episodes/e06-sojourner.yaml.facts.last-contact.source",
+        "episodes/e06-sojourner.yaml.images.yogi.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/resource/sojourner-does-a-wheelie-on-yogi/",
+      "attempts": 1
+    },
+    {
+      "url": "https://science.nasa.gov/resource/surveyor-1-shadow/",
+      "locations": [
+        "episodes/e01-surveyor.yaml.images.shadow.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://science.nasa.gov/resource/surveyor-1-shadow/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www-robotics.jpl.nasa.gov/what-we-do/flight-projects/pathfinder/software-electronics/",
+      "locations": [
+        "episodes/e06-sojourner.yaml.facts.autonomy.source",
+        "episodes/e06-sojourner.yaml.facts.range.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www-robotics.jpl.nasa.gov/what-we-do/flight-projects/pathfinder/software-electronics/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.apollojournals.org/alsj/a12/as12psr.pdf",
+      "locations": [
+        "episodes/e03-alsep.yaml.facts.interpretation.source",
+        "episodes/e03-alsep.yaml.facts.vibration.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.apollojournals.org/alsj/a12/as12psr.pdf",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.gutenberg.org/files/12242/12242-h/12242-h.htm",
+      "locations": [
+        "episodes/e01-surveyor.yaml.comment:77",
+        "episodes/e03-alsep.yaml.comment:72",
+        "episodes/e04-lrv.yaml.comment:71",
+        "episodes/e05-viking.yaml.comment:73",
+        "episodes/e06-sojourner.yaml.comment:72",
+        "episodes/e07-spirit.yaml.comment:74",
+        "episodes/e09-phoenix.yaml.comment:72",
+        "episodes/e10-insight.yaml.comment:72",
+        "episodes/e11-ingenuity.yaml.comment:89",
+        "episodes/e13-near.yaml.comment:68",
+        "episodes/e15-dawn.yaml.comment:72"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.gutenberg.org/files/12242/12242-h/12242-h.htm",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.gutenberg.org/files/151/151-h/151-h.htm",
+      "locations": [
+        "episodes/e12-pioneer.yaml.comment:72"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.gutenberg.org/files/151/151-h/151-h.htm",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/kepler-telescope-bids-goodnight-with-final-commands/",
+      "locations": [
+        "episodes/e14-kepler.yaml.facts.goodnight.source",
+        "episodes/e14-kepler.yaml.facts.orbit.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/kepler-telescope-bids-goodnight-with-final-commands/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/nasa-finishes-listening-for-phoenix-mars-lander/",
+      "locations": [
+        "episodes/e09-phoenix.yaml.facts.last-contact.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/nasa-finishes-listening-for-phoenix-mars-lander/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/nasas-dawn-mission-to-asteroid-belt-comes-to-end",
+      "locations": [
+        "episodes/e15-dawn.yaml.facts.orbit.source",
+        "episodes/e15-dawn.yaml.facts.out-of-fuel.source",
+        "episodes/e15-dawn.yaml.facts.two-worlds.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/nasas-dawn-mission-to-asteroid-belt-comes-to-end",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/nasas-ingenuity-mars-helicopter-team-says-goodbye-for-now/",
+      "locations": [
+        "episodes/e11-ingenuity.yaml.facts.storing-data.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/nasas-ingenuity-mars-helicopter-team-says-goodbye-for-now/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars/",
+      "locations": [
+        "episodes/e07-spirit.yaml.facts.silence.source",
+        "episodes/e07-spirit.yaml.facts.silica.source",
+        "episodes/e07-spirit.yaml.facts.tools.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/phoenix-mars-lander-is-silent-new-image-shows-damage/",
+      "locations": [
+        "episodes/e09-phoenix.yaml.facts.damage.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/phoenix-mars-lander-is-silent-new-image-shows-damage/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/press_kits/insight/landing/mission/science/",
+      "locations": [
+        "episodes/e10-insight.yaml.facts.noise.source",
+        "episodes/e10-insight.yaml.facts.placement.source",
+        "episodes/e10-insight.yaml.facts.waves.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/press_kits/insight/landing/mission/science/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/press_kits/mars_2020/ingenuity/landing/mission/spacecraft/",
+      "locations": [
+        "episodes/e11-ingenuity.yaml.facts.power.source",
+        "episodes/e11-ingenuity.yaml.facts.relay.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/press_kits/mars_2020/ingenuity/landing/mission/spacecraft/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/news/team-prepares-to-uplink-commands-to-spirit/",
+      "locations": [
+        "episodes/e07-spirit.yaml.facts.troy.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/news/team-prepares-to-uplink-commands-to-spirit/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.jpl.nasa.gov/podcasts/on-a-mission-season-1/season-4-mars-rovers/episode-8-how-to-drive-a-mars-rover/",
+      "locations": [
+        "episodes/e08-opportunity.yaml.facts.light-time.source",
+        "episodes/e08-opportunity.yaml.facts.sequence.source"
+      ],
+      "status": 403,
+      "finalUrl": "https://www.jpl.nasa.gov/podcasts/on-a-mission-season-1/season-4-mars-rovers/episode-8-how-to-drive-a-mars-rover/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/directorates/somd/space-communications-navigation-program/what-is-the-deep-space-network/",
+      "locations": [
+        "episodes/e16-voyager1.yaml.facts.dishes.source",
+        "episodes/e16-voyager1.yaml.facts.three-sites.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/directorates/somd/space-communications-navigation-program/what-is-the-deep-space-network/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/mission/apollo-12/",
+      "locations": [
+        "episodes/e03-alsep.yaml.facts.launch.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/mission/apollo-12/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/mission/apollo-15/",
+      "locations": [
+        "episodes/e04-lrv.yaml.facts.launch.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/mission/apollo-15/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/missions/insight/nasa-retires-insight-mars-lander-mission-after-years-of-science/",
+      "locations": [
+        "episodes/e10-insight.yaml.facts.dust.source",
+        "episodes/e10-insight.yaml.facts.marsquakes.source",
+        "episodes/e10-insight.yaml.facts.mole.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/missions/insight/nasa-retires-insight-mars-lander-mission-after-years-of-science/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/",
+      "locations": [
+        "finale.yaml.facts.arrays.source",
+        "finale.yaml.facts.corner-cube.source",
+        "finale.yaml.facts.ranging.source",
+        "finale.yaml.facts.receding.source",
+        "finale.yaml.facts.round-trip.source",
+        "finale.yaml.facts.weak.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/news-release/after-three-years-on-mars-nasas-ingenuity-helicopter-mission-ends/",
+      "locations": [
+        "episodes/e11-ingenuity.yaml.facts.flight72.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/news-release/after-three-years-on-mars-nasas-ingenuity-helicopter-mission-ends/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/news-release/nasas-ingenuity-mars-helicopter-succeeds-in-historic-first-flight/",
+      "locations": [
+        "episodes/e11-ingenuity.yaml.facts.first-flight.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/news-release/nasas-ingenuity-mars-helicopter-succeeds-in-historic-first-flight/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/news-release/nasas-record-setting-opportunity-rover-mission-on-mars-comes-to-end/",
+      "locations": [
+        "episodes/e08-opportunity.yaml.facts.endeavour.source",
+        "episodes/e08-opportunity.yaml.facts.hematite.source",
+        "episodes/e08-opportunity.yaml.facts.last-contact.source",
+        "episodes/e08-opportunity.yaml.facts.lifetime.source",
+        "episodes/e08-opportunity.yaml.facts.wake-up.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/news-release/nasas-record-setting-opportunity-rover-mission-on-mars-comes-to-end/",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/wp-content/uploads/static/history/SP-350/ch-12-7.html",
+      "locations": [
+        "episodes/e03-alsep.yaml.facts.station.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/wp-content/uploads/static/history/SP-350/ch-12-7.html",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/wp-content/uploads/static/history/SP-4029/Apollo_12i_Timeline.htm",
+      "locations": [
+        "episodes/e03-alsep.yaml.facts.impact.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/wp-content/uploads/static/history/SP-4029/Apollo_12i_Timeline.htm",
+      "attempts": 1
+    },
+    {
+      "url": "https://www.nasa.gov/wp-content/uploads/static/history/SP-4029/Apollo_18-31_ALSEP_Arrays_and_Status.htm",
+      "locations": [
+        "episodes/e03-alsep.yaml.facts.switched-off.source"
+      ],
+      "status": 200,
+      "finalUrl": "https://www.nasa.gov/wp-content/uploads/static/history/SP-4029/Apollo_18-31_ALSEP_Arrays_and_Status.htm",
+      "attempts": 1
+    }
+  ]
+}

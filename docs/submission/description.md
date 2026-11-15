@@ -11,8 +11,13 @@ These are simplified teaching simulations. On-screen labels identify reconstruct
 The game does not present rover motion as live joystick control from Earth.
 
 Each mission separates sourced records from imagined speech. Source buttons connect the story to NASA mission pages and technical records.
-The archive also contains thirteen additional mission files. Their completion state is recorded in the episode data and task board.
-Completed archive files use a NASA model or photograph with a short explanation of the machine's operation.
+The archive also contains thirteen complete mission files, each with seven beats and a NASA model or photograph.
+Short, sourced captions explain each machine's operation; Discovery and Silence connect its findings with the end of its work.
+These files have no dedicated control simulations.
+
+The title and map share an Orrery. Its dated planet positions use JPL's approximate orbital elements.
+Distances are compressed, sizes are illustrative, and estimated spacecraft positions carry labels.
+Opening a machine from the Orrery shows a short journey and a distance estimate. A list view offers the same archive.
 
 ## Built and checked
 
@@ -22,12 +27,14 @@ Progress stays in browser storage. The project has no account system.
 
 The automated gate checks content structure, source references, puzzle reachability, TypeScript, production builds and possible bundled secrets.
 Browser captures provide visual evidence. These checks do not establish complete accessibility or historical accuracy by themselves.
+The thirteen archive files completed all seven beats and saved progress in Explorer, reduced-motion Explorer and a forced no-WebGL run.
 
 ## Current limits
 
 Webcam Hands, gaze input and sky AR are not delivered. Dedicated interactive operations for the thirteen archive files are outside this build.
-The Orrery, postcard and final Voyager coda are separate integration tasks; check the current build before describing them as delivered.
+The postcard and final Voyager coda remain separate, unfinished integration tasks in this snapshot.
 Human source sign-off, assistive-technology testing, phone testing and a timed audience playtest remain team responsibilities.
+Without WebGL, the Field File panel can cover part of the scene description; the issue is recorded for the engine lane.
 Do not claim a twelve-minute completion time or universal accessibility without those tests.
 
 ## NASA material and authorship

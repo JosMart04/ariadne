@@ -1,0 +1,200 @@
+{
+  "checkedAt": "2026-11-15T22:54:55.716Z",
+  "results": [
+    {
+      "episode": "e01-surveyor",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 18,
+      "errors": []
+    },
+    {
+      "episode": "e03-alsep",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 17,
+      "errors": []
+    },
+    {
+      "episode": "e04-lrv",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 16,
+      "errors": []
+    },
+    {
+      "episode": "e05-viking",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 17,
+      "errors": []
+    },
+    {
+      "episode": "e06-sojourner",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 17,
+      "errors": []
+    },
+    {
+      "episode": "e07-spirit",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 17,
+      "errors": []
+    },
+    {
+      "episode": "e09-phoenix",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 16,
+      "errors": []
+    },
+    {
+      "episode": "e10-insight",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 16,
+      "errors": []
+    },
+    {
+      "episode": "e11-ingenuity",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 18,
+      "errors": []
+    },
+    {
+      "episode": "e12-pioneer",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 16,
+      "errors": []
+    },
+    {
+      "episode": "e13-near",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 17,
+      "errors": []
+    },
+    {
+      "episode": "e14-kepler",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 17,
+      "errors": []
+    },
+    {
+      "episode": "e15-dawn",
+      "mode": "reduce",
+      "beats": [
+        "passage",
+        "arrival",
+        "operation",
+        "discovery",
+        "silence",
+        "status",
+        "file"
+      ],
+      "steps": 17,
+      "errors": []
+    }
+  ]
+}
