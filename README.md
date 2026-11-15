@@ -29,8 +29,11 @@ Three of them give you the clews to deduce who answers at midnight.
 - **The voices are imagined. Every fact is real.** Every line is tagged `REAL` (with a link to its source) or
   `IMAGINED`. The build fails if a real statement has no source.
 - **A labyrinth, not a maze.** No puzzle can leave you stuck. An automated test walks every puzzle graph on every build.
-- **For every body.** One mechanic, point and choose: mouse, touch, keyboard or a single button. No dragging, no typing,
-  no reflexes, no time limits. Captions, text scaling, reduced motion and high contrast are built in.
+- **Touch the engineering.** Each machine is operated the way it really was: Apollo is flown by hand, Mars rovers get
+  command sequences from Earth with the real light delay, deep-space probes are reached through the Deep Space Network.
+- **For every body, cutting nobody.** Three ways to play the same 3D scenes: Explorer (direct control), Hands (webcam
+  gestures) and Accessible (point and choose with a mouse, a keyboard or a single button, with no dragging, typing,
+  reflexes or time limits). Captions, text scaling, reduced motion and high contrast are built in.
 - **No accounts, no tracking, no cookies.** Progress is saved only on your device.
 
 ## Run it locally

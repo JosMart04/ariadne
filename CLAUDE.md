@@ -2,12 +2,13 @@
 
 NASA Space Apps Challenge 2026 · Challenge "Abandoned but not Forgotten" · Universal Event.
 A guided interactive documentary for the browser: the player follows ARIADNE through 16 machines
-NASA left on the Moon, on Mars and beyond, **performs each machine's real operation** as a short
-puzzle, and deduces that what "answers every midnight" is the Apollo 11 retroreflector.
+NASA left on the Moon, on Mars and beyond, **performs each machine's real operation in an explorable 3D scene,
+on a console that copies the real controls**, and deduces that what "answers every midnight" is the Apollo 11 retroreflector.
 
-**Deadline: Sunday Nov 15, 2026, 23:59 UTC−5. Internal target 22:30. Feature freeze 17:00.**
-Live site: https://josmart04.github.io/ariadne/ · Requirements (Spanish, local only, git-ignored):
+**Deadline: Sunday Nov 15, 2026, 23:59 UTC−5. Internal target 22:30. Feature freeze 17:00. Text freeze 15:00.**
+Live site: https://josmart04.github.io/ariadne/ · Requirements **v1.1** (Spanish, local only, git-ignored):
 `para_fable/1_obligatorio/ARIADNE_ELICITACION.md`. If that folder is missing, ask the team for it.
+Course correction of Sun 00:15: read the "Course correction v1.1" block in `docs/DECISIONS.md` first.
 
 ## Rules that are never broken
 
@@ -23,8 +24,21 @@ Design pillars:
 1. **Teach first.** When "fun" and "clear" conflict, clear wins.
 2. **Every fact is real and sourced.** Every line is `REAL` (cites a fact with an https source) or `IMAGINED`. The build fails otherwise.
 3. **A labyrinth, not a maze.** No puzzle can leave the player stuck. The reachability test proves it on every build.
-4. **For every body.** One mechanic: point and choose. No dragging, typing, reflexes or real time limits. Max 3 options.
+4. **For every body, cutting nobody.** Three ways to play the same scenes: Explorer (direct control), Hands (webcam gestures),
+   Accessible (point and choose, one button, head). Modes simplify **how** you act. They never remove a scene, 3D, sound or the ending.
 5. **Cinema with restraint.** Scale, light, silence, slow motion. No decorative noise.
+6. **Touch the engineering.** Explorable 3D sets, official NASA models, consoles that copy the real controls.
+
+**The screenshot rule (AC-15).** If a screenshot of any beat of the Thread route could be mistaken for a form, a quiz
+or a documentation page, that beat is not done. Run `npm run capture`, look at the PNGs, commit them in `docs/captures/<iteration>/`.
+
+**Operational fidelity (FR-60 to FR-63).** Every machine is operated the way it really was:
+- Apollo: direct control, in real time, on site.
+- Robots on Mars: command sequences sent from Earth, minutes of delay, **no real-time joystick**.
+- Deep space: commands through the Deep Space Network, hours of delay.
+- **No human ever appears on Mars or in deep space.** Astronauts appear only on the Moon, as a labelled reconstruction.
+- Every console control that is shown existed. Each is `REAL` with a source, or labelled `IMAGINED`.
+- Anything simulated, reconstructed or not to scale carries its label on screen (`set.labels`).
 
 Writing: second person, plain English (B1), sentences of 25 words or fewer, numbers at human scale.
 Machines **rest, sleep, go silent**. Never "die", "dead", "killed".
@@ -34,38 +48,56 @@ Machines **rest, sleep, go silent**. Never "die", "dead", "killed".
 - `npm run dev` — dev server (recompiles content on change)
 - `npm run content` — validate `content/*.yaml` and compile to `src/generated/content.json`
 - `npm run check` — the full gate: content + `tsc` + tests + build + secret scan. **Run before every push.**
+- `npm run capture` — screenshots of every Thread beat into `docs/captures/` (arrives in I1a)
 
 ## Architecture in one screen
 
 ```
 content/*.yaml --scripts/build-content.ts (zod)--> src/generated/content.json (git-ignored)
-src/content/schema.ts   THE CONTRACT. Frozen. Owner: Front A. Changes go in docs/DECISIONS.md.
-src/engine/             store (settings + progress, localStorage), hash router, fsm (puzzle graph logic), announce
-src/episode/            EpisodePlayer (the 7-beat template), ScenePlayer (prologue/finale), PuzzleRunner, Stage
+src/content/schema.ts   THE CONTRACT. Changes go in docs/DECISIONS.md.
+src/engine/             store (settings + progress), hash router, fsm (puzzle graph logic), announce, input/scan
+src/sim/                pure deterministic simulations, no DOM, no three: descent, ranging, ... + outcomes.ts
+src/three/              SceneHost: renderer, fixed 60 Hz steps, pause when hidden, Auto quality, context-loss recovery,
+                        reduced motion, seeded RNG, particles, GLB loading
+src/scenes/<id>/        one 3D set per folder: { cues, create(host) -> setCue, update, hotspots, describe, dispose }
+src/consoles/           faithful consoles in HTML/SVG with native buttons: Dsky, LmPanel, TelescopeConsole, ...
+src/input/              Controls (axes + buttons) fed by keyboard, pointer/touch, gamepad and hands
+src/hands/              MediaPipe Hand Landmarker (lazy), gesture classifier (pure), virtual cursor, calibration
+src/audio/              AudioBus (voice, music, sfx, ambience), procedural sfx, voice by line id
+src/episode/            EpisodePlayer (7 beats, cinema layout: full-bleed 3D set + captions + HUD), ScenePlayer, PuzzleRunner
 src/screens/            Title, Setup, Map, Prologue, Finale, Credits
 src/ui/parts.tsx        Line (REAL/IMAGINED), Source, Badge, ClewCard, Btn, glossary terms
-tests/                  content gates + puzzle reachability
+tests/                  content gates, puzzle reachability, simulations, gestures
 ```
 
-Principle: **everything interactive is a real `<button>` or `<a>`, and every puzzle is a graph declared in data.**
-Keyboard, screen readers, one-button scanning and head pointing all operate on the DOM, with no per-screen code.
+Folders marked in `docs/TASKS.md` as not started do not exist yet. Iteration 0 shipped `engine`, `episode`, `screens`, `ui`.
 
-### Adding or completing an episode (no code needed)
+### One simulation, three ways to play
 
-Copy the shape of `content/episodes/e08-opportunity.yaml` (the reference). One file per machine.
+**Every puzzle is still a state machine declared in data.** It is the only logic. The three modes are views of it:
+
+| Mode | How the player acts | What reaches the state machine |
+|---|---|---|
+| Explorer (default) | Flies, drives, turns knobs, presses console keys | The simulation's **outcome** picks the choice whose `when` matches |
+| Hands | Same controls, by gesture: pinch = press, fist = joystick | Same as Explorer |
+| Accessible | Picks one of at most 3 large targets shown **inside the same 3D scene** | The chosen choice; a scripted pilot then plays it |
+
+No WebGL, or a lost context: the generic choice view plays the same graph as text. It is the fallback, never the default.
+
+### Adding or completing an episode
+
+Copy the shape of `content/episodes/e02-apollo11.yaml` (3D reference) or `e08-opportunity.yaml` (text reference). One file per machine.
 Remove `draft: true` only when the episode has `objectives`, `arrival`, `operation`, `discovery`, `silence`, `statusNow`.
 The seven beats: Passage, Arrival, The Operation, The Discovery, The Silence, Status Now, Field File.
 
-The Operation has three layers; each one ships on its own:
-1. `operation.explainer`: the real operation in 3 to 5 steps (required).
-2. `operation.puzzle`: an FSM. It plays immediately in the generic choice view.
-3. `stage` on puzzle states: the visual skin (see below).
+**A beat is done when** it plays in Explorer, in Hands and in Accessible; has a reduced-motion version; has a text
+equivalent (`describe`); passes the screenshot rule; and its capture is committed.
 
 ### Puzzle contract
 
 ```yaml
 puzzle:
-  archetype: [D]          # A Sequence, B Aim, C Route, D Budget, E Compare, F Wave, G Assemble, H Hypothesis, I Decode
+  archetype: [B, A]       # A Sequence, B Aim, C Route, D Budget, E Compare, F Wave, G Assemble, H Hypothesis, I Decode
   initial: first
   maxSteps: 8             # longest allowed shortest-path from any state to SOLVED
   hints: [where to look, the rule]
@@ -73,44 +105,38 @@ puzzle:
     first:
       say: Narration or feedback.          # at least one of say / prompt
       prompt: The question?
+      stage: { kind: scene, cue: boulders } # what the 3D set shows in this state
+      sim: descent                          # Explorer/Hands play this decision with this simulation
       choices:                              # 1 to 3, OR use `next` for a single Continue
-        - { label: Right, to: SOLVED }
-        - { label: Wrong, detail: optional, to: oops }
+        - { label: Right, to: SOLVED, when: landed-safe, target: beyond }
+        - { label: Wrong, detail: optional, to: oops, when: crash-boulders, target: crater }
     oops: { wrong: true, say: "What would have happened in the real mission.", next: first }
 ```
 
 `SOLVED` is implicit. `wrong: true` counts as an error for hints. `forced: true` shows
 "This is what really happened." Use `fact: <key>` when `say` states something real.
-
-### Stage primitives (`stage: { kind: ... }` on a puzzle state)
-
-| kind | props | status |
-|---|---|---|
-| `gauge` | `label`, `value` (0–100), `unit?` | built |
-| `figure` | `image` (key in `images`), `caption?` | iteration 2 |
-| `hotspots` | `image`, `spots: [{x, y}]` in %, one per choice, same order | iteration 2 |
-| `cards` | (none: choices render as cards) | iteration 2 |
-| `trace` | `series: [{label, points: [numbers]}]`, one per choice | iteration 2 |
-| `grid` | `cols`, `rows`, `cells` (rows of characters), `at: [x, y]` | iteration 4 |
-| `sequence` | `steps: [text]`, `done` (count) | iteration 4 |
-
-A state whose `kind` is not built yet still plays: the prompt and choices are the full text equivalent.
+`sim` + `when`: every outcome the simulation can produce must map to exactly one choice (build gate).
+`target`: the hotspot of the scene that stands for the choice in Accessible.
 
 ### Text conventions
 
 - `[[sol]]` links a glossary term from `content/glossary.yaml`.
 - `who:` is `ariadne`, `machine` (shown as the machine's name), `note`, `record`, `narrator`, or any key `speaker.<id>` in `content/ui.yaml`.
 - Facts: `text`, `source` (https, prefer *.nasa.gov), optional `note` (internal) and `verified` (initials of the HUMAN who checked it).
-- Assets by stable id: `public/assets/vo/vo_<lineId>_en.mp3`, `public/assets/img/img_<episode>_<slot>.webp`.
+- Assets by stable id: `public/assets/vo/vo_<lineId>_en.mp3`, `public/assets/img/img_<episode>_<slot>.webp`,
+  `public/assets/models/mdl_<name>.glb`. Every asset has a credit and a source in content.
 
-## Who owns what (two Claude sessions work in parallel)
+## Who owns what (two Claude sessions work in parallel; ownership is by folder)
 
-| Front | Owns | Never edits |
-|---|---|---|
-| **A · Engine** | `src/**` (except `src/extras/`), `tests/`, `scripts/build-content.ts`, `scripts/check-dist.ts`, `.github/`, config files, `content/ui.yaml` keys | episode text |
-| **B · Content and pipelines** | `content/**` (values), `assets-src/`, `public/assets/`, other `scripts/`, `docs/submission/`, `src/extras/` | `src/content/schema.ts`, engine code |
+**Until account A returns, account B leads both fronts and may edit everything.** After that:
 
-Need something from the other front? Write it under your section in `docs/HANDOFF.md`. Do not edit their files.
+| Front | Owns | 
+|---|---|
+| **A · Cosmos, station, shell** | `src/scenes/orrery/`, `src/scenes/station/`, `src/scenes/sky/`, `src/screens/`, `src/engine/`, `src/content/schema.ts`, `scripts/build-content.ts`, `scripts/check-dist.ts`, `tests/` (except `tests/sim`, `tests/hands`), `.github/`, config files, `content/ui.yaml`, `content/prologue.yaml`, `src/styles/app.css` |
+| **B · Machines, consoles, content, assets** | `src/three/`, `src/sim/`, `src/consoles/`, `src/input/`, `src/hands/`, `src/audio/`, `src/episode/`, `src/scenes/{tranquility,telescope,meridiani,dsn,diorama}/`, `tests/sim`, `tests/hands`, `content/episodes/`, `content/finale.yaml`, `content/glossary.yaml`, `content/voices.yaml`, `public/assets/`, `assets-src/`, other `scripts/`, `docs/submission/`, `docs/captures/`, `src/styles/cinema.css` |
+
+Need something from the other front? Write it under "Requests" in your section of `docs/HANDOFF.md`. Do not edit their files.
+Adding a dependency to `package.json`: say so in `docs/HANDOFF.md` and `git pull --rebase` first.
 
 ## Session protocol
 
