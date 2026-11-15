@@ -79,7 +79,7 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 - [x] X-01 (Astra, Nov 15 16:48 UTC-5) `docs/submission/`: `summary.md`, `description.md`, `ai-disclosure.md`, `nasa-data.md`, `references.md`,
   `video-script.md` (30 seconds at most). Say what is built and what is not. 30 minutes at most, then the files.
 - [x] X-10 (Astra; content and captures, A-30 integration pending) E11 Ingenuity · [x] X-11 (Astra) E07 Spirit · [x] X-12 (Astra) E05 Viking · [x] X-13 (Astra) E12 Pioneer · [x] X-14 (Astra) E14 Kepler ·
-  [~] X-15 (Astra) E15 Dawn · [ ] X-16 E13 NEAR · [ ] X-17 E10 InSight · [ ] X-18 E01 Surveyor · [ ] X-19 E09 Phoenix ·
+  [x] X-15 (Astra) E15 Dawn · [~] X-16 (Astra) E13 NEAR · [ ] X-17 E10 InSight · [ ] X-18 E01 Surveyor · [ ] X-19 E09 Phoenix ·
   [ ] X-20 E06 Sojourner · [ ] X-21 E03 ALSEP · [ ] X-22 E04 Lunar rovers.
   For each, in this order, one file per commit: facts opened and noted → seven beats of text → on stage (recipe in
   `docs/HANDOFF.md`, section 0) → `draft: true` removed → `npm run check` → `npm run capture -- x<n> e<NN>` → push.
@@ -274,5 +274,6 @@ A-27 Gaze (no time; it stays in the pitch as the next step).
   planning station is clear: do you know what to do, what "enough" means, and what happens after you press Send?
 - [ ] T-16 Review the new text and facts of E08 (changed after the 15:00 freeze because the set needed it): each fact has
   a `note:` with the sentence that was checked. The myth check was removed for lack of a source (decision F-D08).
+
 
 

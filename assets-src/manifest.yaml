@@ -3,6 +3,13 @@
 # NASA material is in the public domain and is credited as NASA asks. No NASA logo is used.
 
 models:
+  mdl_dawn.glb:
+    title: Dawn
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Dawn
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Dawn/Dawn.glb
+    raw: models/dawn.glb
   mdl_kepler.glb:
     title: Kepler (A)
     credit: NASA/Brian E. Kumanchik; NASA/Christian A. Lopez

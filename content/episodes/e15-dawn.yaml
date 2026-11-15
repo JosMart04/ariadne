@@ -5,20 +5,86 @@ name: Dawn
 title: Two Worlds
 slate: { place: Dwarf planet Ceres, year: 2015 }
 launched: "2007-09-27"
-draft: true
 status: { badge: orbiting, where: "In orbit around the dwarf planet Ceres" }
 nssdca: [2007-043A]
 resource: dawn
-
+objectives:
+  - Explain how solar power and xenon supported ion propulsion.
+  - Compare imaging with measurements of surface composition.
+  - Distinguish propulsion fuel from the fuel used to point the spacecraft.
 facts:
-  two-worlds:
-    text: Dawn orbited Vesta and then Ceres. It was the first spacecraft to orbit two destinations beyond Earth and the first to orbit a dwarf planet.
+  journey:
+    text: Dawn launched on September 27, 2007, to study Vesta and Ceres in the main asteroid belt.
     source: https://science.nasa.gov/mission/dawn/
-  out-of-fuel:
-    text: Dawn ran out of hydrazine in late October 2018. It will remain in orbit around Ceres for decades.
+    note: "Checked Nov 15, 2026: The mission overview gives the launch date, targets and location in the main asteroid belt."
+  two-worlds:
+    text: Dawn orbited Vesta in 2011 and Ceres in 2015. It was the first spacecraft to orbit two destinations beyond Earth.
     source: https://www.jpl.nasa.gov/news/nasas-dawn-mission-to-asteroid-belt-comes-to-end
-
+    note: "Checked Nov 15, 2026: The 2011 and 2015 mission paragraphs identify the two orbital arrivals and the first two-destination orbit mission."
+  ions:
+    text: Dawn's solar panels supplied electricity. Its ion engines used electric forces to speed up charged xenon particles, producing gentle thrust.
+    source: https://science.nasa.gov/mission/dawn/technology/ion-propulsion/
+    note: "Checked Nov 15, 2026: Ion Propulsion describes electrical acceleration of xenon ions and small thrust; Solar Power supplies all onboard systems."
+  instruments:
+    text: Dawn's cameras photographed both worlds. Its spectrometer measured reflected light to map surface composition, while another instrument mapped chemical elements.
+    source: https://science.nasa.gov/mission/dawn/technology/science-payload/
+    note: "Checked Nov 15, 2026: FC captures images; VIR maps composition from reflected-light bands; GRaND produces elemental maps."
+  salts:
+    text: Dawn found that Ceres' bright spots contain carbonates and other salts. Several kinds of evidence also indicate abundant ice at high latitudes.
+    source: https://science.nasa.gov/mission/dawn/science/ceres/
+    note: "Checked Nov 15, 2026: Dawn's Accomplishments identifies bright deposits as carbonates and salts, and lists independent evidence of high-latitude ice."
+  out-of-fuel:
+    text: Dawn missed radio sessions on October 31 and November 1, 2018. The team concluded it had exhausted the hydrazine needed for pointing.
+    source: https://www.jpl.nasa.gov/news/nasas-dawn-mission-to-asteroid-belt-comes-to-end
+    note: "Checked Nov 15, 2026: The opening says the team ruled out other causes and concluded hydrazine was exhausted; antenna and panel pointing became impossible."
+  orbit:
+    text: Dawn was left in orbit around Ceres. In 2018, engineers expected the orbit to last at least 20 years.
+    source: https://www.jpl.nasa.gov/news/nasas-dawn-mission-to-asteroid-belt-comes-to-end
+    note: "Checked Nov 15, 2026: The planetary-protection paragraph gives the minimum 20-year orbital prediction. It is a prediction, not ongoing tracking."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "My engine pushes very gently. But I never stopped pushing."
+  - { who: machine, tag: IMAGINED, text: "You can travel far with a patient push." }
+  - { who: ariadne, tag: REAL, fact: journey, text: "You follow Dawn from its 2007 launch to two worlds in the asteroid belt: Vesta and Ceres." }
+operation:
+  title: A small push, used for a long time
+  explainer:
+    - { text: "You gather sunlight with two solar arrays. Their electricity powers the spacecraft and its ion engine.", fact: ions }
+    - { text: "Electric forces accelerate charged xenon particles. Their departure gives the spacecraft a gentle push.", fact: ions }
+    - { text: "You study each world from orbit. Cameras make images; instruments measure reflected light and chemical elements.", fact: instruments }
+    - { text: "Dawn moves from orbiting Vesta to orbiting Ceres. It becomes the first spacecraft to orbit two destinations beyond Earth.", fact: two-worlds }
+discovery:
+  headline: { text: "Ceres' bright spots contain salts, including carbonates.", fact: salts }
+  story:
+    text: >-
+      You see bright patches among Ceres' craters.
+      Dawn's measurements identify carbonates and other salts there.
+      Multiple lines of evidence also point to abundant ice at high latitudes.
+      You learn about the surface by combining pictures with measurements of what it contains.
+    facts: [salts, instruments]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: out-of-fuel, text: "Dawn misses radio sessions in late 2018. The team concludes that its pointing fuel, hydrazine, has run out." }
+    - { who: ariadne, tag: REAL, fact: out-of-fuel, text: "Without that fuel, Dawn cannot keep its antenna toward Earth or turn its solar panels toward the Sun." }
+  last: { who: machine, tag: IMAGINED, text: "You know two worlds a little better. Let that be enough for my quiet." }
+statusNow:
+  text: "Dawn remains silent around Ceres. Its final orbit was expected to last at least 20 years from 2018; this view is not live tracking."
+  fact: orbit
+# Poems, Third Series (1896), Nature III; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "A light exists in spring\nNot present on the year"
+  author: Emily Dickinson
+  work: Poems, Third Series
+  year: 1896
+set:
+  scene: diorama
+  model: orbiter
+  alt: "NASA's Dawn model has a central instrument body, a dish antenna and two long wings of solar panels."
+  labels: [artistic-view]
+  options: { size: 1.15, yaw: 30, float: true }
+models:
+  orbiter:
+    file: mdl_dawn.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Dawn
+    license: Public domain (NASA 3D Resources)
+crossThreads: [e13-near]
