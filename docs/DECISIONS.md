@@ -217,6 +217,22 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   Why: with several agents adding assets, a hand-written credits page would fall behind, and an uncredited NASA asset
   or an undeclared generated voice is a contest risk (CR-11, R-08).
 
+- **F-D16 · Three lanes, checked by a program (Sun 16:30).** Machine A (Fable) integrates and finishes the ending, machine B
+  (Fable) builds the Orrery and the shell screens, Astra writes and stages the 13 files. Every path has one lane
+  (`lanes.json`), and `npm run lane -- <lane>` fails before a push that holds a file of another lane. To make that
+  possible: interface strings may live in `content/ui/*.yaml`, one file per lane; `scripts/capture.ts` calls the routes of
+  `scripts/capture-shell.ts`; `CREDITS.md` no longer lists fact sources, so writing text never changes it. The schema, the
+  set contract and the button texts of the Thread check are frozen for this phase. Proposed clock: new work and text stop
+  at 20:00, final build 21:15. Why: a rule that only people remember does not hold with three agents and five hours.
+
+## Lane b · machine B (decisions of this lane go here)
+
+- (none yet)
+
+## Lane astra (decisions of this lane go here)
+
+- (none yet)
+
 ## Pending team confirmation (defaults in use)
 
 - ARIADNE acronym: "Archive for Robotic Instruments And Dormant Network Explorers" (not shown in the game yet).

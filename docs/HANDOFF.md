@@ -7,50 +7,100 @@ done / in progress / next steps / traps.
 **Deadlines (UTC−5): feature freeze 17:00 · final submission 22:30.** The 13:00 cut rule, the 14:00 first submission and
 the 15:00 text freeze passed while no session was running (see section 0).
 
-## 0. Parallel lanes (written Sun Nov 15, 14:50 by Fable, the session that builds E08)
+## 0. Three lanes at once (written Sun Nov 15, 16:30 by Fable on machine A; it wins over everything below)
 
-**What happened:** account A (Claude Fable) took over at 10:30, but its plan waited for approval until 14:45. Nothing
-was pushed between 10:02 and 14:50. **State on Sun 16:10: the Thread is whole.** E08 is in 3D in both modes, every spoken
-line has a voice file, the Thread passes from a clean start, the diorama contract is proven on two files, and the two
-lifecycle defects are fixed. All of it is pushed and deployed.
+**State:** the Thread is whole, in 3D, in both modes, with voices, and it passes from a clean start. E08, the diorama
+contract (two files on stage), the explainer as captions, the lifecycle fixes and the generated credits are pushed and deployed.
+**What is still missing for "most of the game":** the map is a card list that looks like a website; 11 files are off stage
+and all 13 are drafts; the finale has no Voyager coda and no postcard; nobody has run an accessibility pass.
 
-**From now on several AI sessions may work at once.** Lanes and rules are in `CLAUDE.md`, "Who owns what". In short:
+**Clock (UTC−5), proposed and in use unless the team says otherwise:** new work and new text stop at **20:00** ·
+20:00 to 21:15 voices for the final text, integration, the full regression · final build 21:15 · the team submits by **22:30**.
+(The old 17:00 feature freeze cannot hold if the three lanes below are to land.)
 
-| Lane | Works on now | Must not touch |
-|---|---|---|
-| **Fable · Thread and core** | Next, in this order: A-13 accessibility pass on the Thread, fixes that the team's playtest asks for (T-13b, T-15) | the 13 non-Thread episode files |
-| **Fable · diorama** | Done (F-01, F-04). Nothing is open in this lane; its files went back to "Fable · Thread and core" | |
-| **Astra · content** (GPT Astra) | X-01 `docs/submission/`, X-02 text and facts of the 13 files, X-05 put the 11 remaining files on stage (recipe below), X-04 link check | anything under `src/`, `tests/`, `scripts/` (except `check-links.ts`), `content/ui.yaml`, the Thread content |
+| Lane | Machine | Builds | Owns (the full list is `lanes.json`) |
+|---|---|---|---|
+| **a** | A · Claude Fable | Integration of the other two lanes · the ending of the Thread (Voyager coda, postcard) · accessibility pass · voices · final regression | everything that is not listed for b or astra: `src/` (engine, episode, consoles, sims, the five sets), `tests/`, `scripts/`, `content/ui.yaml`, the Thread content, `public/assets/vo/`, `package.json`, `CLAUDE.md` |
+| **b** | B · Claude Fable | The Orrery as the map, with today's real positions · the title screen on the same set · the card list as list view | `src/scenes/orrery/`, `src/sim/planets.ts`, `tests/sim/planets.test.ts`, `src/screens/`, `content/ui/shell.yaml`, `scripts/capture-shell.ts`, `docs/captures/b*` |
+| **astra** | Astra | The 13 files: facts, text, model or photograph on stage, out of draft · the submission texts · the link check | the 13 files in `content/episodes/`, `content/glossary.yaml`, `docs/submission/`, `assets-src/manifest.yaml`, `public/assets/{img,models}/`, `CREDITS.md`, `README.md`, `scripts/check-links.ts`, `docs/captures/x*` |
 
-Rules that keep parallel work safe:
-- One owner per file. Requests for someone else's file go under "Requests" below.
-- Claim a task in `docs/TASKS.md` (`[~] (Fable)`, `[~] (Fable-diorama)`, `[~] (Astra)`) and push that line before coding.
-- Each session in its own clone. `npm run check` green, `git pull --rebase`, then push. Stage only your lane's files.
-- Shared files where two lanes append: `assets-src/manifest.yaml` (add rows at the end of a block), `scripts/capture.ts`
-  (this session only adds the `e08` routes; the diorama lane owns the generic route), `src/styles/cinema.css` (append a
-  block with a comment naming the set). Never reorder or reformat what is already there.
+**Why these three cannot collide** (each line closes a place where they would have):
+- **Paths:** every path has exactly one lane. `npm run lane -- <a|b|astra>` fails before the push if a commit holds a file of another lane.
+- **Interface strings:** lane b writes its strings in `content/ui/shell.yaml`, never in `content/ui.yaml`. A key defined twice fails the build.
+- **Styles:** a lane adds its own `.css` file next to its component and imports it there. Nobody appends to `app.css` or `cinema.css` except lane a.
+- **Captures:** lane b's routes live in `scripts/capture-shell.ts` (`npm run capture -- b1 title map`). A file on the diorama needs no route (`npm run capture -- x1 e07`). Nobody but lane a edits `scripts/capture.ts`.
+- **Dependencies:** nobody adds one. Planet positions come from JPL's approximate elements (the table is in `src/sim/meridiani.ts`; lane b copies it into `src/sim/planets.ts` and does not edit the original).
+- **Generated files:** `CREDITS.md` changes only when the manifest or the voice cast changes, so only lane astra ever commits it. `src/generated/` is not in git.
+- **Voices:** only lane a makes voice files, once, after 20:00, when the text is final.
+- **Shared documents:** in `docs/TASKS.md`, `docs/HANDOFF.md` and `docs/DECISIONS.md` each lane writes only under its own heading. A rebase conflict there is solved by keeping both sides.
+- **Contracts frozen for this phase:** `src/content/schema.ts`, the `SetController` and `SetContext` types, the `act` contract and the button texts the Thread check presses ("Begin", "Start", "Follow the thread", "The Center of the Labyrinth", "Back to the labyrinth", `input[name="play"]`). A lane that needs one changed writes a request; lane a answers within 15 minutes.
+- **Deploy:** every push to `main` deploys if the gate passes; a newer push cancels an older deploy. A red gate never reaches the site.
 
-**Start prompt for Astra (paste as is):**
+**The loop of every lane, for every step:** `git pull --rebase` → work → `npm run check` → `npm run capture -- <your prefix><n> <scene>` and look
+at the pictures → `git add <your paths>` (never `-A`) → commit → `git pull --rebase` → `npm run lane -- <lane>` → `git push`. One small
+step per commit. Claim a task in your section of `docs/TASKS.md` and push the claim before you start it.
 
-> You are joining ARIADNE (NASA Space Apps 2026, challenge "Abandoned but not Forgotten"), repository
-> https://github.com/JosMart04/ariadne, as the **Astra · content** lane. Another AI (Claude Fable) is building the 3D engine
-> in parallel; you never edit its files. Clone the repository into your own folder, run `npm ci` and `npm run check`
-> (must be green). Read `AGENTS.md`, `CLAUDE.md`, `docs/HANDOFF.md` section 0 and `docs/TASKS.md` ("Lane Astra").
-> Take the first open task of your lane, mark it `[~] (Astra)` in `docs/TASKS.md` and push that line before working.
-> Rules that disqualify the project if broken: English only in the repository; every REAL line cites an https source that
-> you actually opened (write the sentence you checked in `note:`; never fill `verified:`, that is for human initials);
-> no NASA logo; no copyrighted text, quotes or music; machines "rest, sleep, go silent", never "die"; no human on Mars.
-> Plain English (B1), second person, sentences of 25 words or fewer. A claim with no source is narrowed to what the source
-> says or removed; it is never relabelled IMAGINED. Keep `draft: true` on the 13 files until the diorama set exists.
-> Before every push: `npm run check`, `git pull --rebase`, and stage only files of your lane. Report to the team in Spanish.
+**Not proven yet, and who proves it:** a file that has left draft has never played its Discovery and Silence beats on the
+diorama. Lane astra finishes E11 first; lane a captures it at once and fixes the engine before the other twelve follow.
+Lane astra may not be able to run captures (they need Chrome or Edge on the machine): if so it says so in "Requests" and lane a captures every file it pushes.
 
-**Start prompt for a second Fable session (paste as is):**
+### Start prompt · machine A (this session or a new one)
 
-> You are the **Fable · diorama** lane of ARIADNE (https://github.com/JosMart04/ariadne). Another Fable session is building
-> E08; do not touch its files. Work in your own clone. Read `CLAUDE.md`, `docs/HANDOFF.md` (section 0, then 3 to 5) and
-> task F-01 in `docs/TASKS.md`. Mark F-01 `[~] (Fable-diorama)`, push that line, then build it: the set context, the
-> `diorama` set, the explainer as captions, the asset gates, and two proving files (E11 with the official Ingenuity model,
-> one file with a real NASA image). Every beat must pass the screenshot rule; commit its captures. Report in Spanish.
+> You are **lane a** of ARIADNE (https://github.com/JosMart04/ariadne): integration and the ending of the Thread. Two other AI
+> sessions work at the same time (lane b: Orrery and shell screens; lane astra: the 13 files). Read `CLAUDE.md`, `docs/HANDOFF.md`
+> section 0 and "Lane a" in `docs/TASKS.md`. Your duties, in this order: (1) at every commit read "Requests" in
+> `docs/HANDOFF.md` and answer within 15 minutes; when lane astra pushes a file, run `npm run capture -- a<n> e<NN>`, look at
+> the pictures and fix the engine or write back; (2) A-31 the Voyager coda of the finale, with copy that is right before, on
+> and after Nov. 18, 2026 and a `?date=` override; (3) A-32 the postcard; (4) A-33 the accessibility pass on the Thread;
+> (5) at 20:00 the voices for the final text, then `npm run capture -- final thread` and `... lifecycle` and the whole capture
+> set. You are the only lane that may edit the shared engine, `scripts/capture.ts`, `content/ui.yaml` and `package.json`.
+> Before every push: `npm run check`, `git pull --rebase`, `npm run lane -- a`. Report in Spanish.
+
+### Start prompt · machine B (Claude Fable)
+
+> You are **lane b** of ARIADNE (https://github.com/JosMart04/ariadne), NASA Space Apps 2026. Two other AI sessions work at
+> the same time; you never edit their files. Set up: `git pull --rebase`, `npm ci`, `npm run check` (must be green),
+> `npm run dev`. Read `AGENTS.md`, `CLAUDE.md`, `docs/HANDOFF.md` section 0 (all of it) and "Lane b" in `docs/TASKS.md`.
+> **Your job: the map is still a list of cards and looks like a website. Make it the Orrery.** In order:
+> B-40 `src/sim/planets.ts` + `tests/sim/planets.test.ts`: where the eight planets are on a given date, from JPL's
+> approximate elements (copy the table and the solver from `src/sim/meridiani.ts`; do not edit that file; no new dependency).
+> B-41 `src/scenes/orrery/` (copy the shape of `src/scenes/diorama/index.ts`): the Sun, the planets at today's real
+> positions, their orbits, and the 16 machines marked where they are; drag and zoom; reduced motion; a written description
+> of every cue; on-screen labels for whatever is not to scale or only approximate.
+> B-42 the map screen in `src/screens/`: the Orrery is the map, every machine is a real `<button>` anchored in the scene
+> (`Anchor` in `src/episode/Set3D.tsx`) that opens its file, the golden thread joins them in launch order, and today's
+> card list stays as the list view for Accessible play and for devices without WebGL.
+> B-43 the title screen on the same set. B-44, only if all of that is pushed: the Passage of an episode as a travel shot.
+> Hard limits: your strings go in `content/ui/shell.yaml`, your styles in a `.css` file next to your component, your capture
+> routes in `scripts/capture-shell.ts`. Do not rename or remove the buttons "Begin", "Start", "Follow the thread",
+> "The Center of the Labyrinth": `npm run capture -- b<n> thread` must pass before every push. Everything in the
+> repository is English; every number you show is computed or sourced; nothing looks like a form or a web page (AC-15).
+> Before every push: `npm run check`, `git pull --rebase`, `npm run lane -- b`. Claim each task in `docs/TASKS.md` first.
+> Need a change in a file that is not yours? Write it under "Requests" in `docs/HANDOFF.md` and go on. Report in Spanish.
+
+### Start prompt · Astra
+
+> You are **lane astra** of ARIADNE (https://github.com/JosMart04/ariadne), a browser game for NASA Space Apps 2026 about the
+> machines NASA left on the Moon, on Mars and beyond. Two other AI sessions build the 3D engine at the same time; you never
+> edit their files. Clone the repository into your own folder, then `npm ci` and `npm run check` (must be green). Read
+> `AGENTS.md`, `CLAUDE.md`, `docs/HANDOFF.md` section 0 (all of it, including "Putting a file on stage") and "Lane astra" in
+> `docs/TASKS.md`. **Your job: the 13 machines that are still drafts.** First X-01, the submission texts in
+> `docs/submission/` (30 minutes at most). Then one file at a time, in this order: E11, E07, E05, E12, E14, E15, E13, E10,
+> E01, E09, E06, E03, E04. For each file: (1) open every source and write the sentence you checked in `note:`; a claim
+> with no source is narrowed to what the source says or removed, never relabelled IMAGINED; never fill `verified:`;
+> (2) write the seven beats in the shape of `content/episodes/e16-voyager1.yaml` without `console`, `cues` and `puzzle`:
+> `objectives` (3), `arrival`, `operation.explainer` (3 to 5 steps of how it really worked, each with a `fact`),
+> `discovery` (headline and story), `silence` (`before`, `last`), `statusNow`, an epigraph only from a poem published
+> before 1929; (3) put it on stage with the recipe of section 0 (official NASA model, or one NASA photograph);
+> (4) remove `draft: true`; (5) `npm run check`, then `npm run capture -- x<n> e<NN>` and look at the pictures; if your
+> machine cannot run captures, say so under "Requests" in `docs/HANDOFF.md` and go on; (6) commit that one file with its
+> asset, manifest row, `CREDITS.md` and captures. Rules that disqualify the project if broken: English only; no NASA logo;
+> no copyrighted text, quote or music; no human on Mars or in deep space; machines "rest, sleep, go silent", never "die".
+> Plain English, second person, sentences of 25 words or fewer. You never touch `src/`, `tests/`, `content/ui.yaml`, the
+> Thread files (prologue, e02, e08, e16, finale) or voices. Stop writing new text at 20:00. Before every push:
+> `npm run check`, `git pull --rebase`, `npm run lane -- astra`. Finish E11 first and push it: lane a checks it before
+> you are deep into the others. Report to the team in Spanish.
+
 
 **Putting a file on stage (ready since Sun 15:55; this is task X-05 and needs no engine change):**
 
@@ -96,8 +146,10 @@ Knossos Station is a console set, not a walkable room. The postcard and the Voya
 13 files are drafts; two of them (E11, E01) are already on stage. There is no `?date=` override for light times.
 Nobody has yet played E08 or timed the Thread; no real hardware, phone or screen reader has been tried by a person.
 
-**Requests** (write here; the owner answers in place):
-- (none yet)
+**Requests** (each lane writes under its own line; the owner answers in place, with the time):
+- to lane a:
+- to lane b:
+- to lane astra:
 
 ## 1. Where the project stands
 

@@ -1,0 +1,37 @@
+{
+  "about": "Who may change which path while several AI sessions work at once. A path belongs to the first lane that lists a prefix of it; every other path belongs to lane a. Checked by `npm run lane -- <a|b|astra>` before every push.",
+  "shared": ["docs/TASKS.md", "docs/HANDOFF.md", "docs/DECISIONS.md"],
+  "b": [
+    "src/scenes/orrery/",
+    "src/sim/planets.ts",
+    "tests/sim/planets.test.ts",
+    "src/screens/",
+    "content/ui/shell.yaml",
+    "scripts/capture-shell.ts",
+    "docs/captures/b"
+  ],
+  "astra": [
+    "content/episodes/e01-",
+    "content/episodes/e03-",
+    "content/episodes/e04-",
+    "content/episodes/e05-",
+    "content/episodes/e06-",
+    "content/episodes/e07-",
+    "content/episodes/e09-",
+    "content/episodes/e10-",
+    "content/episodes/e11-",
+    "content/episodes/e12-",
+    "content/episodes/e13-",
+    "content/episodes/e14-",
+    "content/episodes/e15-",
+    "content/glossary.yaml",
+    "docs/submission/",
+    "assets-src/manifest.yaml",
+    "public/assets/img/",
+    "public/assets/models/",
+    "CREDITS.md",
+    "scripts/check-links.ts",
+    "README.md",
+    "docs/captures/x"
+  ]
+}

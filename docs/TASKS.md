@@ -3,7 +3,7 @@
 Status: `[ ]` open · `[~]` in progress (add who) · `[x]` done.
 IDs in brackets are requirement ids from the requirements document (v1.1).
 
-**State on Sun Nov 15, 14:50 UTC−5:** prologue, E02, E16 and the finale are done in 3D. **E08 in 3D (B-27) is being built now.**
+**State on Sun Nov 15, 16:30 UTC−5:** the Thread is whole and deployed. **Three lanes work at once: see "Phase 2" below.**
 Several AI sessions may work at once: lanes and claim rules are in `CLAUDE.md` and in section 0 of `docs/HANDOFF.md`.
 
 ## Iterations (UTC−5)
@@ -35,6 +35,59 @@ operation, the Orrery** (the card map stays).
 
 **A beat is done when** it plays in Explorer and in Accessible (and in Hands once B-25 exists); has a reduced-motion version;
 has a text equivalent (the cue description in `cues.json`); passes the screenshot rule; and its capture is committed.
+
+## Phase 2: three lanes at once (from Sun 16:30; paths in `lanes.json`, rules in `docs/HANDOFF.md` section 0)
+
+New work and new text stop at **20:00**. Each lane writes only under its own heading here. Claim with `[~]` and push the claim first.
+
+### Lane a · machine A (Fable): integration and the ending
+
+- [ ] A-30 **Integration duty, the whole phase.** At every commit read "Requests" in `docs/HANDOFF.md`; answer within 15 minutes.
+  When lane astra pushes a file: `npm run capture -- a<n> e<NN>`, look at every picture, fix the engine or write back.
+  The first file out of draft (E11) is the proof that Discovery and Silence play on the diorama: check it before anything else.
+- [ ] A-31 **Voyager coda of the finale** (was A-24, A-10): the last beat, on the `dsn` set, with copy that is right before, on
+  and after Nov. 18, 2026 (`lightDayMoment` in `src/sim/dsn.ts`) and a `?date=` override for the team's video. No text by Carl Sagan.
+- [ ] A-32 **Postcard** (was A-11): three fragments, three options each, drawn on a canvas, saved as a PNG. `src/extras/postcard/`.
+- [ ] A-33 **Accessibility pass on the Thread** (was A-13, A-02): keyboard only, one button, 200 % text, high contrast, screen-reader
+  labels of the planning station and the diorama. Fix what fails; list what a person must still try.
+- [ ] A-34 **20:00:** voice files for every line that changed or is new (`npx tsx scripts/gen-voices.ts --dry-run` first), then `npm run content`.
+- [ ] A-35 **20:30:** the full regression: `npm run capture -- final`, `... final thread`, `... final lifecycle`, `... final reduce`,
+  every file of lane astra, the public URL. Write the result in `docs/HANDOFF.md`.
+
+### Lane b · machine B (Fable): cosmos and shell
+
+- [ ] B-40 `src/sim/planets.ts` + `tests/sim/planets.test.ts`: heliocentric positions of the eight planets for a date, from JPL's
+  approximate elements. Copy the table and the solver from `src/sim/meridiani.ts` (do not edit it). Tests against published
+  distances. No new dependency.
+- [ ] B-41 `src/scenes/orrery/` (`cues.json` + `index.ts`, shape of `src/scenes/diorama/`): the Sun, eight planets at today's real
+  positions, their orbits, the Moon by the Earth, and the 16 machines marked where they are (four on the Moon, seven on
+  Mars, NEAR on Eros, Dawn at Ceres, Kepler behind the Earth, Pioneer and Voyager far out). Drag to turn, wheel or keys to
+  zoom, reduced motion. Hotspots named by episode id. Labels: sizes are not to scale; a probe whose position is not
+  computed says "approximate". (FR-70 to FR-73, AC-18)
+- [ ] B-42 **The map is the Orrery.** In `src/screens/`: every machine is a real `<button>` anchored to its hotspot that opens its
+  file; restored ones are marked; the golden thread joins them in launch order (`content.threadOrder`); "Follow the thread",
+  the center and "Skip to the finale" keep their texts and behaviour. Today's card list stays as the list view: the default
+  in Accessible play and without WebGL, one click away otherwise. (FR-01, FR-02)
+- [ ] B-43 **Title screen on the same set:** the first picture a judge sees is the solar system with the thread, not a page of text.
+- [ ] B-44 Only when B-40 to B-43 are pushed: the Passage of an episode as a travel shot from the Earth to the machine, with
+  the real distance of today. Ask lane a first: it touches `src/episode/`.
+- Rules of this lane: strings in `content/ui/shell.yaml`; styles in a `.css` beside the component; routes in
+  `scripts/capture-shell.ts`; `npm run capture -- b<n> thread` green before every push.
+
+### Lane astra · Astra: the 13 files and the submission
+
+- [ ] X-01 `docs/submission/`: `summary.md`, `description.md`, `ai-disclosure.md`, `nasa-data.md`, `references.md`,
+  `video-script.md` (30 seconds at most). Say what is built and what is not. 30 minutes at most, then the files.
+- [ ] X-10 E11 Ingenuity · [ ] X-11 E07 Spirit · [ ] X-12 E05 Viking · [ ] X-13 E12 Pioneer · [ ] X-14 E14 Kepler ·
+  [ ] X-15 E15 Dawn · [ ] X-16 E13 NEAR · [ ] X-17 E10 InSight · [ ] X-18 E01 Surveyor · [ ] X-19 E09 Phoenix ·
+  [ ] X-20 E06 Sojourner · [ ] X-21 E03 ALSEP · [ ] X-22 E04 Lunar rovers.
+  For each, in this order, one file per commit: facts opened and noted → seven beats of text → on stage (recipe in
+  `docs/HANDOFF.md`, section 0) → `draft: true` removed → `npm run check` → `npm run capture -- x<n> e<NN>` → push.
+  **Push E11 first and say so in "Requests": lane a checks it on the diorama before the rest.**
+- [ ] X-04 `scripts/check-links.ts`: report every source URL in `content/` that does not answer 200. After the files.
+- Rules of this lane: never `src/`, `tests/`, `content/ui.yaml`, the Thread files or voices. A fact with no source is
+  narrowed or removed. New text stops at 20:00.
+
 
 ## Lanes (since Sun 14:50; ownership by folder is in `CLAUDE.md`)
 

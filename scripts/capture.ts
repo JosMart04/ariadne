@@ -20,19 +20,22 @@ import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer, { type Browser, type Page } from 'puppeteer-core';
+import { map as mapShell, title as titleShell, type Kit } from './capture-shell.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 /** `e11`, `e01`...: any file that has no route of its own is walked by the generic route (see `file`). */
 const isFile = (a: string) => /^e\d\d$/.test(a);
-const name = args.find((a) => !isFile(a) && !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale', 'thread', 'lifecycle'].includes(a)) ?? 'latest';
+const name = args.find((a) => !isFile(a) && !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale', 'thread', 'lifecycle', 'title', 'map'].includes(a)) ?? 'latest';
 const reduce = args.includes('reduce');
 const route = ['explorer', 'accessible'].find((r) => args.includes(r));
-const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale', 'thread', 'lifecycle'] as const;
+const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale', 'thread', 'lifecycle', 'title', 'map'] as const;
+/** Runs that only happen when they are asked for by name. */
+const ON_REQUEST: readonly string[] = ['thread', 'lifecycle', 'title', 'map'];
 const wanted = SCENES.filter((s) => args.includes(s));
 // `thread` is the whole route from a clean start. It is long, so it only runs when it is asked for.
 const files = args.filter((a) => isFile(a) && !(SCENES as readonly string[]).includes(a));
-const scenes: string[] = wanted.length || files.length ? [...wanted, ...files] : SCENES.filter((s) => s !== 'thread' && s !== 'lifecycle');
+const scenes: string[] = wanted.length || files.length ? [...wanted, ...files] : SCENES.filter((s) => !ON_REQUEST.includes(s));
 const BASE = process.env.CAPTURE_URL ?? 'http://localhost:5173/';
 const OUT = join(ROOT, 'docs', 'captures', reduce ? `${name}-reduce` : name);
 
@@ -668,6 +671,9 @@ async function thread(page: Page) {
 
 // ------------------------------------------------------------------
 
+/** The tools handed to the routes that live in other files (scripts/capture-shell.ts, owned by lane B). */
+const KIT: Kit = { shooter, press, waitFor, sleep, base: BASE };
+
 const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Page) => Promise<void>>>> = {
   prologue: { accessible: prologue },
   e02: { accessible: e02Accessible, explorer: e02Explorer },
@@ -675,6 +681,8 @@ const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Pa
   e16: { accessible: e16Accessible, explorer: e16Explorer },
   finale: { accessible: finaleAccessible, explorer: finaleExplorer },
   thread: { accessible: thread },
+  title: { accessible: (page) => titleShell(page, KIT) },
+  map: { accessible: (page) => mapShell(page, KIT) },
   lifecycle: { accessible: lifecycleAccessible, explorer: lifecycleExplorer },
 };
 

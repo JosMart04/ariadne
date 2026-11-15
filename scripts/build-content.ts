@@ -253,6 +253,14 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
   const finale = scene('finale');
 
   const ui = validate(UiStrings, load('ui.yaml'), problems) ?? {};
+  // More strings may live in content/ui/*.yaml, one file per lane, so two sessions never append to the same file.
+  const uiDir = join(CONTENT, 'ui');
+  for (const extra of existsSync(uiDir) ? readdirSync(uiDir).filter((f) => f.endsWith('.yaml')).sort() : []) {
+    for (const [key, value] of Object.entries(validate(UiStrings, load(`ui/${extra}`), problems) ?? {})) {
+      if (key in ui) problems.push(`ui/${extra}: "${key}" is already defined in another ui file`);
+      else ui[key] = value;
+    }
+  }
   const glossary = validate(Glossary, load('glossary.yaml'), problems) ?? {};
 
   // ---------- Credits: generated, so they can never fall behind what the game serves (NFR-08, CR-11) ----------

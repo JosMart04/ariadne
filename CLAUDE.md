@@ -130,22 +130,25 @@ puzzle:
 - Assets by stable id: `public/assets/vo/vo_<lineId>_en.mp3`, `public/assets/img/img_<episode>_<slot>.webp`,
   `public/assets/models/mdl_<name>.glb`. Every asset has a credit and a source in content.
 
-## Who owns what (several AI sessions work in parallel; ownership is by folder)
+## Who owns what (three AI sessions work at once; ownership is by path)
 
-These rules bind **every** agent, whatever its maker (Claude Fable, GPT Astra, or another). Lanes since Sun Nov 15, 14:50:
+These rules bind **every** agent, whatever its maker. The exact paths are in `lanes.json`; a program checks them.
 
-| Lane | Owns |
-|---|---|
-| **Fable · Thread and core** | Everything not listed below: `src/**`, `tests/`, `scripts/capture.ts`, `scripts/check-dist.ts`, `package.json`, config, `.github/`, `content/ui.yaml`, `content/voices.yaml`, `src/styles/`, the Thread content (`content/prologue.yaml`, `e02-apollo11.yaml`, `e08-opportunity.yaml`, `e16-voyager1.yaml`, `content/finale.yaml`), `CLAUDE.md`, `AGENTS.md` |
-| **Fable · diorama** (only if a second Fable session is started; otherwise part of the lane above) | `src/scenes/diorama/`, the set context (`SetContext` in `src/three/host.ts`, `src/episode/Set3D.tsx`, the `Explainer` of `src/episode/CinemaEpisode.tsx`), `src/content/schema.ts`, `scripts/build-content.ts`, `scripts/prep-assets.ts`, the generic route of `scripts/capture.ts` |
-| **Astra · content** | The 13 non-Thread files in `content/episodes/` (e01, e03 to e07, e09 to e15), `content/glossary.yaml`, `docs/submission/`, new rows of `assets-src/manifest.yaml` with their files in `public/assets/{img,models}/`, `scripts/check-links.ts`, `README.md` |
+| Lane | Machine | Owns |
+|---|---|---|
+| **a** | A · Claude Fable | Everything not listed for the other two: the engine (`src/engine`, `src/episode`, `src/three`, `src/content`, `src/consoles`, `src/sim`, `src/audio`, `src/input`, `src/ui`, `src/extras`), the sets `tranquility`, `telescope`, `dsn`, `meridiani`, `diorama`, `tests/`, `scripts/`, `content/ui.yaml`, the Thread content, voices, `package.json`, config, `CLAUDE.md` |
+| **b** | B · Claude Fable | `src/scenes/orrery/`, `src/sim/planets.ts`, `tests/sim/planets.test.ts`, `src/screens/`, `content/ui/shell.yaml`, `scripts/capture-shell.ts`, `docs/captures/b*` |
+| **astra** | Astra | The 13 non-Thread files in `content/episodes/`, `content/glossary.yaml`, `docs/submission/`, `assets-src/manifest.yaml`, `public/assets/{img,models}/`, `CREDITS.md`, `README.md`, `scripts/check-links.ts`, `docs/captures/x*` |
 
-- **One owner per file.** Need a change in a file you do not own? Write it under "Requests" in `docs/HANDOFF.md`. Do not edit it.
-- **Claim before you code.** Mark the task `[~] (Fable)`, `[~] (Fable-diorama)` or `[~] (Astra)` in `docs/TASKS.md` and push that line first.
-  A claim is released only by its owner, in writing. Silence, or no commits for a while, releases nothing.
-- **Do not touch what is finished** without a written reason: the sets `tranquility`, `telescope`, `dsn`, their simulations and
-  consoles, and the text of the prologue, E02, E16 and the finale.
-- Adding a dependency to `package.json`: Fable lane only; say so in `docs/HANDOFF.md`.
+- **One owner per file.** `npm run lane -- <a|b|astra>` must pass before every push. Need a change in a file you do not own?
+  Write it under "Requests" in `docs/HANDOFF.md`. Do not edit it.
+- **Claim before you code:** mark the task `[~]` in your section of `docs/TASKS.md` and push that line first. A claim is
+  released only by its owner, in writing.
+- **Frozen in this phase:** `src/content/schema.ts`, the set contract, the button texts the Thread check presses.
+- **No new dependency.** Strings of lane b go in `content/ui/shell.yaml`; a lane's styles go in its own `.css` file.
+- **Do not touch what is finished** without a written reason: the sets `tranquility`, `telescope`, `dsn`, `meridiani`, their
+  simulations and consoles, and the text of the prologue, E02, E08, E16 and the finale.
+- In the three shared documents (`docs/TASKS.md`, `docs/HANDOFF.md`, `docs/DECISIONS.md`) write only under your lane's heading.
 
 ## Session protocol
 

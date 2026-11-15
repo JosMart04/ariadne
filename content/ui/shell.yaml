@@ -1,0 +1,4 @@
+# Interface strings of the shell screens (title, map, Orrery). Owner: lane B.
+# Same format as content/ui.yaml. A key may be defined in only one ui file: the compiler rejects a second definition.
+map.view.orrery: Orrery
+map.view.list: List
