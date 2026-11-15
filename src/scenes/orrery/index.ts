@@ -279,10 +279,12 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
 
   // ---------- The golden thread, in launch order ----------
   const threadMats: LineMaterial[] = [];
-  const strand = (points: THREE.Vector3[], width: number, opacity: number, color: number, dashed = false) => {
+  /** Lights that run along the woven thread. They stand still with reduced motion. */
+  const runners: Line2[] = [];
+  const strand = (points: THREE.Vector3[], width: number, opacity: number, color: number, dashed = false, dash = 0.06, gap = 0.05) => {
     const geo = new LineGeometry();
     geo.setPositions(points.flatMap((p) => [p.x, p.y, p.z]));
-    const mat = new LineMaterial({ color, linewidth: width, transparent: true, opacity, depthWrite: false, dashed, dashSize: 0.06, gapSize: 0.05, blending: dashed ? THREE.NormalBlending : THREE.AdditiveBlending, toneMapped: false });
+    const mat = new LineMaterial({ color, linewidth: width, transparent: true, opacity, depthWrite: false, dashed, dashSize: dash, gapSize: gap, blending: dashed && gap < 1 ? THREE.NormalBlending : THREE.AdditiveBlending, toneMapped: false });
     mat.resolution.set(host.width, host.height);
     threadMats.push(mat);
     const line = new Line2(geo, mat);
@@ -310,7 +312,11 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
   // The whole path, faint: where the thread will go.
   if (!whole) weave(order, 0.1, (points) => root.add(strand(points, 1.4, 0.5, 0xb08a40, true)));
   // The thread woven so far: it joins the restored machines, in launch order.
-  weave(whole ? order : order.filter((id) => done.has(id)), whole ? 0.1 : 0.17, (points) => root.add(strand(points, 7, 0.16, 0xffb84a), strand(points, 2.2, 0.95, 0xffd27a)));
+  weave(whole ? order : order.filter((id) => done.has(id)), whole ? 0.1 : 0.17, (points) => {
+    const runner = strand(points, 4.5, 0.9, 0xfff1c8, true, 0.22, 4.2);
+    runners.push(runner);
+    root.add(strand(points, 7, 0.16, 0xffb84a), strand(points, 2.2, 0.95, 0xffd27a), runner);
+  });
 
   // ---------- State ----------
   /** The Earth toward the player in the map view. */
@@ -534,6 +540,10 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
       leaders.visible = cue !== 'title';
       pinNow = still ? (cue === 'far' ? 0.46 : 1) : damp(pinNow, cue === 'far' ? 0.46 : 1, 5, dt);
       for (const m of threadMats) m.resolution.set(host.width, host.height);
+      for (const r of runners) {
+        r.visible = !still;
+        r.material.dashOffset -= dt * 0.55;
+      }
       fan();
     },
 

@@ -432,6 +432,34 @@
   margin: 0 0 0.5rem;
 }
 
+/* ---------- Setup and credits: a column of words over the same sky ---------- */
+.cosmos--panel > section {
+  position: absolute;
+  z-index: 2;
+  inset: 0 auto 0 0;
+  width: min(48rem, 100%);
+  margin: 0;
+  padding: 5rem var(--pad) 3rem;
+  overflow-y: auto;
+  background: linear-gradient(to right, rgba(3, 4, 11, 0.94) 0%, rgba(3, 4, 11, 0.9) 78%, rgba(3, 4, 11, 0) 100%);
+}
+.cosmos--panel::after {
+  background: none;
+}
+.cosmos--panel .set3d__note,
+.cosmos--panel .set3d__fallback {
+  display: none;
+}
+:root[data-contrast='high'] .cosmos--panel > section {
+  background: #000;
+}
+@media (max-width: 60rem) {
+  .cosmos--panel > section {
+    width: 100%;
+    background: rgba(3, 4, 11, 0.92);
+  }
+}
+
 /* ---------- The title ---------- */
 .ctitle {
   position: absolute;
@@ -524,5 +552,38 @@
   .omap__tools {
     left: var(--pad);
     right: auto;
+  }
+}
+
+/* A short window (a phone on its side, a small browser pane): the picture keeps the room, the small print goes. */
+@media (max-height: 34rem) {
+  .omap__labels,
+  .omap__look,
+  .omap__today,
+  .omap__title,
+  .omap__meta,
+  .omap__locked,
+  .ctitle__today,
+  .ctitle__logline {
+    display: none;
+  }
+  .omap__lower {
+    bottom: 1rem;
+    gap: 0.4rem;
+  }
+  .omap__tools {
+    bottom: 1rem;
+  }
+  .omap__name {
+    font-size: 1.3rem;
+  }
+  .ctitle {
+    bottom: 1.2rem;
+  }
+  .ctitle__name {
+    font-size: clamp(2.2rem, 12vh, 4rem);
+  }
+  .ctitle__motto {
+    margin: 0.6rem 0 0.8rem;
   }
 }

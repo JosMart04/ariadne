@@ -86,7 +86,9 @@ export function Setup() {
     set({ setupDone: true });
     go(progress.prologueDone ? 'map' : 'prologue');
   };
+  const when = useMemo(mapDate, []);
   return (
+    <Cosmos cue="title" when={when} thread="whole" className="cosmos--panel">
     <section className="setup" aria-labelledby="setup-title">
       <h1 id="setup-title" ref={head} tabIndex={-1}>
         {t('setup.title')}
@@ -202,6 +204,7 @@ export function Setup() {
         )}
       </div>
     </section>
+    </Cosmos>
   );
 }
 
@@ -374,7 +377,9 @@ export function Credits() {
   const head = useFocusOn<HTMLHeadingElement>('credits');
   const s = content.stats;
   const hosts = [...new Set([...episodes.flatMap((e) => Object.values(e.facts)), ...Object.values(content.finale.facts)].map((f) => f.host))].sort();
+  const when = useMemo(mapDate, []);
   return (
+    <Cosmos cue="title" when={when} thread="whole" className="cosmos--panel">
     <section className="credits" aria-labelledby="credits-title">
       <h1 id="credits-title" ref={head} tabIndex={-1}>
         {t('credits.title')}
@@ -425,5 +430,6 @@ export function Credits() {
         </Btn>
       </div>
     </section>
+    </Cosmos>
   );
 }

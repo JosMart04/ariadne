@@ -26,7 +26,8 @@ export function mapDate(): number {
 export function readouts(when: number) {
   const mars = distanceAu('earth', 'mars', when);
   return {
-    date: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(when),
+    // The player's own calendar day: at 8 p.m. in Lima it is already tomorrow in Greenwich.
+    date: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(when),
     marsKm: Math.round((mars * AU_KM) / 1e6),
     marsLight: minSec(lightMinutes(mars)),
     voyagerAu: Math.round(voyager1(when).au),

@@ -38,6 +38,14 @@ export async function title(page: Page, kit: Kit) {
   await ready(page);
   await kit.waitFor(page, 'Continue the thread');
   await shot('title', 3000);
+  // Setup and credits are a column of words over the same sky.
+  for (const [route, button] of [['setup', 'Start'], ['credits', 'Labyrinth']]) {
+    await page.evaluate(`location.hash = '#${route}'`);
+    await ready(page);
+    await kit.waitFor(page, button);
+    await shot(route, 1800);
+  }
+  await page.evaluate(`location.hash = '#'`);
   // A new player: nothing restored yet, and the button says "Begin".
   await page.evaluate(`localStorage.removeItem('ariadne-v1')`);
   await page.reload({ waitUntil: 'networkidle2' });
