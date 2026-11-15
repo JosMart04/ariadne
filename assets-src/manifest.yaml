@@ -142,6 +142,15 @@ images:
     raw: img/as12-47-6918_orig.jpg
     note: "Untouched, resized to 1600 pixels. NASA Images API caption checked Nov 15, 2026: PSE in the foreground, central station and SIDE behind it."
 
+  img_e04_rover.webp:
+    title: Apollo 17 rover in its final parking space (AS17-146-22367)
+    credit: NASA/JSC
+    license: Public domain
+    page: https://images.nasa.gov/details/as17-146-22367
+    url: https://images-assets.nasa.gov/image/as17-146-22367/as17-146-22367~orig.jpg
+    raw: img/as17-146-22367_orig.jpg
+    note: "Untouched, resized to 1600 pixels. NASA Images API caption checked Nov 15, 2026: final parking space at Taurus-Littrow, photographed December 13, 1972."
+
 textures:
   tex_tranquility_ground.webp:
     title: Ground of the Tranquility Base set

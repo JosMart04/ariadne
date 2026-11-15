@@ -1,30 +1,87 @@
 id: e04-lrv
 num: 4
 act: moon
-name: Lunar Roving Vehicles
+name: Lunar Rovers
 title: The Last Drive
 slate: { place: "Hadley, Descartes, Taurus-Littrow", year: 1971 }
 launched: "1971-07-26"
-draft: true
 status: { badge: parked, where: "Three Apollo landing sites, the Moon" }
 nssdca: [1971-063C, 1972-031C, 1972-096C]
 resource: lrv
-
+objectives:
+  - Explain how astronauts controlled an electric lunar rover.
+  - Describe how the rover tracked the route back to its lander.
+  - Understand how a repair used supplies already aboard.
 facts:
+  launch:
+    text: Apollo 15 launched on July 26, 1971. Its crew used a rover near Hadley Rille.
+    source: https://www.nasa.gov/mission/apollo-15/
+    note: "Checked Nov 15, 2026: Launch gives July 26; photograph AS15-85-11451 shows Scott with the rover at Hadley Rille on July 31."
+  journeys:
+    text: Apollo 15, 16 and 17 each used one lunar rover. Apollo 17's rover traveled 35.9 kilometers in total.
+    source: https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html
+    note: "Checked Nov 15, 2026: Opening paragraphs list the three missions and give Apollo 17's total distance as 35.9 km."
+  drive:
+    text: Each wheel had its own electric motor. Two batteries powered driving, steering and equipment; they could not be recharged.
+    source: https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html
+    note: "Checked Nov 15, 2026: Wheel-drive and power sections describe individual motors and two non-rechargeable 36-volt silver-zinc batteries."
+  controls:
+    text: A T-shaped hand controller moved the rover forward and turned it. Pulling back applied the brakes; reverse required a separate switch.
+    source: https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html
+    note: "Checked Nov 15, 2026: Controller paragraph distinguishes braking from reverse, which requires activating the handle switch first."
+  navigation:
+    text: A gyro measured direction, and an odometer measured distance. A computer calculated the direction and distance back to the lunar module.
+    source: https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_lrv.html
+    note: "Checked Nov 15, 2026: Navigation paragraph specifies the directional gyro, odometer and computed return bearing and distance."
   fender:
-    text: Apollo 17's rover fender was repaired with four laminated maps, tape and two clamps, a fix designed in Houston.
-    source: https://www.nasa.gov/history/alsj/a17/A17NewFender.html
-  fender-home:
-    text: The repaired fender returned to Earth and is at the Smithsonian.
-    source: https://airandspace.si.edu/stories/editorial/duct-tape-auto-repair-moon
-  tracks:
-    text: Apollo 17's rover was driven more than 35 km. Orbital images still show its tracks.
-    source: https://planetary.org/space-images/apollo-17-site-as-seen-by-lro
-  cernan:
-    text: Gene Cernan's final words on the lunar surface are recorded in the Apollo 17 Lunar Surface Journal.
-    source: https://www.nasa.gov/history/alsj/a17/a17.html
-
+    text: After Apollo 17 lost a fender extension, Houston designed a replacement using maps, tape and clamps already in the cabin.
+    source: https://apollojournals.org/alsj/a17/A17NewFender.html
+    note: "Checked Nov 15, 2026: The journal describes the failed first repair and Houston's replacement. It also reports later wear after about 29 km."
+  parking:
+    text: Cernan parked Apollo 17's rover east of the lunar module so its television camera could show liftoff. He brought the replacement fender home.
+    source: https://apollojournals.org/alsj/a17/A17NewFender.html
+    note: "Checked Nov 15, 2026: Final historical paragraph describes parking for the liftoff broadcast and removal of the replacement fender for return to Earth."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "I drove the last humans across the Moon. Then they asked me to watch them leave."
+  - { who: machine, tag: IMAGINED, text: "You gave the journey four wheels. You left the road behind." }
+  - { who: ariadne, tag: REAL, fact: launch, text: "You follow Apollo 15, launched on July 26, 1971, to the rover beside Hadley Rille." }
+operation:
+  title: Drive with one hand
+  explainer:
+    - { text: "You draw power from two batteries. Each wheel has its own electric motor.", fact: drive }
+    - { text: "You push the hand controller forward to drive. Move it left or right to steer.", fact: controls }
+    - { text: "You pull back to brake. To reverse, you first use the switch on the handle.", fact: controls }
+    - { text: "You read the direction and distance back to the lander. A gyro and an odometer feed the navigation computer.", fact: navigation }
+discovery:
+  headline: { text: "Maps, tape and clamps became a replacement fender.", fact: fender }
+  story:
+    text: >-
+      You discover another use for the maps aboard Apollo 17.
+      After a fender extension is lost, Houston designs a replacement from supplies already in the cabin.
+      The crew builds it with maps, tape and clamps.
+    facts: [fender]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: journeys, text: "Across three missions, you leave three rovers on the Moon. Apollo 17's rover has traveled 35.9 kilometers." }
+    - { who: ariadne, tag: REAL, fact: parking, text: "You park Apollo 17's rover east of the lander. Its television camera will show the liftoff." }
+  last: { who: machine, tag: IMAGINED, text: "You take the next step. I will keep the place where this road ends." }
+statusNow:
+  text: "You see Apollo 17's rover in its final parking place. The vehicle stays on the Moon; its replacement fender returns to Earth."
+  fact: parking
+# Poems, Third Series (1896), Life XVI, A Book; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "How frugal is the chariot\nThat bears a human soul!"
+  author: Emily Dickinson
+  work: Poems, Third Series
+  year: 1896
+set:
+  scene: diorama
+  image: rover
+  labels: [artistic-view]
+images:
+  rover:
+    file: img_e04_rover.webp
+    alt: "Apollo 17's rover rests on lunar soil, with its seats empty and its dish antenna standing above the wheels."
+    credit: NASA/JSC
+    source: https://images.nasa.gov/details/as17-146-22367
+crossThreads: [e06-sojourner, e08-opportunity]
