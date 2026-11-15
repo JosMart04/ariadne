@@ -259,6 +259,16 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   under the 44 px of the list, above the 24 px that WCAG 2.2 AA asks for; the list keeps the large targets.
 - **b-D08 · `?date=YYYY-MM-DD` sets the day the title and the map show** (`mapDate` in `src/screens/Cosmos.tsx`), for the
   team's video and for repeatable pictures. Lane a plans the same name for the finale.
+- **b-D10 · The journey to a machine plays on the map, not in the episode.** Opening a machine from the Orrery flies the
+  camera from the Earth to its world (`act('travel', { to })` on the `orrery` set) while the lower third says how far it is
+  today and how long light takes, and says where each number comes from: computed from JPL's elements (Mars, Eros, Ceres),
+  NASA's figure (Voyager 1), an average (the Moon, 384,400 km), or approximate (Kepler, Pioneer 10)
+  (`fromEarthKm` in `src/sim/planets.ts`). Why here: the Passage beat lives in `src/episode/` (lane a), and mounting a
+  second 3D set inside an episode would load the scene twice. `travel` follows the contract of every operation of a set:
+  it resolves to `{ cancelled: true }` on a new cue, on `reset` and on `dispose`; the screen also opens the file after six
+  seconds whatever happens, so nobody waits on a camera.
+- **b-D11 · Setup and Credits sit over the sky of the title.** They are still real forms and real lists (the same inputs,
+  the same button texts the Thread check presses); only the page behind them is gone (AC-15).
 - **b-D09 · The station bar floats over the title and the map through `.app:has(.cosmos)`** in `src/screens/cosmos.css`,
   the same rules `.app--cinema` has. Why: `src/App.tsx` decides `app--cinema` and belongs to lane a.
 

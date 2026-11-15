@@ -92,7 +92,10 @@ export async function map(page: Page, kit: Kit) {
 
   // A marker opens its file.
   await page.click('.omap__machines li:nth-child(11) .machine');
-  await kit.sleep(400);
+  // The camera flies from the Earth to the machine, with the distance of today, and then the file opens.
+  await shot('journey-leaving-the-earth', 900);
+  await shot('journey-arriving', 1500);
+  await page.waitForFunction("/^#e\\d\\d-/.test(location.hash)", { timeout: 12_000 });
   const opened = (await page.evaluate(`location.hash`)) as string;
   expect(/^#e\d\d-/.test(opened), `a marker opens its file (${opened})`);
 

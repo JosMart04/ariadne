@@ -425,6 +425,38 @@
   white-space: nowrap;
 }
 
+/* The journey from the Earth to a machine: the map steps aside, the distance of today takes the lower third. */
+.omap--trip > :not(.omap__trip) {
+  visibility: hidden;
+}
+.omap__trip {
+  position: absolute;
+  left: var(--pad);
+  bottom: 2.4rem;
+  max-width: min(40rem, 80vw);
+  display: grid;
+  gap: 0.35rem;
+}
+.omap__trip > p {
+  margin: 0;
+}
+.omap__trip .actions {
+  margin: 0.6rem 0 0;
+  pointer-events: auto;
+}
+.omap__far {
+  font-family: var(--f-display);
+  font-size: clamp(2rem, 1.4rem + 3vw, 3.8rem);
+  line-height: 1.1;
+  color: var(--gold);
+  text-shadow: 0 0 1.2rem #000;
+}
+.omap__light {
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-shadow: 0 0 0.6rem #000;
+}
+
 /* The list view keeps its page; this is the way back to the map. */
 .map__views {
   display: flex;

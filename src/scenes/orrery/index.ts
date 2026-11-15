@@ -14,6 +14,11 @@
  *   thread  'whole' draws the whole thread bright (the title screen)
  *   pin     size of a machine's marker on screen, pixels (it grows with the text size): the fans open to fit it
  *
+ * Orders (`act`): `zoom { by }` and `reset` are the keys of the map. `travel { to: <place> }` flies the camera from the
+ * Earth to a place and resolves to `{ arrived: true }`; like every operation of a set it resolves to
+ * `{ cancelled: true }` on `reset`, on a new cue and on `dispose`, so nobody is ever left waiting. With reduced motion
+ * it cuts to the place and resolves at once.
+ *
  * Hotspots: a world by its name (`earth`, `moon`, `voyager`...) and a machine by its episode id. Machines that share
  * a world open in a fan around it, with the same spacing on screen at every zoom.
  */
@@ -24,7 +29,7 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { content } from '../../content';
 import { PLANETS, compress, heliocentric, kepler, moonLongitude, onMap, orbitOf, pathOf, pioneer10, positionOn, smallOrbit, voyager1, type Planet, type Vec3 } from '../../sim/planets';
 import type { SceneHost, SetContext, SetController, Tier } from '../../three/host';
-import { clamp, damp, fbm, rng } from '../../three/util';
+import { clamp, damp, fbm, lerp, rng, smoothstep } from '../../three/util';
 import { PLACES, placeOf, type Place } from './places';
 
 /** Map coordinates (plane of the planets, z north) to the scene (y up). Seen from the north, planets go anticlockwise. */
@@ -71,8 +76,15 @@ function texture(size: number, paint: Paint): THREE.CanvasTexture {
   t.colorSpace = THREE.SRGBColorSpace;
   return t;
 }
-/** Noise that joins up round the sphere. */
-const wrap = (u: number, v: number, f: number, seed: number, oct = 4) => fbm(Math.cos(u * Math.PI * 2) * f + 7.3, Math.sin(u * Math.PI * 2) * f + v * f * 2.2 + 3.1, oct, seed);
+/** Noise sampled on the sphere itself, so it joins up all the way round and does not stretch at the poles. */
+function wrap(u: number, v: number, f: number, seed: number, oct = 4): number {
+  const lon = u * Math.PI * 2;
+  const lat = (0.5 - v) * Math.PI;
+  const x = Math.cos(lat) * Math.cos(lon);
+  const y = Math.sin(lat);
+  const z = Math.cos(lat) * Math.sin(lon);
+  return fbm((x + z * 0.5) * f + 11.3, (y + z * 0.8) * f + 5.7, oct, seed);
+}
 const mix = (a: number[], b: number[], t: number): [number, number, number] => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 const bands = (a: number[], b: number[], n: number, wobble: number, seed: number): Paint => (u, v) => mix(a, b, 0.5 + 0.5 * Math.sin(v * n + (wrap(u, v, 1.6, seed) - 0.5) * wobble));
 
@@ -401,6 +413,31 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
   /** Which way each fan opened last frame, in quarter turns from "away from the Sun". Kept unless another way is clearly better. */
   const turned = new Map<Place, number>();
   const crowd = [...PLANETS, 'moon', 'eros', 'ceres', 'kepler', 'sun'] as const;
+  // ---------- The journey from the Earth to a machine ----------
+  type Trip = { to: THREE.Vector3; t: number; time: number; swing: number; line: Line2[] };
+  let trip: Trip | null = null;
+  let settle: ((result: { arrived?: true; cancelled?: true }) => void) | null = null;
+  const endTrip = () => {
+    settle?.({ cancelled: true });
+    settle = null;
+    if (trip) for (const l of trip.line) root.remove(l);
+    trip = null;
+  };
+  const startTrip = (place: string) =>
+    new Promise<{ arrived?: true; cancelled?: true }>((resolve) => {
+      endTrip();
+      const to = where[place];
+      if (!to || place === 'sun') return resolve({ cancelled: true });
+      const far = where.earth.distanceTo(to);
+      const mid = where.earth.clone().add(to).multiplyScalar(0.5);
+      mid.y += 0.05 + far * 0.08;
+      const points = new THREE.QuadraticBezierCurve3(where.earth, mid, to).getPoints(48);
+      const line = [strand(points, 8, 0.2, 0xffb84a), strand(points, 2.4, 1, 0xffe2a0)];
+      root.add(...line);
+      trip = { to, t: host.reduceMotion ? 1 : 0, time: 2.4 + Math.min(1.6, far * 0.3), swing: Math.min(2.4, far * 0.4), line };
+      settle = resolve;
+    });
+
   /** How large the markers are right now: from far away they shrink to dots, and their fans with them. */
   let pinNow = 1;
   /**
@@ -489,6 +526,7 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
       cue = next;
       shot = shots[next];
       if (same && !instant) return;
+      endTrip();
       cueTime = 0;
       view.yaw = 0;
       view.pitch = 0;
@@ -525,10 +563,25 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
       } else {
         for (const key of Object.keys(want) as (keyof typeof want)[]) now[key] = damp(now[key], want[key], 5, dt);
       }
-      const c = Math.cos(now.pitch);
       const closer = cue === 'title' ? 0 : clamp((SHOTS.map.dist - now.dist) / (SHOTS.map.dist - NEAR), 0, 1);
       look.set(focus.x * closer, now.lift, focus.z * closer);
-      camera.position.set(look.x + Math.sin(now.yaw) * c * now.dist, look.y + Math.sin(now.pitch) * now.dist, look.z + Math.cos(now.yaw) * c * now.dist);
+      let dist = now.dist;
+      let pitch = now.pitch;
+      if (trip) {
+        // First down to the Earth, then along the thread to the machine.
+        trip.t = Math.min(1, trip.t + dt / trip.time);
+        const leave = smoothstep(0, 0.32, trip.t);
+        const go = smoothstep(0.32, 1, trip.t);
+        look.lerp(where.earth, leave).lerp(trip.to, go);
+        dist = lerp(lerp(now.dist, 2.6, leave), 1.15, go) + Math.sin(go * Math.PI) * trip.swing;
+        pitch = lerp(now.pitch, 0.42, leave);
+        if (trip.t >= 1 && settle) {
+          settle({ arrived: true });
+          settle = null;
+        }
+      }
+      const c = Math.cos(pitch);
+      camera.position.set(look.x + Math.sin(now.yaw) * c * dist, look.y + Math.sin(pitch) * dist, look.z + Math.cos(now.yaw) * c * dist);
       camera.up.set(0, 1, 0);
       camera.lookAt(look);
       camera.near = 0.1;
@@ -537,7 +590,7 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
       if (Math.abs(now.sx) > 0.002 || Math.abs(now.sy) > 0.002) camera.setViewOffset(host.width, host.height, now.sx * host.width, now.sy * host.height, host.width, host.height);
       else if (camera.view) camera.clearViewOffset();
       camera.updateProjectionMatrix();
-      leaders.visible = cue !== 'title';
+      leaders.visible = cue !== 'title' && !trip;
       pinNow = still ? (cue === 'far' ? 0.46 : 1) : damp(pinNow, cue === 'far' ? 0.46 : 1, 5, dt);
       for (const m of threadMats) m.resolution.set(host.width, host.height);
       for (const r of runners) {
@@ -555,16 +608,19 @@ export async function create(host: SceneHost, ctx: SetContext): Promise<SetContr
       // The on-screen keys of the map: closer, farther, back to the first view.
       if (name === 'zoom') zoomBy((arg as { by?: number } | undefined)?.by ?? 1);
       if (name === 'reset') {
+        endTrip();
         view.yaw = 0;
         view.pitch = 0;
         view.zoom = 1;
       }
+      if (name === 'travel') return startTrip(String((arg as { to?: string } | undefined)?.to ?? ''));
       return undefined;
     },
 
     onTier(_tier: Tier) {},
 
     dispose() {
+      endTrip();
       el.removeEventListener('pointerdown', onDown);
       el.removeEventListener('pointermove', onMove);
       el.removeEventListener('pointerup', onUp);

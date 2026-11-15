@@ -207,6 +207,42 @@ export function keplerLag(when: number): number {
   return (((longitude(heliocentric('earth', when)) - longitude(kepler(when).pos)) % 360) + 360) % 360;
 }
 
+// ---------- How far from home ----------
+
+/**
+ * Average distance from the Earth to the Moon, km (NASA: https://science.nasa.gov/moon/facts/). The real distance swings
+ * between about 363,000 and 405,500 km every month; this file does not compute it, and the screen says "on average".
+ */
+export const MOON_KM = 384_400;
+
+/** How a distance was obtained: the screen tells the player. */
+export type DistanceKind = 'computed' | 'average' | 'nasa' | 'approximate';
+
+/** How far a place of the map is from the Earth on a date, km. */
+export function fromEarthKm(place: 'moon' | 'mars' | 'eros' | 'ceres' | 'kepler' | 'pioneer' | 'voyager', when: number): { km: number; kind: DistanceKind } {
+  const earth = heliocentric('earth', when);
+  const to = (p: Vec3) => length(sub(p, earth)) * AU_KM;
+  switch (place) {
+    case 'moon':
+      return { km: MOON_KM, kind: 'average' };
+    case 'mars':
+      return { km: to(heliocentric('mars', when)), kind: 'computed' };
+    case 'eros':
+    case 'ceres':
+      return { km: to(positionOn(smallOrbit(place, when))), kind: 'computed' };
+    case 'kepler':
+      return { km: to(kepler(when).pos), kind: 'approximate' };
+    case 'pioneer':
+      return { km: to(pioneer10(when).pos), kind: 'approximate' };
+    case 'voyager':
+      // NASA gives this one from the Earth already.
+      return { km: voyagerDistanceKm(when), kind: 'nasa' };
+  }
+}
+
+/** Seconds a radio signal needs to cross a distance in km. */
+export const lightSeconds = (km: number) => km / LIGHT_SPEED;
+
 // ---------- The scale of the map ----------
 
 /**

@@ -3,15 +3,15 @@
  * Every machine is a real button pinned to its place; the list of cards (`MapList`) is one click away and is the
  * default for Accessible play and for devices without 3D.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { content, episodeById, episodes, keyEpisodes, t } from '../content';
 import type { EpisodeC } from '../content/schema';
-import { act } from '../episode/setStore';
+import { act, useStage } from '../episode/setStore';
 import { go } from '../engine/router';
 import { finaleOpen, nextKeyEpisode, useGame } from '../engine/store';
 import { APPROXIMATE, placeOf } from '../scenes/orrery/places';
 import { Badge, Btn, useFocusOn } from '../ui/parts';
-import { Cosmos, Pin, mapDate, readouts } from './Cosmos';
+import { Cosmos, Pin, journey, mapDate, readouts } from './Cosmos';
 
 /** Worlds that carry a name on the map. The three probes are their own marker: their name hangs from it. */
 const WORLDS = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon', 'eros', 'ceres'] as const;
@@ -22,9 +22,34 @@ export function OrreryMap({ onList }: { onList: () => void }) {
   const [seen, setSeen] = useState<string | null>(null);
   const [wide, setWide] = useState(false);
   const [confirmSkip, setConfirmSkip] = useState(false);
+  const reduceMotion = useGame((s) => s.settings.reduceMotion);
+  /** The machine the camera is flying to: the journey from the Earth plays before its file opens. */
+  const [trip, setTrip] = useState<EpisodeC | null>(null);
+  const enter = (ep: EpisodeC) => {
+    if (reduceMotion || trip || useStage.getState().status !== 'ready') return go(ep.id);
+    setTrip(ep);
+  };
+  useEffect(() => {
+    if (!trip) return;
+    let live = true;
+    const arrive = () => {
+      if (!live) return;
+      live = false;
+      go(trip.id);
+    };
+    // The file opens when the camera arrives, when the 3D view stops, or after six seconds, whichever is first.
+    const timer = setTimeout(arrive, 6000);
+    void Promise.resolve(act('travel', { to: placeOf(trip.id) })).then(arrive);
+    return () => {
+      live = false;
+      clearTimeout(timer);
+    };
+  }, [trip]);
+
   const head = useFocusOn<HTMLHeadingElement>('map');
   const when = useMemo(mapDate, []);
   const r = useMemo(() => readouts(when), [when]);
+  const way = useMemo(() => (trip ? journey(placeOf(trip.id)!, when) : null), [trip, when]);
   const machines = useMemo(() => content.threadOrder.map((id) => episodeById(id)).filter((e): e is EpisodeC => !!e && !!placeOf(e.id)), []);
 
   const doneCount = Object.keys(progress.done).length;
@@ -35,7 +60,7 @@ export function OrreryMap({ onList }: { onList: () => void }) {
 
   return (
     <Cosmos cue={wide ? 'far' : 'map'} when={when}>
-      <section className="omap" aria-labelledby="map-title">
+      <section className={`omap${trip ? ' omap--trip' : ''}`} aria-labelledby="map-title">
         <header className="omap__head">
           <h1 id="map-title" ref={head} tabIndex={-1}>
             {t('map.title')}
@@ -68,7 +93,7 @@ export function OrreryMap({ onList }: { onList: () => void }) {
                     className={`machine${done ? ' machine--done' : ''}${ep.key ? ' machine--key' : ''}${next ? ' machine--next' : ''}${seen === ep.id ? ' machine--seen' : ''}${probe ? ' machine--probe' : ''}`}
                     data-scan="primary"
                     aria-label={t('map.pin', { num: num(ep), name: ep.name, place: t(`place.${place}`) }) + (probe ? `, ${t('map.approximate')}` : '') + (ep.key ? `, ${t('map.key')}` : '') + (done ? `, ${t('map.restored')}` : '')}
-                    onClick={() => go(ep.id)}
+                    onClick={() => enter(ep)}
                     onFocus={() => setSeen(ep.id)}
                     onPointerEnter={() => setSeen(ep.id)}
                   >
@@ -110,12 +135,12 @@ export function OrreryMap({ onList }: { onList: () => void }) {
             {!progress.prologueDone ? (
               <Btn onClick={() => go('prologue')}>{t('title.begin')}</Btn>
             ) : nextKey ? (
-              <Btn onClick={() => go(nextKey.id)}>{t('map.follow', { name: nextKey.name })}</Btn>
+              <Btn onClick={() => enter(nextKey)}>{t('map.follow', { name: nextKey.name })}</Btn>
             ) : (
               <Btn onClick={() => go('finale')}>{t('map.center')}</Btn>
             )}
             {seen && seen !== nextKey?.id && (
-              <Btn kind="ghost" onClick={() => go(seen)}>
+              <Btn kind="ghost" onClick={() => enter(episodeById(seen)!)}>
                 {t('map.open', { name: episodeById(seen)?.name ?? '' })}
               </Btn>
             )}
@@ -171,6 +196,21 @@ export function OrreryMap({ onList }: { onList: () => void }) {
         <p className="omap__look" aria-hidden="true">
           {t('map.look')}
         </p>
+
+        {trip && way && (
+          <div className="omap__trip" role="status">
+            <p className="omap__eyebrow">{t('travel.from', { place: t(`travel.to.${placeOf(trip.id)}`) })}</p>
+            <p className="omap__far">{way.km}</p>
+            <p className="omap__light">
+              {t('travel.light', { time: way.light })} {t(`travel.kind.${way.kind}`)}
+            </p>
+            <div className="actions">
+              <Btn kind="ghost" onClick={() => go(trip.id)} autoFocus>
+                {t('travel.skip', { name: trip.name })}
+              </Btn>
+            </div>
+          </div>
+        )}
       </section>
     </Cosmos>
   );

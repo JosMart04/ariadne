@@ -13,11 +13,13 @@ import {
   PLANETS,
   compress,
   distanceAu,
+  fromEarthKm,
   heliocentric,
   kepler,
   keplerLag,
   length,
   lightMinutes,
+  lightSeconds,
   longitude,
   moonLongitude,
   onMap,
@@ -179,5 +181,34 @@ describe('the map: where the sixteen machines rest', () => {
 
   it('declares every machine and every place as a hotspot of the Orrery', () => {
     for (const name of [...ids, ...PLACES]) expect(sheet.hotspots, name).toContain(name);
+  });
+});
+
+describe('planets: how far from home', () => {
+  it('gives Mars the same distance as the planning station of E08', () => {
+    expect(fromEarthKm('mars', TODAY)).toEqual({ km: distanceAu('earth', 'mars', TODAY) * AU_KM, kind: 'computed' });
+    expect(fromEarthKm('mars', TODAY).km).toBeCloseTo(marsDistanceKm(TODAY), 0);
+  });
+
+  it('gives the Moon its average distance and says it is an average', () => {
+    expect(fromEarthKm('moon', TODAY)).toEqual({ km: 384_400, kind: 'average' });
+    expect(lightSeconds(384_400)).toBeCloseTo(1.28, 2);
+  });
+
+  it('gives Voyager 1 the distance of NASA: one light-day on Nov. 18, 2026', () => {
+    const v = fromEarthKm('voyager', ONE_LIGHT_DAY_AT);
+    expect(v.kind).toBe('nasa');
+    expect(lightSeconds(v.km) / 3600).toBeCloseTo(24, 1);
+  });
+
+  it('keeps every other place within what its orbit allows, and marks the guesses', () => {
+    const au = (place: Parameters<typeof fromEarthKm>[0]) => fromEarthKm(place, TODAY).km / AU_KM;
+    expect(au('eros')).toBeGreaterThan(0.1);
+    expect(au('eros')).toBeLessThan(2.8);
+    expect(au('ceres')).toBeGreaterThan(1.5);
+    expect(au('ceres')).toBeLessThan(4.1);
+    expect(au('kepler')).toBeLessThan(2.04);
+    expect(fromEarthKm('kepler', TODAY).kind).toBe('approximate');
+    expect(fromEarthKm('pioneer', TODAY).kind).toBe('approximate');
   });
 });

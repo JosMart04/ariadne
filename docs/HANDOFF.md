@@ -147,14 +147,8 @@ Knossos Station is a console set, not a walkable room. The postcard and the Voya
 Nobody has yet played E08 or timed the Thread; no real hardware, phone or screen reader has been tried by a person.
 
 **Requests** (each lane writes under its own line; the owner answers in place, with the time):
-- to lane a: **from lane b, Sun 17:35 · B-44, the Passage as a travel shot. Yes or no?** B-40 to B-43 are pushed. I can
-  build the shot inside my lane: a cue `travel` on the `orrery` set (the camera leaves the Earth and follows the thread to
-  the world of the machine; `options.to = <episode id>`) and a helper `travelContext(ep.id)` in `src/screens/Cosmos.tsx`
-  that also gives the real distance of today as text. It needs one change in a file of yours: in
-  `src/episode/CinemaEpisode.tsx` the Passage beat would mount `<Set3D scene="orrery" context={travelContext(ep.id)} />`
-  and show cue `travel`, only for files on the `diorama` (E02, E08 and E16 keep their own passage). The 3D set is then
-  loaded twice in one episode (about a second of "Restoring the memory…" between Passage and Arrival). **With no answer
-  by 18:30 I do not build it** and the diorama keeps its own passage.
+- to lane a: **from lane b, Sun 17:50 · nothing is asked any more.** (The request of 17:35 about B-44 is withdrawn: the
+  travel shot now plays on the map itself, in lane b's files. `src/episode/` is untouched.)
 - to lane b:
 - to lane astra: Astra to lane a (Nov 15): E11 is the first completed archive file; please run the A-30 integration capture after this push. Local captures prove Discovery and Silence. The generic capture route currently only runs Accessible; please add Explorer coverage for diorama files.
 
@@ -349,7 +343,7 @@ accessibility pass (A-13), the submission texts (X-01). Also done at 16:06: cred
 
 ### Lane b · machine B (Fable, from Sun 17:00)
 
-**Done and pushed (Sun 17:35):** B-40 to B-43. The map is the Orrery and the title is the same solar system.
+**Done and pushed (Sun 17:35 to 17:55):** B-40 to B-44 and B-46. The map is the Orrery and the title is the same solar system.
 - `src/sim/planets.ts` (21 tests in `tests/sim/planets.test.ts`): planets, Eros, Ceres, the Moon, three approximate probes,
   the compressed scale of the map.
 - `src/scenes/orrery/`: cues `title`, `map`, `far`; hotspots are the worlds by name and the machines by episode id;
@@ -370,8 +364,13 @@ accessibility pass (A-13), the submission texts (X-01). Also done at 16:06: cred
   every marker has a full name ("E08 Opportunity, Mars, key memory, restored"). Not tried with a screen reader.
 - If the finale gets `?date=`, `mapDate()` reads the same parameter: one link sets both.
 
-**Not done:** B-44 (asked above). Not tried on real hardware or on a phone (B-45, for the team). Touch has drag and the
-+ and − keys, no pinch.
+**Added Sun 17:50:** the journey from the Earth to a machine (B-44, on the map: `act('travel', { to })`, `journey()` in
+`Cosmos.tsx`, `fromEarthKm` in `planets.ts`), Setup and Credits over the sky of the title (B-46), lights running along the
+woven thread, captures with reduced motion (`docs/captures/b2-reduce/`). Latest pictures: `docs/captures/b3/`.
+
+**Not done:** not tried on real hardware or on a phone (B-45, for the team). Touch has drag and the + and − keys, no
+pinch. The Orrery is not tried with a screen reader. The journey is not offered from the list view (it opens the file
+directly), by design.
 
 ### Team (humans)
 

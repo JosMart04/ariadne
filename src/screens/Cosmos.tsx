@@ -12,7 +12,8 @@ import { showCue, useStage } from '../episode/setStore';
 import { useGame } from '../engine/store';
 import { lightHours } from '../sim/dsn';
 import { minSec } from '../sim/meridiani';
-import { AU_KM, distanceAu, lightMinutes, voyager1 } from '../sim/planets';
+import { AU_KM, distanceAu, fromEarthKm, lightMinutes, lightSeconds, voyager1 } from '../sim/planets';
+import type { Place } from '../scenes/orrery/places';
 import './cosmos.css';
 
 /** The date the map shows: now, or `?date=2026-11-18` for the team's video and for repeatable pictures. */
@@ -33,6 +34,27 @@ export function readouts(when: number) {
     voyagerAu: Math.round(voyager1(when).au),
     voyagerHours: lightHours(when).toFixed(1),
   };
+}
+
+/** "384,400 km", "196 million km", "25.9 billion km" */
+export function kmText(km: number): string {
+  if (km >= 1e9) return t('travel.km.billion', { n: (km / 1e9).toFixed(1) });
+  if (km >= 1e6) return t('travel.km.million', { n: Math.round(km / 1e6) });
+  return t('travel.km', { n: Math.round(km).toLocaleString('en-US') });
+}
+
+/** "1.3 s", "10 min 53 s", "24.0 hours" */
+export function lightText(km: number): string {
+  const s = lightSeconds(km);
+  if (s < 90) return t('travel.light.s', { n: s.toFixed(1) });
+  if (s < 2 * 3600) return minSec(s / 60);
+  return t('travel.light.h', { n: (s / 3600).toFixed(1) });
+}
+
+/** What the journey from the Earth to a place says on screen: every number is computed or NASA's, and says which. */
+export function journey(place: Place, when: number) {
+  const d = fromEarthKm(place, when);
+  return { km: kmText(d.km), light: lightText(d.km), kind: d.kind };
 }
 
 /** Size of a machine's marker on screen, pixels: it follows the text size the player chose. */

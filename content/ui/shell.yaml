@@ -44,3 +44,23 @@ place.kepler: around the Sun, behind the Earth
 place.pioneer: beyond the planets
 place.voyager: interstellar space
 title.today: "The solar system on {date}"
+# The journey from the Earth to a machine, played on the map before its file opens. Numbers: src/sim/planets.ts.
+travel.from: "From the Earth to {place}"
+travel.to.moon: the Moon
+travel.to.mars: Mars
+travel.to.eros: the asteroid Eros
+travel.to.ceres: Ceres
+travel.to.kepler: Kepler
+travel.to.pioneer: Pioneer 10
+travel.to.voyager: Voyager 1
+travel.km: "{n} km"
+travel.km.million: "{n} million km"
+travel.km.billion: "{n} billion km"
+travel.light: "Light takes {time}."
+travel.light.s: "{n} s"
+travel.light.h: "{n} hours"
+travel.kind.computed: "Computed for today from JPL's orbital elements."
+travel.kind.average: "This is the average: the Moon comes closer and goes farther every month."
+travel.kind.nasa: "Estimated for today from NASA's figure for Nov. 18, 2026."
+travel.kind.approximate: "An approximate figure."
+travel.skip: "Open {name} now"

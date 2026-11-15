@@ -69,8 +69,13 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
   the center and "Skip to the finale" keep their texts and behaviour. Today's card list stays as the list view: the default
   in Accessible play and without WebGL, one click away otherwise. (FR-01, FR-02)
 - [x] (Sun 17:35) B-43 **Title screen on the same set:** the first picture a judge sees is the solar system with the thread, not a page of text.
-- [ ] B-44 Only when B-40 to B-43 are pushed: the Passage of an episode as a travel shot from the Earth to the machine, with
-  the real distance of today. Ask lane a first: it touches `src/episode/`.
+- [x] (Sun 17:50, built another way: **no file of lane a is touched**) B-44 The travel shot from the Earth to the machine, with
+  the real distance of today. It plays **on the map**, when a machine is opened from the Orrery: the camera goes down to the
+  Earth and follows a thread to the machine's world, the lower third gives the distance and the light time of today and how
+  each was obtained, and then the file opens. One key opens the file at once; with reduced motion, in the list view and
+  without 3D the file opens directly. The Passage beat inside `src/episode/` is unchanged.
+- [x] (Sun 17:40) B-46 Setup and Credits are a column of words over the same sky as the title, not a page. Every control and
+  every button text is the same.
 - [ ] B-45 (team, 5 minutes) **Try the map on real hardware:** the public URL on a laptop with integrated graphics with
   `?fps` (target: 30 or more), and on a phone (drag with one finger, the + and − keys, the List key). Claude cannot do this.
 - Rules of this lane: strings in `content/ui/shell.yaml`; styles in a `.css` beside the component; routes in
