@@ -19,6 +19,10 @@ export type Settings = {
   input: InputMode;
   captions: boolean;
   narration: boolean;
+  /** Master switch for every sound. */
+  sound: boolean;
+  /** Both ears get the same signal (FR-33). */
+  mono: boolean;
   textScale: number;
   reduceMotion: boolean;
   storyMode: boolean;
@@ -53,6 +57,8 @@ const defaultSettings = (): Settings => ({
   input: 'pointer',
   captions: true,
   narration: true,
+  sound: true,
+  mono: false,
   textScale: 1,
   reduceMotion: mq('(prefers-reduced-motion: reduce)'),
   storyMode: false,

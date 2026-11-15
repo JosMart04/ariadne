@@ -122,7 +122,9 @@ export function Setup() {
       <fieldset>
         <legend>{t('shell.settings')}</legend>
         <Toggle label={t('setup.captions')} value={settings.captions} onChange={(v) => set({ captions: v })} />
+        <Toggle label={t('setup.sound')} value={settings.sound} onChange={(v) => set({ sound: v })} />
         <Toggle label={t('setup.narration')} value={settings.narration} onChange={(v) => set({ narration: v })} />
+        <Toggle label={t('setup.mono')} help={t('setup.mono.help')} value={settings.mono} onChange={(v) => set({ mono: v })} />
         <Toggle label={t('setup.motion')} value={settings.reduceMotion} onChange={(v) => set({ reduceMotion: v })} />
         <Toggle label={t('setup.contrast')} value={settings.highContrast} onChange={(v) => set({ highContrast: v })} />
         <Toggle label={t('setup.story')} help={t('setup.story.help')} value={settings.storyMode} onChange={(v) => set({ storyMode: v })} />

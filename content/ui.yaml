@@ -65,6 +65,9 @@ scan.bar: "One-button mode. Wait for your choice to light up, then press Space o
 scan.left: One-button mode is off. Mouse and keyboard are back.
 setup.captions: Captions
 setup.narration: Voice narration
+setup.sound: Sound
+setup.mono: Mono sound
+setup.mono.help: Both ears hear the same.
 setup.textSize: Text size
 setup.motion: Reduce motion
 setup.story: Story mode

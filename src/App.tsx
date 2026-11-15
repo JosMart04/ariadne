@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { content, episodeById, t } from './content';
 import { EpisodePlayer } from './episode/EpisodePlayer';
+import { audio } from './audio/bus';
 import { announce, mountAnnouncer } from './engine/announce';
 import { useScanning } from './engine/input/scan';
 import { useRoute } from './engine/router';
@@ -58,6 +59,25 @@ export function App() {
     el.dataset.input = settings.input;
     el.dataset.play = settings.play;
   }, [settings]);
+
+  // Sound starts only after the first interaction (FR-33). Every button answers with a small key click.
+  useEffect(() => {
+    audio.configure({ sound: settings.sound, narration: settings.narration, mono: settings.mono });
+  }, [settings.sound, settings.narration, settings.mono]);
+  useEffect(() => {
+    const wake = () => audio.unlock();
+    const click = (e: MouseEvent) => {
+      if ((e.target as HTMLElement).closest?.('button, a.chrome, a.node')) audio.play('key');
+    };
+    addEventListener('pointerdown', wake, true);
+    addEventListener('keydown', wake, true);
+    addEventListener('click', click, true);
+    return () => {
+      removeEventListener('pointerdown', wake, true);
+      removeEventListener('keydown', wake, true);
+      removeEventListener('click', click, true);
+    };
+  }, []);
 
   useEffect(() => {
     scrollTo(0, 0);

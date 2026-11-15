@@ -188,6 +188,12 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
       for (const k of Object.keys(ep.facts))
         if (!c.used.has(k)) warnings.push(`${file}: fact "${k}" is never cited (it still shows in the Field File)`);
     }
+    // Stable ids for voice files (src/content/voice.ts).
+    const tagLines = (list: LineT[] | undefined, prefix: string) => list?.forEach((l, i) => (l.id = `${prefix}.${i}`));
+    tagLines(ep.arrival, `${ep.id}.arrival`);
+    tagLines(ep.silence?.before, `${ep.id}.silence.before`);
+    tagLines(ep.silence?.lines, `${ep.id}.silence.lines`);
+    if (ep.silence) ep.silence.last.id = `${ep.id}.silence.last`;
     episodes.push({ ...ep, facts: compileFacts(ep.facts, ep.id) });
   }
 
@@ -215,7 +221,11 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     for (const [id, ctl] of Object.entries(sc.console?.controls ?? {})) c.control(id, ctl);
     sc.beats.forEach((b, i) => {
       c.cue(b.cue, `beats[${i}]`);
-      if (b.kind === 'lines') b.lines.forEach((l, j) => c.line(l, `beats[${i}].lines[${j}]`));
+      if (b.kind === 'lines')
+        b.lines.forEach((l, j) => {
+          c.line(l, `beats[${i}].lines[${j}]`);
+          l.id = `${sc.id}.b${i}.${j}`;
+        });
       if (b.kind === 'puzzle') c.puzzle(b.puzzle, `beats[${i}].puzzle`);
       if (b.kind === 'facts') b.facts.forEach((k) => c.cite(k, `beats[${i}].facts`));
     });

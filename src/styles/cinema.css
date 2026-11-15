@@ -920,3 +920,14 @@
     height: 8rem;
   }
 }
+
+/* The rain of light of The Silence: over the scene, never in the way of a click. */
+.rain {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+  max-width: none !important;
+}

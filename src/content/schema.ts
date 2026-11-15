@@ -92,6 +92,8 @@ export const Line = z.strictObject({
   vo: z.boolean().optional(),
   /** What the 3D set shows while this line is on screen. */
   cue: z.string().optional(),
+  /** Stable id of the line, used to name its voice file (NFR-07). The compiler assigns it; do not write it by hand. */
+  id: z.string().optional(),
 });
 
 /** Public-domain epigraph: at most 4 lines, published before 1929 (elicitation 15.2). */

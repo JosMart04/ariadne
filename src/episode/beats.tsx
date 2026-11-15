@@ -3,6 +3,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { t } from '../content';
 import type { FactC, LineT } from '../content/schema';
 import { Btn, FactView, LineView, useFocusOn } from '../ui/parts';
+import { audio } from '../audio/bus';
 import { showCue } from './setStore';
 
 /** A beat body + its single way forward. Keeps every beat ending in a clear closing action (Shneiderman). */
@@ -44,6 +45,7 @@ export function LinesBeat({
   // Each line can move the camera of the 3D set.
   useEffect(() => {
     showCue(lines[shown - 1]?.cue ?? cue);
+    audio.speak(lines[shown - 1]?.id);
   }, [lines, shown, cue]);
   // Focus enters the beat once. After that it stays on Continue, so one key press reveals each line;
   // new lines are announced through the live region.

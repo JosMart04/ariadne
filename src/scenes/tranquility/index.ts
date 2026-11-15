@@ -13,6 +13,7 @@
 import * as THREE from 'three';
 import { loadTexture } from '../../three/assets';
 import type { SceneHost, SetController, Tier } from '../../three/host';
+import { DustSheet } from '../../three/particles';
 import { clamp, damp } from '../../three/util';
 import { controls, playerPilot } from '../../input/controls';
 import { PILOTS, START, altitude, outcome, step as simStep, type DescentState, type Pilot } from '../../sim/descent';
@@ -145,6 +146,10 @@ export async function create(host: SceneHost): Promise<SetController> {
   const sunDisc = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture(), blending: THREE.AdditiveBlending, depthWrite: false, depthTest: true, transparent: true }));
   sunDisc.scale.setScalar(6500);
   root.add(sunDisc);
+
+  // Dust blown by the descent engine: flat, fast, and gone the moment the engine stops (10.3).
+  const dust = new DustSheet();
+  root.add(dust.points);
 
   // ---------- State ----------
   let cue = 'passage';
@@ -280,6 +285,15 @@ export async function create(host: SceneHost): Promise<SetController> {
       cueTime += dt;
       placeEagle();
 
+      // The engine starts to move dust below about 30 metres, and more as the lander comes down.
+      if (!host.reduceMotion) {
+        const s = flightState();
+        const agl = altitude(s);
+        const blowing = shot.eagle === 'flying' && s.phase === 'flying' && agl < 32 ? Math.min(1, s.thrust) * (1 - agl / 32) : 0;
+        dust.update(dt * host.timeScale, blowing, eaglePos.x, groundY(eaglePos.x, eaglePos.z), eaglePos.z, host.budget);
+        dust.points.visible = shot.eagle === 'flying';
+      } else dust.points.visible = false;
+
       // Where the camera wants to be.
       const still = host.reduceMotion;
       const t = still ? 0 : cueTime;
@@ -367,6 +381,7 @@ export async function create(host: SceneHost): Promise<SetController> {
         return;
       }
       if (name === 'reset') {
+        dust.clear();
         flight = null;
         rest = START;
         host.timeScale = 1;

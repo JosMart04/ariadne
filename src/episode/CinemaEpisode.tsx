@@ -8,7 +8,9 @@
  * Episodes without a set still use EpisodePlayer's text layout.
  */
 import { useEffect, useMemo, useState } from 'react';
+import { audio } from '../audio/bus';
 import { asset } from '../content/assets';
+import { captions, voiceId } from '../content/voice';
 import { nssdcaUrl, t } from '../content';
 import type { EpisodeC, LineT } from '../content/schema';
 import { announce } from '../engine/announce';
@@ -17,6 +19,7 @@ import { useGame } from '../engine/store';
 import { Badge, Btn, ClewCard, EpigraphView, FactView, LineView, Rich, useFocusOn } from '../ui/parts';
 import { LinesBeat } from './beats';
 import { PuzzleRunner } from './PuzzleRunner';
+import { RainOfLight } from './RainOfLight';
 import { Set3D, SetLabels } from './Set3D';
 import { showCue, useStage } from './setStore';
 
@@ -48,6 +51,9 @@ export function CinemaEpisode({ ep }: { ep: EpisodeC }) {
 
   // Beats that do not drive the camera line by line show their own cue.
   useEffect(() => {
+    if (beat === 'clew' && ep.clew) audio.speak(voiceId.clew(ep.clew.id));
+    if (beat === 'status') audio.speak(voiceId.status(ep.id));
+    if (beat === 'passage' || beat === 'file') audio.stopVoice();
     if (beat === 'passage' || beat === 'discovery' || beat === 'clew' || beat === 'status' || beat === 'file') showCue(cueOf(beat));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [beat, ready]);
@@ -100,6 +106,7 @@ export function CinemaEpisode({ ep }: { ep: EpisodeC }) {
                 scene
                 cue={cueOf('operation')}
                 consoleDef={ep.console}
+                voice={ep.id}
                 puzzle={ep.operation!.puzzle}
                 facts={ep.facts}
                 onSolved={(a) => {
@@ -198,19 +205,6 @@ function Explainer({ ep, onNext }: { ep: EpisodeC; onNext: () => void }) {
   );
 }
 
-/** Groups the sentences of a story into captions short enough to read in one look. */
-function captions(text: string, max = 150): string[] {
-  const sentences = text.match(/[^.!?]+[.!?]+["”]?s*/g) ?? [text];
-  const out: string[] = [];
-  for (const raw of sentences) {
-    const one = raw.trim();
-    const last = out[out.length - 1];
-    if (last && last.length + one.length + 1 <= max) out[out.length - 1] = `${last} ${one}`;
-    else out.push(one);
-  }
-  return out;
-}
-
 /**
  * Beat 4. The headline first. "Tell me more" plays the story as captions, one at a time, while the camera
  * visits what each one talks about; then the sources, then the myth check. Nothing here is a wall of text.
@@ -226,6 +220,7 @@ function Discovery({ ep, onNext }: { ep: EpisodeC; onNext: () => void }) {
 
   useEffect(() => {
     if (k >= 0 && k < parts.length) showCue(d.story?.cues?.[Math.min(k, (d.story.cues?.length ?? 1) - 1)]);
+    audio.speak(k === -1 ? voiceId.headline(ep.id) : k < parts.length ? voiceId.story(ep.id, k) : voiceId.myth(ep.id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [k]);
 
@@ -307,6 +302,7 @@ function Silence({ ep, cue, onCaught, onNext }: { ep: EpisodeC; cue: string; onC
 
   useEffect(() => {
     showCue((atLast ? s.last.cue : before[n].cue) ?? cue);
+    audio.speak(atLast ? s.last.id : before[n].id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [n, atLast]);
 
@@ -321,6 +317,7 @@ function Silence({ ep, cue, onCaught, onNext }: { ep: EpisodeC; cue: string; onC
 
   return (
     <>
+      <RainOfLight caught={caught} />
       <div className={`beat__body silence${caught ? ' silence--caught' : ''}`} ref={region} tabIndex={-1}>
         {s.epigraph && <EpigraphView e={s.epigraph} />}
         <p className="eyebrow">{t('ep.lastMessage')}</p>
@@ -344,6 +341,7 @@ function Silence({ ep, cue, onCaught, onNext }: { ep: EpisodeC; cue: string; onC
             data-scan="primary"
             onClick={() => {
               setCaught(true);
+              audio.play('catch');
               onCaught();
             }}
           >

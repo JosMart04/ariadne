@@ -15,9 +15,11 @@
  *  - forced historical outcomes are labelled "This is what really happened." (FR-26)
  */
 import { useEffect, useMemo, useState } from 'react';
+import { audio } from '../audio/bus';
 import { SimConsole, hasConsole } from '../consoles';
 import { t } from '../content';
 import type { ChoiceT, ConsoleT, FactC, PuzzleT } from '../content/schema';
+import { voiceId } from '../content/voice';
 import { announce } from '../engine/announce';
 import { SOLVED, shortestPath } from '../engine/fsm';
 import { useGame } from '../engine/store';
@@ -36,12 +38,14 @@ type Props = {
   cue?: string;
   /** The faithful console of this operation: labels and REAL / IMAGINED tags of its controls. */
   consoleDef?: ConsoleT;
+  /** Prefix of the voice ids of this puzzle's narration (src/content/voice.ts). */
+  voice?: string;
 };
 
 type FlightReadout = { alt: number; sink: number; speed: number; fuel: number };
 type FlightEnd = { outcome: string | null };
 
-export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, consoleDef }: Props) {
+export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, consoleDef, voice }: Props) {
   const storyMode = useGame((s) => s.settings.storyMode);
   const play = useGame((s) => s.settings.play);
   const stage3d = useStage((s) => s.status === 'ready');
@@ -81,6 +85,15 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
     showCue(named ?? cue);
   }, [scene, cur, state, cue, stage3d]);
 
+  // Narration, and a sound for what just happened. The first alarm state rings the master alarm once.
+  useEffect(() => {
+    if (!state) return;
+    if (voice && state.say) audio.speak(voiceId.say(voice, cur));
+    if (state.wrong) audio.play('wrong');
+    else if ((state.stage as { cue?: string } | undefined)?.cue === 'alarm' && cur === puzzle.initial) audio.play('alarm');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cur]);
+
   const skillHelp = byHand && errors >= 2;
   const level = storyMode || skillHelp ? 3 : Math.max(errors >= 3 || seconds >= 90 ? 3 : 0, errors >= 2 || seconds >= 60 ? 2 : 0, errors >= 1 || seconds >= 30 ? 1 : 0);
   // Hints belong to the open decision; they step aside while a result is being narrated.
@@ -96,6 +109,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
 
   function move(to: string) {
     if (to === SOLVED) {
+      audio.play('confirm');
       announce(t('puzzle.solved'));
       onSolved(everAssisted);
       return;
@@ -127,6 +141,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
   /** Explorer and Hands: the player flies. The simulation's outcome is the choice (FR-29). */
   async function takeControl(retry = false) {
     setMiss(false);
+    audio.stopVoice();
     setFlying('player');
     let end: FlightEnd | undefined;
     try {
@@ -139,6 +154,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
     // Not an outcome of the puzzle: the state does not change. Teach, count it for help, offer a retry.
     setErrors((e) => e + 1);
     setMiss(true);
+    audio.play('wrong');
     announce(t('flight.hard'));
   }
 

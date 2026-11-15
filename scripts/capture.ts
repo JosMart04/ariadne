@@ -53,6 +53,8 @@ async function press(page: Page, text: string, timeout = 120_000) {
 async function e02(page: Page) {
   await page.goto(`${BASE}?q=high&dev#e02-apollo11`, { waitUntil: 'networkidle2' });
   await page.waitForSelector('.set3d--ready', { timeout: 60_000 });
+  // One real click, so the page may start its sound (browsers require a gesture) and audio code is exercised too.
+  await page.mouse.click(640, 330);
   await shot(page, 'e02-passage', 2500);
   await press(page, 'Continue');
   await shot(page, 'e02-arrival');
@@ -131,6 +133,8 @@ const FLY_BY_HAND = `(function (plan) {
 async function e02Explorer(page: Page) {
   await page.goto(`${BASE}?q=high&dev#e02-apollo11`, { waitUntil: 'networkidle2' });
   await page.waitForSelector('.set3d--ready', { timeout: 60_000 });
+  // One real click, so the page may start its sound (browsers require a gesture) and audio code is exercised too.
+  await page.mouse.click(640, 330);
   for (let i = 0; i < 4; i++) await press(page, 'Continue');
   await press(page, 'Ask Mission Control');
   await press(page, 'Continue');

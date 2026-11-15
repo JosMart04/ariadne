@@ -11,13 +11,14 @@
  * Keyboard: W / S tilt, R / F descent rate. Gamepad: left stick, two face buttons.
  */
 import { useEffect, useRef, useState } from 'react';
+import { audio } from '../audio/bus';
 import { t } from '../content';
 import type { ConsoleT, FactC } from '../content/schema';
 import { act } from '../episode/setStore';
 import { bindFlightKeys, controls } from '../input/controls';
 import { Source, TagChip } from '../ui/parts';
 
-type Readout = { agl: number; vx: number; vy: number; fuel: number; sink: number };
+type Readout = { agl: number; vx: number; vy: number; fuel: number; sink: number; thrust: number; flying: boolean };
 
 export function LmPanel({ def, facts }: { def?: ConsoleT; facts: Record<string, FactC> }) {
   const [r, setR] = useState<Readout | null>(null);
@@ -36,6 +37,7 @@ export function LmPanel({ def, facts }: { def?: ConsoleT; facts: Record<string, 
     return () => {
       clearInterval(id);
       controls.reset();
+      audio.engine(0);
     };
   }, []);
 
@@ -51,6 +53,19 @@ export function LmPanel({ def, facts }: { def?: ConsoleT; facts: Record<string, 
   // Each call is heard once, for a few seconds, as it was on the radio.
   const call = fuel <= 30 && fuel > 24 ? 'flight.call30' : fuel <= 60 && fuel > 54 ? 'flight.call60' : null;
   const contact = !!r && r.agl < 1.73;
+  const flying = !!r?.flying;
+  const thrust = r ? Math.round(Math.min(1.5, r.thrust) * 10) / 10 : 0;
+
+  // What the crew heard: the engine through the cabin floor, the calls from Mission Control, the thump of contact.
+  useEffect(() => {
+    audio.engine(flying ? 0.35 + 0.4 * thrust : 0);
+  }, [flying, thrust]);
+  useEffect(() => {
+    if (call) audio.play('quindar');
+  }, [call]);
+  useEffect(() => {
+    if (contact) audio.play('contact');
+  }, [contact]);
   const ctl = def?.controls ?? {};
   const tag = (id: string) => (ctl[id] ? <TagChip tag={ctl[id].tag} /> : null);
 
