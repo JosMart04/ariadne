@@ -5,23 +5,84 @@ name: Apollo 12 ALSEP
 title: The Moon Rang Like a Bell
 slate: { place: Oceanus Procellarum, year: 1969 }
 launched: "1969-11-14"
-draft: true
 status: { badge: silent-intact, where: "Ocean of Storms, the Moon" }
 nssdca: [1969-099C]
 resource: alsep
-
+objectives:
+  - Describe how a lunar station sent measurements after the crew left.
+  - Explain what a seismometer records.
+  - Distinguish an observed vibration from a proposed explanation.
 facts:
+  launch:
+    text: Apollo 12 launched on November 14, 1969. Its astronauts placed scientific instruments on the lunar surface.
+    source: https://www.nasa.gov/mission/apollo-12/
+    note: "Checked Nov 15, 2026: Launch gives November 14; the mission's deployment photograph identifies Alan Bean setting up ALSEP."
+  station:
+    text: ALSEP grouped instruments around a central station. A radioisotope generator supplied electricity; an antenna sent data and received adjustment commands from Earth.
+    source: https://www.nasa.gov/wp-content/uploads/static/history/SP-350/ch-12-7.html
+    note: "Checked Nov 15, 2026: ALSEP: Scientific Station on the Moon describes the instrument group, generator and two-way radio link."
+  seismometer:
+    text: The passive seismic experiment recorded ground motion. Three long-period sensors measured motion in three directions; another sensor measured faster vertical motion.
+    source: https://pds.nasa.gov/ds-view/pds/viewContext.jsp?identifier=urn:nasa:pds:context:instrument:pse.a12a
+    note: "Checked Nov 15, 2026: NASA PDS describes the three-axis long-period and vertical-axis short-period instruments at the Apollo 12 station."
   impact:
-    text: On Nov. 20, 1969, Apollo 12's empty ascent stage was deliberately crashed into the Moon. The seismometer recorded vibrations for nearly an hour.
-    source: https://www.popsci.com/does-moon-sound-like-bell/
-    note: VERIFY. Secondary source; prefer the Apollo 12 Preliminary Science Report or a NASA page.
+    text: On November 20, 1969, Apollo 12's empty ascent stage was sent into the Moon. The crew had already returned to the command module.
+    source: https://www.nasa.gov/wp-content/uploads/static/history/SP-4029/Apollo_12i_Timeline.htm
+    note: "Checked Nov 15, 2026: The timeline lists crew transfer to the CM, ascent-stage jettison, deorbit burn and impact at 22:17 GMT on November 20."
+  vibration:
+    text: The ascent-stage impact produced a seismic signal lasting about 55 minutes. Its strength rose gradually before fading into the background.
+    source: https://www.nasa.gov/wp-content/uploads/static/history/alsj/a12/as12psr.pdf
+    note: "Checked Nov 15, 2026: Apollo 12 Preliminary Science Report, printed p. 44, reports the approximately seven-minute rise and 55-minute total signal."
+  interpretation:
+    text: The long signal suggested that seismic waves lost little energy while traveling through lunar material. Scientists also investigated how uneven rock could scatter waves.
+    source: https://www.nasa.gov/wp-content/uploads/static/history/alsj/a12/as12psr.pdf
+    note: "Checked Nov 15, 2026: Printed pp. 49-51 discuss low attenuation and scattering; p. 50 explicitly says the model fit does not verify the scattering hypothesis."
   switched-off:
-    text: The ALSEP stations were switched off on Sept. 30, 1977.
-    source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C
-
+    text: Apollo 12's station was switched on November 19, 1969, and commanded off September 30, 1977. It had been designed for one year.
+    source: https://www.nasa.gov/wp-content/uploads/static/history/SP-4029/Apollo_18-31_ALSEP_Arrays_and_Status.htm
+    note: "Checked Nov 15, 2026: The Apollo 12 column gives design life 365 days and both command dates. The claim is specific to this station."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "They left me behind to listen. Then they dropped their empty ship on purpose, just to see what I would hear."
-
-crossThreads: [e01-surveyor]
+  - { who: machine, tag: IMAGINED, text: "You leave a question here, and give it time to grow." }
+  - { who: ariadne, tag: REAL, fact: switched-off, text: "You switch on Apollo 12's scientific station on November 19, 1969." }
+operation:
+  title: Leave instruments listening
+  explainer:
+    - { text: "You connect instruments to a central station. A radioisotope generator supplies their electricity.", fact: station }
+    - { text: "You point the station's antenna toward Earth. It sends measurements home and receives commands to adjust instruments.", fact: station }
+    - { text: "The seismometer records motion in the ground. Its sensors measure movement in different directions and at different rates.", fact: seismometer }
+    - { text: "After the crew returns to the command module, you send the empty ascent stage into the Moon.", fact: impact }
+discovery:
+  headline: { text: "The impact's recorded vibrations lasted about 55 minutes.", fact: vibration }
+  story:
+    text: >-
+      You read a record of ground motion.
+      Its signal grows, then fades slowly after the empty spacecraft's impact.
+      Scientists infer that the waves lose little energy as they travel through lunar material.
+      They investigate scattering in uneven rock, while keeping that explanation a hypothesis.
+    facts: [seismometer, vibration, interpretation]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: switched-off, text: "The station was designed for one year. Its command record stretches from November 1969 to September 1977." }
+    - { who: ariadne, tag: REAL, fact: switched-off, text: "On September 30, 1977, a command from Earth switches the station off." }
+  last: { who: machine, tag: IMAGINED, text: "You can close the channel without closing the question." }
+statusNow:
+  text: "Apollo 12's station remains on the Moon. Its scientific operation ended with the command sent on September 30, 1977."
+  fact: switched-off
+# Poems, Third Series (1896), Nature X; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "To my quick ear the leaves conferred;\nThe bushes they were bells;"
+  author: Emily Dickinson
+  work: Poems, Third Series
+  year: 1896
+set:
+  scene: diorama
+  image: station
+  labels: [artistic-view]
+images:
+  station:
+    file: img_e03_alsep.webp
+    alt: "Apollo 12's photograph shows the seismic experiment in the foreground, with the central station and another instrument behind it on lunar soil."
+    credit: NASA/JSC
+    source: https://images.nasa.gov/details/as12-47-6918
+crossThreads: [e01-surveyor, e10-insight]

@@ -26,6 +26,7 @@ Data & imagery: NASA. This project is not affiliated with or endorsed by NASA. N
 - [Surveyor 1 Shadow (PIA02976)](https://images.nasa.gov/details/PIA02976) · NASA/JPL · Public domain · `img_e01_surveyor1_shadow.webp`
 - [Dodo-Goldilocks Trench Dug by Phoenix (PIA10903)](https://science.nasa.gov/photojournal/dodo-goldilocks-trench-dug-by-phoenix/) · NASA/JPL-Caltech/University of Arizona/Texas A&M University · Public domain · `img_e09_trench.webp`
 - [Sojourner Does a Wheelie on Yogi (PIA00670)](https://science.nasa.gov/resource/sojourner-does-a-wheelie-on-yogi/) · NASA/JPL · Public domain · `img_e06_yogi.webp`
+- [Apollo 12 deployed ALSEP (AS12-47-6918)](https://images.nasa.gov/details/as12-47-6918) · NASA/JSC · Public domain · `img_e03_alsep.webp`
 
 ## Textures
 

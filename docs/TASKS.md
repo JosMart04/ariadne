@@ -87,7 +87,7 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
   `video-script.md` (30 seconds at most). Say what is built and what is not. 30 minutes at most, then the files.
 - [x] X-10 (Astra; content and captures, A-30 integration pending) E11 Ingenuity · [x] X-11 (Astra) E07 Spirit · [x] X-12 (Astra) E05 Viking · [x] X-13 (Astra) E12 Pioneer · [x] X-14 (Astra) E14 Kepler ·
   [x] X-15 (Astra) E15 Dawn · [x] X-16 (Astra) E13 NEAR · [x] X-17 (Astra) E10 InSight · [x] X-18 (Astra) E01 Surveyor · [x] X-19 (Astra) E09 Phoenix ·
-  [x] X-20 (Astra) E06 Sojourner · [~] X-21 (Astra) E03 ALSEP · [ ] X-22 E04 Lunar rovers.
+  [x] X-20 (Astra) E06 Sojourner · [x] X-21 (Astra) E03 ALSEP · [~] X-22 (Astra) E04 Lunar rovers.
   For each, in this order, one file per commit: facts opened and noted → seven beats of text → on stage (recipe in
   `docs/HANDOFF.md`, section 0) → `draft: true` removed → `npm run check` → `npm run capture -- x<n> e<NN>` → push.
   **Push E11 first and say so in "Requests": lane a checks it on the diorama before the rest.**

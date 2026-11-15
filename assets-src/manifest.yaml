@@ -133,6 +133,15 @@ images:
     raw: img/PIA00670_orig.jpg
     note: Untouched archive photograph; no enlargement.
 
+  img_e03_alsep.webp:
+    title: Apollo 12 deployed ALSEP (AS12-47-6918)
+    credit: NASA/JSC
+    license: Public domain
+    page: https://images.nasa.gov/details/as12-47-6918
+    url: https://images-assets.nasa.gov/image/as12-47-6918/as12-47-6918~orig.jpg
+    raw: img/as12-47-6918_orig.jpg
+    note: "Untouched, resized to 1600 pixels. NASA Images API caption checked Nov 15, 2026: PSE in the foreground, central station and SIDE behind it."
+
 textures:
   tex_tranquility_ground.webp:
     title: Ground of the Tranquility Base set
