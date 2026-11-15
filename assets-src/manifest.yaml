@@ -75,6 +75,14 @@ models:
     url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Viking%20Lander/Viking%20Lander.glb
     raw: models/viking.glb
 
+  mdl_insight.glb:
+    title: InSight Cruise Lander (arm deployed)
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(arm%20deployed).glb
+    raw: models/insight.glb
+
 images:
   img_e02_site_noon.webp:
     title: High Noon at Tranquility Base (PIA12925)

@@ -5,25 +5,85 @@ name: InSight
 title: The Listener
 slate: { place: Elysium Planitia, year: 2018 }
 launched: "2018-05-05"
-draft: true
-status: { badge: silent-buried, where: "Elysium Planitia, Mars" }
+status: { badge: silent-intact, where: "Elysium Planitia, Mars" }
 nssdca: [2018-042A]
 resource: phoenix-insight
-
+objectives:
+  - Explain how ground motion reveals a planet's inner layers.
+  - Describe how wind and temperature can disturb a measurement.
+  - Distinguish a successful measurement from an unfinished experiment.
 facts:
-  marsquakes:
-    text: InSight detected 1,319 marsquakes.
+  landing:
+    text: InSight launched on May 5, 2018, and landed in Elysium Planitia on November 26, 2018.
     source: https://science.nasa.gov/mission/insight/
-  largest:
-    text: The largest marsquake, estimated at magnitude 5, struck in May 2022.
-    source: https://spaceflightnow.com/2022/12/21/nasas-insight-lander-bows-out-after-ground-shaking-mars-mission/
-    note: Secondary source. Look for the NASA/JPL release.
+    note: "Checked Nov 15, 2026: Launch and mission timeline give both dates and the landing site."
+  placement:
+    text: InSight's robotic arm placed its seismometer on the ground. A cable connected the instrument to the lander for power and data.
+    source: https://www.jpl.nasa.gov/news/press_kits/insight/landing/mission/science/
+    note: "Checked Nov 15, 2026: SEIS describes surface deployment, six ground-motion sensors and the tether carrying power and data; NASA's mission page confirms arm deployment."
+  noise:
+    text: A shield protected the seismometer from wind and temperature changes. Nearby weather measurements helped scientists separate ground motion from other disturbances.
+    source: https://www.jpl.nasa.gov/news/press_kits/insight/landing/mission/science/
+    note: "Checked Nov 15, 2026: SEIS noise discussion describes the Wind and Thermal Shield, vacuum enclosure and environmental sensors used to remove noise."
+  waves:
+    text: Seismic waves change as they pass through different materials. Their paths and speeds help scientists study a planet's hidden layers.
+    source: https://www.jpl.nasa.gov/news/press_kits/insight/landing/mission/science/
+    note: "Checked Nov 15, 2026: The seismology explanation describes reflection, refraction, velocity and attenuation through materials of different composition and density."
+  marsquakes:
+    text: InSight recorded 1,319 marsquakes. Its measurements helped scientists study Mars's crust, mantle and core.
+    source: https://www.nasa.gov/missions/insight/nasa-retires-insight-mars-lander-mission-after-years-of-science/
+    note: "Checked Nov 15, 2026: The Dec. 21, 2022 retirement release reports 1,319 marsquakes and discoveries about all three interior layers."
+  mole:
+    text: The heat probe could not grip the clumpy soil well enough to reach its intended depth. Its attempts still taught scientists about that soil.
+    source: https://www.nasa.gov/missions/insight/nasa-retires-insight-mars-lander-mission-after-years-of-science/
+    note: "Checked Nov 15, 2026: The mole section describes poor friction, the unmet five-metre goal and resulting physical and thermal soil measurements."
   dust:
-    text: Dust on its solar panels ended the mission in December 2022.
-    source: https://spaceflightnow.com/2022/12/21/nasas-insight-lander-bows-out-after-ground-shaking-mars-mission/
-    note: Secondary source. Look for the NASA/JPL release.
-
+    text: Dust gradually reduced power from InSight's solar panels. Its last contact was December 15, 2022; NASA ended the mission on December 21.
+    source: https://www.nasa.gov/missions/insight/nasa-retires-insight-mars-lander-mission-after-years-of-science/
+    note: "Checked Nov 15, 2026: The dated release gives last contact, two failed contact attempts, declining solar energy and the mission's end."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "I had no wheels. I didn't need them. I sat very still and listened to a planet."
+  - { who: machine, tag: IMAGINED, text: "You can hear more when you give the quiet time." }
+  - { who: ariadne, tag: REAL, fact: landing, text: "You reach Elysium Planitia with InSight on November 26, 2018." }
+operation:
+  title: Listen through the ground
+  explainer:
+    - { text: "You use the robotic arm to place the seismometer on the ground. Its cable carries power and measurements.", fact: placement }
+    - { text: "You protect the sensor from wind and temperature changes. Weather readings help identify disturbances that are not marsquakes.", fact: noise }
+    - { text: "You follow waves traveling through Mars. Their speeds and paths change as they meet different materials.", fact: waves }
+    - { text: "You compare the recordings to study the crust, mantle and core. The mission records 1,319 marsquakes.", fact: marsquakes }
+discovery:
+  headline: { text: "Ground motion helped reveal the inside of Mars.", fact: marsquakes }
+  story:
+    text: >-
+      You learn about hidden layers by recording waves at the surface.
+      The seismometer helps scientists study the crust, mantle and core.
+      The separate heat probe cannot reach its intended depth.
+      Its difficult attempts still reveal properties of the nearby soil.
+    facts: [waves, marsquakes, mole]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: dust, text: "Dust gathers on the solar panels, leaving less power. You receive the last contact on December 15, 2022." }
+    - { who: ariadne, tag: REAL, fact: dust, text: "After two failed contact attempts, NASA ends the mission on December 21." }
+  last: { who: machine, tag: IMAGINED, text: "You can keep listening to what I left you." }
+statusNow:
+  text: "InSight rests in Elysium Planitia. The mission ended in December 2022 after dust reduced its solar power."
+  fact: dust
+# Poems, Third Series (1896), Nature VIII; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "A murmur in the trees to note,\nNot loud enough for wind;"
+  author: Emily Dickinson
+  work: Poems, Third Series
+  year: 1896
+set:
+  scene: diorama
+  model: lander
+  alt: "NASA's InSight lander model shows two round solar panels and an extended robotic arm."
+  labels: [artistic-view]
+  options: { size: 1.0, yaw: 25 }
+models:
+  lander:
+    file: mdl_insight.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander
+    license: Public domain (NASA 3D Resources)
