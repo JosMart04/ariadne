@@ -3,32 +3,89 @@ num: 12
 act: beyond
 name: Pioneer 10 & 11
 title: Toward the Bull
-slate: { place: Leaving the solar system, year: 1972 }
+slate: { place: Beyond the outer planets, year: 1972 }
 launched: "1972-03-02"
-draft: true
-status: { badge: drifting, where: "Beyond the planets, heading out of the solar system" }
+status: { badge: drifting, where: "Beyond the planets, on outward paths" }
 nssdca: [1972-012A, 1973-019A]
 resource: pioneer
-
+objectives:
+  - Explain how a spinning spacecraft made images.
+  - Compare the paths of Pioneer 10 and Pioneer 11.
+  - Distinguish a radio signal from useful spacecraft data.
 facts:
-  last-signal:
-    text: Pioneer 10's last, very weak signal was received on Jan. 23, 2003, after more than 30 years.
-    source: https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/
-  aldebaran:
-    text: Pioneer 10 is heading in the general direction of the star Aldebaran in Taurus, a journey of more than 2 million years.
-    source: https://nssdc.gsfc.nasa.gov/planetary/text/pion10_pr_20030225.txt
-    note: VERIFY wording against the 2003 release.
-  plaque:
-    text: Both Pioneers carry a plaque showing where and when they came from.
+  firsts:
+    text: Pioneer 10 launched in March 1972. It first crossed the main asteroid belt and first visited Jupiter, in 1973.
     source: https://science.nasa.gov/mission/pioneer-10/
-
+    note: "Checked Nov 15, 2026: Overview identifies the first asteroid-belt crossing and Jupiter visit; Key Dates gives the launch and 1973 encounter."
+  imaging:
+    text: Pioneer 10's imaging instrument used the spacecraft's spin to scan Jupiter. It measured light in two color bands.
+    source: https://ntrs.nasa.gov/citations/19740060914
+    note: "Checked Nov 15, 2026: The 1974 imaging-experiment abstract describes a steerable telescope in spin-scan mode and two spectral bands."
+  measurements:
+    text: Pioneer 10 measured Jupiter's magnetic field and radiation. These measurements helped planners prepare Voyager and Galileo.
+    source: https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/
+    note: "Checked Nov 15, 2026: The mission-results paragraph lists magnetic and radiation measurements and says they were critical to planning Voyager and Galileo."
+  saturn:
+    text: Pioneer 11 passed Jupiter in 1974 and became the first spacecraft to visit Saturn in 1979. Its mission ended in 1995.
+    source: https://science.nasa.gov/mission/pioneer-11/
+    note: "Checked Nov 15, 2026: Overview and Results give both encounters, the first Saturn visit and the 1995 mission end. Contact is deliberately stated only by year."
+  plaque:
+    text: Both Pioneers carry a metal plaque identifying the time and place from which they came.
+    source: https://science.nasa.gov/mission/pioneer-10/
+    note: "Checked Nov 15, 2026: Results describes identical metal plaques on both spacecraft, identifying their time and place of origin."
+  last-signal:
+    text: Pioneer 10's last signal reached Earth on January 23, 2003. It was too weak to carry spacecraft data.
+    source: https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/
+    note: "Checked Nov 15, 2026: The opening identifies the final weak signal and explicitly says no telemetry was returned."
+  direction:
+    text: Pioneer 10 travels in the general direction of Aldebaran, a star in Taurus.
+    source: https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/
+    note: "Checked Nov 15, 2026: The final mission paragraph names Aldebaran in Taurus. A precise future arrival time is not claimed."
+arrival:
+  - { who: machine, tag: IMAGINED, text: "You may lose my voice. Keep the questions that sent me." }
+  - { who: ariadne, tag: REAL, fact: firsts, text: "You follow Pioneer 10 through the asteroid belt to Jupiter. Its 1973 visit opened a new route." }
+operation:
+  title: Scan with a spinning spacecraft
+  explainer:
+    - { text: "You receive measurements as a narrow telescope scans with the spacecraft's spin.", fact: imaging }
+    - { text: "The instrument measures two color bands. Its scans become views of Jupiter.", fact: imaging }
+    - { text: "You also read magnetic-field and radiation measurements. A photograph cannot show every hazard.", fact: measurements }
+    - { text: "You compare two journeys. Pioneer 11 follows Jupiter with the first spacecraft visit to Saturn.", fact: saturn }
+discovery:
+  headline: { text: "Pioneer 10's measurements helped later missions prepare for Jupiter.", fact: measurements }
+  story:
+    text: >-
+      You gain more than a first close view.
+      Magnetic-field and radiation measurements help planners prepare Voyager and Galileo.
+      Pioneer 11 extends the exploration to Saturn in 1979.
+      Both spacecraft also carry a plaque identifying where and when their journeys began.
+    facts: [measurements, saturn, plaque]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: saturn, text: "Pioneer 11's mission ended in 1995." }
+    - { who: ariadne, tag: REAL, fact: last-signal, text: "You receive Pioneer 10's final signal on January 23, 2003. It is too weak to bring spacecraft data." }
+  last: { who: machine, tag: IMAGINED, text: "Let the silence widen. You can still follow what we learned." }
+statusNow:
+  text: "You can trace Pioneer 10's outward path toward the general direction of Aldebaran in Taurus. This is a trajectory, not live contact."
+  fact: direction
+# The poem appeared in Lyrical Ballads (1798); stanza checked Nov 15, 2026:
+# https://www.gutenberg.org/files/151/151-h/151-h.htm
 epigraph:
   text: "Alone, alone, all, all alone,\nAlone on a wide wide sea!"
   author: Samuel Taylor Coleridge
   work: The Rime of the Ancient Mariner
   year: 1798
+set:
+  scene: diorama
+  model: probe
+  alt: "NASA's Pioneer 10 model shows a large dish antenna, a small central body and long instrument booms."
+  labels: [artistic-view]
+  options: { size: 0.72, yaw: 25, float: true }
+models:
+  probe:
+    file: mdl_pioneer.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Pioneer%2010
+    license: Public domain (NASA 3D Resources)
+crossThreads: [e16-voyager1]
 
-arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "I was the first to cross the asteroid belt and the first to visit Jupiter. Now I'm sailing toward the eye of the Bull. I carry a picture of you."

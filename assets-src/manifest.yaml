@@ -3,6 +3,13 @@
 # NASA material is in the public domain and is credited as NASA asks. No NASA logo is used.
 
 models:
+  mdl_pioneer.glb:
+    title: Pioneer 10
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Pioneer%2010
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Pioneer%2010/Pioneer%2010.glb
+    raw: models/pioneer.glb
   mdl_apollo_lm.glb:
     title: Apollo Lunar Module
     credit: NASA

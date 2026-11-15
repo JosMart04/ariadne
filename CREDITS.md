@@ -6,6 +6,7 @@ Data & imagery: NASA. This project is not affiliated with or endorsed by NASA. N
 
 ## 3D models
 
+- [Pioneer 10](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Pioneer%2010) · NASA · Public domain (NASA 3D Resources) · `mdl_pioneer.glb`
 - [Apollo Lunar Module](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Apollo%20Lunar%20Module) · NASA · Public domain (NASA 3D Resources) · `mdl_apollo_lm.glb`
 - [Deep Space Network 70-meter antenna](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Space%20Network%2070-meter) · NASA · Public domain (NASA 3D Resources) · `mdl_dsn_70m.glb`
 - [Voyager Probe (A)](https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Voyager%20Probe%20(A)) · NASA · Public domain (NASA 3D Resources) · `mdl_voyager.glb`
