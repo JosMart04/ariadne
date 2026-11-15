@@ -10,6 +10,7 @@ import type { Content, EpisodeC, LineT, PuzzleT, SceneC } from './schema';
 
 export const voiceId = {
   say: (prefix: string, state: string) => `${prefix}.op.${state}`,
+  explain: (ep: string, k: number) => `${ep}.explain.${k}`,
   headline: (ep: string) => `${ep}.discovery.headline`,
   story: (ep: string, k: number) => `${ep}.discovery.story.${k}`,
   myth: (ep: string) => `${ep}.discovery.myth`,
@@ -47,6 +48,8 @@ const lines = (list: LineT[] | undefined): VoiceLine[] => (list ?? []).flatMap((
 function episodeLines(ep: EpisodeC): VoiceLine[] {
   const out: VoiceLine[] = [...lines(ep.arrival)];
   if (ep.operation?.puzzle) out.push(...puzzleLines(ep.operation.puzzle, ep.id));
+  // Without a puzzle, the explainer is what the player hears in The Operation.
+  else ep.operation?.explainer.forEach((s, k) => out.push({ id: voiceId.explain(ep.id, k), who: NARRATOR, text: spoken(s.text) }));
   if (ep.discovery) {
     out.push({ id: voiceId.headline(ep.id), who: NARRATOR, text: spoken(ep.discovery.headline.text) });
     if (ep.discovery.story) captions(ep.discovery.story.text).forEach((text, k) => out.push({ id: voiceId.story(ep.id, k), who: NARRATOR, text: spoken(text) }));

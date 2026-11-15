@@ -196,7 +196,8 @@ export const Puzzle = z.strictObject({
   states: z.record(z.string(), PuzzleState),
 });
 
-const Step = z.strictObject({ text: z.string().min(1), fact: z.string().optional() });
+/** One step of "how it really worked". `cue`: what the 3D set shows while the step is told. */
+const Step = z.strictObject({ text: z.string().min(1), fact: z.string().optional(), cue: z.string().optional() });
 
 export const Episode = z.strictObject({
   id: z.string().regex(/^e\d\d-[a-z0-9-]+$/),

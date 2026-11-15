@@ -175,7 +175,10 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     for (const [id, ctl] of Object.entries(ep.console?.controls ?? {})) c.control(id, ctl);
 
     ep.arrival?.forEach((l, i) => c.line(l, `arrival[${i}]`));
-    ep.operation?.explainer.forEach((s, i) => c.cite(s.fact, `operation.explainer[${i}]`));
+    ep.operation?.explainer.forEach((s, i) => {
+      c.cite(s.fact, `operation.explainer[${i}]`);
+      c.cue(s.cue, `operation.explainer[${i}]`);
+    });
     if (ep.operation?.puzzle) c.puzzle(ep.operation.puzzle, 'operation.puzzle');
     if (ep.discovery) {
       c.cite(ep.discovery.headline.fact, 'discovery.headline');

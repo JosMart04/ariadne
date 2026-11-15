@@ -196,20 +196,59 @@ function Passage({ ep, onNext }: { ep: EpisodeC; onNext: () => void }) {
   );
 }
 
+/** What the diorama shows for each step when the file names no cue: the machine from one side after another. */
+const TOUR = ['operation', 'arrival', 'discovery', 'status'];
+
+/**
+ * Beat 3 without a puzzle: how the machine really worked, one step at a time, as captions over the set, while the
+ * camera moves to another side of it. It is something to look at, never a list to read (the screenshot rule, AC-15).
+ */
 function Explainer({ ep, onNext }: { ep: EpisodeC; onNext: () => void }) {
-  const region = useFocusOn<HTMLDivElement>(ep.id);
   const op = ep.operation!;
+  const [k, setK] = useState(0);
+  const region = useFocusOn<HTMLDivElement>(k);
+  const step = op.explainer[k];
+  const fact = step.fact ? ep.facts[step.fact] : undefined;
+
+  useEffect(() => {
+    showCue(step.cue ?? (ep.set?.scene === 'diorama' ? TOUR[k % TOUR.length] : ep.cues.operation));
+    audio.speak(voiceId.explain(ep.id, k), step.text, 'ariadne');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [k]);
+
   return (
-    <Frame onNext={onNext}>
-      <div ref={region} tabIndex={-1}>
-        <h2 className="cinema__op">{op.title ?? t('ep.howItWorked')}</h2>
-        <ol className="explainer">
-          {op.explainer.map((s, k) => (
-            <li key={k}>{s.fact && ep.facts[s.fact] ? <FactView text={s.text} fact={ep.facts[s.fact]} /> : <Rich text={s.text} />}</li>
-          ))}
-        </ol>
-      </div>
-    </Frame>
+    <>
+      <h2 className="cinema__op">{op.title ?? t('ep.howItWorked')}</h2>
+      <Frame onNext={() => (k >= op.explainer.length - 1 ? onNext() : setK(k + 1))}>
+        <div className="lines" aria-live="polite" ref={region} tabIndex={-1}>
+          <div className={`line ${fact ? 'line--real' : ''}`}>
+            <div className="line__head">
+              <span className="line__who">{t('speaker.ariadne')}</span>
+              {fact && (
+                <span className="chip chip--real" title={t('tag.REAL.help')}>
+                  <span aria-hidden="true">◆</span> {t('tag.REAL')}
+                </span>
+              )}
+              <span className="line__count">{t('story.part', { n: k + 1, total: op.explainer.length })}</span>
+            </div>
+            <p className="line__text">
+              <Rich text={step.text} />
+            </p>
+            {fact && (
+              <ul className="sources" aria-label={t('story.sources')}>
+                <li>
+                  <a className="source" href={fact.source} target="_blank" rel="noopener noreferrer" title={fact.text}>
+                    <span aria-hidden="true">↗ </span>
+                    {fact.host}
+                    <span className="sr-only">: {fact.text}</span>
+                  </a>
+                </li>
+              </ul>
+            )}
+          </div>
+        </div>
+      </Frame>
+    </>
   );
 }
 

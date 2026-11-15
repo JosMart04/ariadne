@@ -14,6 +14,15 @@ facts:
   flights:
     text: Ingenuity was planned for up to five flights and flew 72 times, for about 129 minutes, covering about 17 km.
     source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
+    note: "Checked Nov 15, 2026: 'would make no more than five test flights in 30 days, the helicopter eventually completed 72 flights across nearly three years' and 'Completed 128.8 flying minutes, covering 10.5 miles (17.0 kilometers)'. The same page says 'Successfully flying in the extremely thin Martian atmosphere.'"
+  build:
+    text: Ingenuity has a mass of 1.8 kilograms. Its rotors measure about 1.2 meters from tip to tip.
+    source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
+    note: "Checked Nov 15, 2026: 'Mass 3.97 pounds (1.8 kilograms)' and 'Total length of rotors: Approximately 4 feet (approximately 1.2 meters) tip to tip'."
+  power:
+    text: A solar panel charges Ingenuity's batteries. They hold enough energy for one 90-second flight per Martian day.
+    source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
+    note: "Checked Nov 15, 2026: 'Solar panel charges Lithium-ion batteries, providing enough energy for one 90-second flight per Martian day'."
   flight72:
     text: Flight 72 on Jan. 18, 2024 damaged its rotor blades. The mission ended a week later.
     source: https://nasaspaceflight.com/2024/01/ingenuity-final-flight
@@ -37,6 +46,18 @@ arrival:
   - who: machine
     tag: IMAGINED
     text: "They said five flights. Just five. I flew seventy-two."
+
+# Three steps of how it flew, each one read against NASA's page. Proving content of F-04 (the explainer as captions).
+# The rest of the text of this file is still to be written (task X-02).
+operation:
+  title: How it flew
+  explainer:
+    - text: Ingenuity is small and light. It has a mass of 1.8 kilograms, and its rotors measure about 1.2 meters from tip to tip.
+      fact: build
+    - text: A solar panel on top charges its batteries. One charge is enough for one 90-second flight per Martian day.
+      fact: power
+    - text: It was built to prove one thing. A machine can fly in the extremely thin air of Mars. It was planned for five flights and made 72.
+      fact: flights
 
 # On stage: NASA's official model, on the stand of the diorama set (src/scenes/diorama). Proving file of F-01 (model).
 set:
