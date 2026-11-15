@@ -5,25 +5,88 @@ name: Spirit
 title: The Broken Wheel
 slate: { place: Gusev Crater, year: 2004 }
 launched: "2003-06-10"
-draft: true
-status: { badge: silent-stuck, where: "Troy, Gusev Crater, Mars" }
+status: { badge: silent-stuck, where: "Troy, beside Home Plate, Gusev Crater, Mars" }
 nssdca: [2003-027A]
 resource: spirit-opportunity
 
+objectives:
+  - Describe how commands from Earth guided Spirit's work.
+  - Explain why a broken wheel helped reveal evidence of past water.
+  - Locate Spirit's last stop and distinguish silence from the mission's official end.
+
 facts:
-  landing:
-    text: Spirit landed in Gusev Crater on Jan. 4, 2004.
-    source: https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/
+  mission:
+    text: Spirit launched on June 10, 2003, and landed in Gusev Crater in January 2004. Its robotic arm carried tools for examining rocks.
+    source: https://science.nasa.gov/mission/mer-spirit/
+    note: "Checked Nov 15, 2026: Launch table, landing account and In Depth describe these events and the arm-mounted instruments. Landing is Jan. 3 PST, Jan. 4 UTC."
+  planning:
+    text: Teams on Earth reviewed Spirit's returned data and prepared the next sequence of commands. Radio signals took minutes to travel between planets.
+    source: https://astrobiology.nasa.gov/news/check-type-living-on-mars-time/
+    note: "Checked Nov 15, 2026: Living on Mars Time describes downlink review, science requests, command sequencing and uplink; Down to Earth, at Light Speed explains the delay."
+  tools:
+    text: Spirit ground and brushed rock surfaces. Spectrometers and a microscopic camera then examined the exposed material.
+    source: https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars/
+    note: "Checked Nov 15, 2026: The mission summary reports grinding 15 rock targets and brushing 92 before inspection with spectrometers and a microscopic imager."
   silica:
-    text: Dragging its broken wheel, Spirit scraped up nearly pure silica near Home Plate, evidence of past hot springs or steam vents.
-    source: https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars
+    text: In 2007, Spirit's stuck front wheel exposed nearly pure silica. The deposit was evidence of ancient hot springs or steam vents.
+    source: https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars/
+    note: "Checked Nov 15, 2026: The backward-driving account says the right-front wheel exposed white soil; APXS and Mini-TES found silica, interpreted as hydrothermal evidence."
   troy:
-    text: Spirit became stuck at "Troy" in 2009. Its last communication was on March 22, 2010.
-    source: https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars
+    text: Spirit became stuck in soft soil at Troy in 2009. Engineers used images to plan attempts to free it.
+    source: https://www.jpl.nasa.gov/news/team-prepares-to-uplink-commands-to-spirit/
+    note: "Checked Nov 15, 2026: The June 2, 2009 mosaic caption identifies soft soil at Troy and its use in planning extraction; the article describes uplinked drive commands."
+  silence:
+    text: Spirit last communicated on March 22, 2010, as winter approached and solar power declined. NASA ended contact attempts on May 25, 2011.
+    source: https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars/
+    note: "Checked Nov 15, 2026: The May 25, 2011 release gives the final contact date, declining winter power and the end of re-contact attempts."
 
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "My front wheel stopped turning. So I turned around and drove backwards, dragging it like an anchor."
+  - { who: machine, tag: IMAGINED, text: "You can still follow my tracks. Even the awkward ones have a story." }
+  - { who: ariadne, tag: REAL, fact: mission, text: "You arrive in Gusev Crater. Spirit landed here in January 2004 with tools to examine the rocks." }
+operation:
+  title: Read a rock from Earth
+  explainer:
+    - { text: "You study the data that reached Earth, then help plan the next command sequence. Radio signals need minutes to cross the gap.", fact: planning }
+    - { text: "The robotic arm brings its tools to a rock. You work through the machine, from Earth.", fact: mission }
+    - { text: "Spirit grinds or brushes a surface. Its instruments examine the material underneath.", fact: tools }
+    - { text: "You compare the returned measurements before planning the next sequence.", fact: planning }
+discovery:
+  headline: { text: "A broken wheel exposed evidence of ancient hot springs or steam vents.", fact: silica }
+  story:
+    text: >-
+      You follow an unexpected discovery.
+      In 2007, Spirit drove backward while dragging its immobile front wheel.
+      The wheel uncovered bright soil.
+      Two instruments found that it was nearly pure silica.
+      The deposit pointed to ancient hot springs or steam vents.
+      You have evidence about an environment, not a discovery of living organisms.
+    facts: [silica]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: troy, text: "Spirit became stuck at Troy in 2009. The team studied images and planned ways to free it." }
+    - { who: machine, tag: IMAGINED, text: "You can carry the journey farther than my wheels can go." }
+  last: { who: record, tag: REAL, fact: silence, text: "March 22, 2010. Spirit's final communication reaches Earth as winter approaches and solar power declines." }
+statusNow:
+  text: "Spirit rests at its last stop. You read the mission's record: final contact in 2010, and the end of contact attempts in 2011."
+  fact: silence
 
+# Poems, Third Series (1896), Nature VII, Dawn; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "Not knowing when the dawn will come\nI open every door;"
+  author: Emily Dickinson
+  work: Poems, Third Series
+  year: 1896
+set:
+  scene: diorama
+  model: twin
+  alt: "NASA's model of Opportunity, Spirit's twin, shows six wheels, broad solar panels, a camera mast and a robotic arm."
+  labels: [artistic-view]
+  options: { size: 1, yaw: 25 }
+models:
+  twin:
+    file: mdl_mer_b.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)
+    license: Public domain (NASA 3D Resources)
 crossThreads: [e08-opportunity]
