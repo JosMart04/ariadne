@@ -9,16 +9,18 @@ the 15:00 text freeze passed while no session was running (see section 0).
 
 ## 0. Parallel lanes (written Sun Nov 15, 14:50 by Fable, the session that builds E08)
 
-**What happened:** account A (Claude Fable) took over at 10:30, but its plan waited for approval until 14:45. Nothing was
-pushed between 10:02 and 14:50. The Thread is still missing one set: E08.
+**What happened:** account A (Claude Fable) took over at 10:30, but its plan waited for approval until 14:45. Nothing
+was pushed between 10:02 and 14:50. **State on Sun 16:10: the Thread is whole.** E08 is in 3D in both modes, every spoken
+line has a voice file, the Thread passes from a clean start, the diorama contract is proven on two files, and the two
+lifecycle defects are fixed. All of it is pushed and deployed.
 
 **From now on several AI sessions may work at once.** Lanes and rules are in `CLAUDE.md`, "Who owns what". In short:
 
 | Lane | Works on now | Must not touch |
 |---|---|---|
-| **Fable · Thread and core** (this session) | E08 Opportunity in 3D (B-27), then voices, the fresh-start Thread check (F-03), lifecycle fixes (F-02) | the 13 non-Thread episode files |
-| **Fable · diorama** (a second Fable session, if the team starts one) | F-01: the set context and `src/scenes/diorama/`, proven on two files | `src/scenes/meridiani/`, `src/sim/meridiani.ts`, `src/consoles/PlanStation.tsx`, `e08-opportunity.yaml` |
-| **Astra · content** (GPT Astra) | X-01 `docs/submission/`, X-02 text and facts of the 13 files, X-03 asset candidates, X-04 link check | anything under `src/`, `tests/`, `scripts/` (except `check-links.ts`), `content/ui.yaml`, the Thread content |
+| **Fable · Thread and core** | Next, in this order: A-13 accessibility pass on the Thread, A-25 credits from the manifest, fixes that the team's playtest asks for (T-13b, T-15) | the 13 non-Thread episode files |
+| **Fable · diorama** | Done (F-01, F-04). Nothing is open in this lane; its files went back to "Fable · Thread and core" | |
+| **Astra · content** (GPT Astra) | X-01 `docs/submission/`, X-02 text and facts of the 13 files, X-05 put the 11 remaining files on stage (recipe below), X-04 link check | anything under `src/`, `tests/`, `scripts/` (except `check-links.ts`), `content/ui.yaml`, the Thread content |
 
 Rules that keep parallel work safe:
 - One owner per file. Requests for someone else's file go under "Requests" below.
@@ -68,6 +70,32 @@ Official models in https://github.com/nasa/NASA-3D-Resources (folder `3D Models`
 served; say "twin" in its `alt`. The others (ALSEP, the lunar rovers, Sojourner, Phoenix) need a NASA photograph.
 A draft file with a set already plays as passage, arrival, status and Field File, with its facts and sources.
 
+**The contract of a set** (what any new set must honour; `src/scenes/meridiani/index.ts` is the reference):
+
+| Part | Rule |
+|---|---|
+| Creation | `create(host, context)`. `context` (`SetContext` in `src/three/host.ts`) carries the file's id, name, hero model or image, `alt` and `options`. A set with a place of its own may ignore it. |
+| Cues | Every cue is declared in `cues.json` with its written description. The compiler rejects a cue or hotspot that content names and the set does not declare. |
+| Orders | `act('fly', { outcome })` scripted run · `act('fly', { player: true, retry })` the player operates · `act('skip')` · `act('slew' \| 'fire' \| 'zoom', …)` console keys · `act('reset')` · `act('state')` readouts. |
+| Outcomes | `fly` resolves to `{ outcome }`, one of the names in `src/sim/outcomes.ts`. A slip that is not an outcome resolves to `{ outcome: null, miss }`. The outcome is decided by the simulation, never by the animation: skipping changes nothing. |
+| Cancellation | A set resolves every pending `fly` with `{ outcome: null, cancelled: true }` on `reset` and `dispose`. `PuzzleRunner` also closes the wait when the stage stops being ready. A cancelled operation of the player returns to the decision, counts no error and never moves the state machine; a cancelled scripted run keeps the choice the player made. |
+| Taking down | `dispose()` removes listeners and takes the set's root out of the scene. `SceneHost.dispose()` frees geometries, materials and textures before that; a set frees nothing by hand. |
+| Proof | `npm run capture -- <name> lifecycle` loses the 3D context in the middle of an operation and checks all of the above. |
+
+**Files with one owner (ask in "Requests" before touching):** `src/content/schema.ts`, `scripts/build-content.ts`,
+`src/episode/PuzzleRunner.tsx`, `src/episode/CinemaEpisode.tsx`, `src/episode/Set3D.tsx`, `src/three/host.ts`,
+`src/sim/outcomes.ts`, `src/consoles/index.tsx`, `scripts/capture.ts`, `scripts/prep-assets.ts`, `package.json`,
+`content/ui.yaml`, `src/styles/app.css` (all Fable). `assets-src/manifest.yaml` and `src/styles/cinema.css` are append-only for everyone.
+
+**Reference files, reproducible on any machine with `npm ci && npm run dev`:**
+- a place of its own with a simulation and a console: E08 (`e08-opportunity.yaml`, `src/sim/meridiani.ts`, `src/scenes/meridiani/`, `src/consoles/PlanStation.tsx`);
+- a file on the shared stage with a model: E11 (`e11-ingenuity.yaml`); with a photograph: E01 (`e01-surveyor.yaml`).
+
+**Cuts and limits in force:** Hands, Look Up, Gaze, the Orrery and every T2 operation are frozen (the card map stays).
+Knossos Station is a console set, not a walkable room. The postcard and the Voyager coda of the finale are not built.
+13 files are drafts; two of them (E11, E01) are already on stage. There is no `?date=` override for light times.
+Nobody has yet played E08 or timed the Thread; no real hardware, phone or screen reader has been tried by a person.
+
 **Requests** (write here; the owner answers in place):
 - (none yet)
 
@@ -111,7 +139,7 @@ What the team asked for in its playtest on Sun 09:40, and what was done (all pus
 ```bash
 git pull --rebase
 npm ci
-npm run check          # content + tsc + 196 tests + build + secret scan: must be green before you change anything
+npm run check          # content + tsc + tests + build + secret scan: must be green before you change anything
 npm run dev            # http://localhost:5173/?q=high#e02-apollo11  → play E02 and E16 once, in both modes
 ```
 - `para_fable/` is git-ignored. **Machine A may still have requirements v1.0.** Ask the team for v1.1 (task T-00), then read its
@@ -125,14 +153,17 @@ npm run dev            # http://localhost:5173/?q=high#e02-apollo11  → play E0
 
 1. `npm run dev`, open the beat with `?q=high` (forces full 3D quality) and, if you want, `?fps`.
 2. Jump to any camera shot from the console: `__stage.getState().set.setCue('landed', true)`.
-3. `npm run capture -- <name> [prologue|e02|e16|finale] [explorer|accessible] [reduce]` plays the scenes in the installed
-   Chrome and saves the pictures in `docs/captures/<name>/`. It fails on any console error. Against a production build:
+3. `npm run capture -- <name> [prologue|e02|e08|e16|finale] [explorer|accessible] [reduce]` plays the scenes in the installed
+   Chrome or Edge and saves the pictures in `docs/captures/<name>/`. It fails on any console error. Against a production build:
    `npm run build && npm run preview -- --port 4173`, then `CAPTURE_URL=http://localhost:4173/ npm run capture -- <name>`
    (do this when you want to keep editing source while it runs: the dev server reloads pages under the script).
 4. `npx tsx scripts/dev/contact.ts docs/captures/<name> <some folder>` makes contact sheets: look at every picture.
    **If one could be mistaken for a form, a quiz or a documentation page, the beat is not done (AC-15).**
-5. Add your new scene to `scripts/capture.ts` (copy `e16Accessible` and `e16Explorer`) and commit the captures with the code.
-   Current captures: `docs/captures/i1d/` (prologue, E02, finale, from the production build) and `docs/captures/i1e/` (E16).
+5. A set with a puzzle gets its own routes in `scripts/capture.ts` (copy `e08Accessible` and `e08Explorer`). A file on the
+   diorama needs none: `npm run capture -- <name> e11` walks it. Commit the captures with the code.
+   Three more runs: `... thread` (the whole Thread from a clean start, with assertions), `... lifecycle` (a lost 3D context
+   in the middle of an operation), `... reduce` (reduced motion).
+   Current captures: `i1d/` (prologue, E02, finale), `i1e/` (E16), `i3/` and `i3-reduce/` (E08, thread), `i4/` (E11, E01), `i5/` (regression of Sun 16:00).
 
 ## 4. Recipe: a new 3D set, its console and its content
 
@@ -143,7 +174,7 @@ Three finished examples to copy, from simplest to richest:
    in `src/sim/outcomes.ts`. Write `tests/sim/<name>.test.ts`: one scripted run per outcome, and the real numbers it teaches.
    Models: `src/sim/dsn.ts` (simplest), `ranging.ts`, `descent.ts`.
 2. **The set.** `src/scenes/<id>/cues.json` lists every cue with its written description (the text equivalent, AX-32) and
-   the hotspots. `src/scenes/<id>/index.ts` exports `create(host): Promise<SetController>`: a `SHOTS` table (one camera per
+   the hotspots. `src/scenes/<id>/index.ts` exports `create(host, context): Promise<SetController>`: a `SHOTS` table (one camera per
    cue), `setCue`, `step` (fixed 60 Hz logic), `frame` (camera, placing things), `hotspot(name)`, `act(name, arg)`.
    Sets are found by `import.meta.glob`: there is no registry to edit. Copy the arrow-key and drag handling as it is.
 3. **`act` contract used by `PuzzleRunner`:** `act('fly', { outcome })` plays a scripted run and resolves to `{ outcome }`;
@@ -193,7 +224,7 @@ Three finished examples to copy, from simplest to richest:
 - `src/generated/` is git-ignored: `npm run content` (or `npm run dev`) before `tsc`.
 - Claude cannot test a webcam, a phone or a real GPU laptop. Hands, Look Up and frame rate need a person.
 
-## 6. Next steps, in order (details in `docs/TASKS.md`)
+## 6. Next steps, as written on Sun 10:05 (superseded: see section 0 and the lanes in `docs/TASKS.md`)
 
 1. **B-27: E08 Opportunity in 3D, operated from Earth.** It is the only key episode still in text, so the Thread is not
    whole without it. Copy `dsn`. Keep the state machine of `e08-opportunity.yaml`; add `set`, cues, a planning station.
@@ -206,9 +237,13 @@ Three finished examples to copy, from simplest to richest:
 5. **I5, by 17:00:** the 13 files with a model or image on stage (`src/scenes/diorama/`, text by 15:00), the Orrery, Hands.
 6. **I6:** fixes only.
 
-## 7. Continuation prompt
+## 7. Continuation prompt of Sun 10:05 (superseded by the two start prompts of section 0)
 
-Paste this to start the next session (the team talks to Claude in Spanish; the repository stays English):
+Kept for the record. The next Fable session starts with: "You are the Fable · Thread and core lane of ARIADNE. Work in
+your own clone. Read `CLAUDE.md`, `docs/HANDOFF.md` section 0 and `docs/TASKS.md`, take the first open task of your lane,
+claim it and push the claim before coding. Report in Spanish."
+
+The old text: paste this to start the next session (the team talks to Claude in Spanish; the repository stays English):
 
 > You are continuing ARIADNE (NASA Space Apps 2026, challenge "Abandoned but not Forgotten") in the repository
 > https://github.com/JosMart04/ariadne. Another Claude session (account B) built the 3D Thread up to here and wrote the
@@ -245,12 +280,17 @@ Did: the course-correction records, the 3D core, the sets `tranquility`, `telesc
 the cinema layout, sound, voices, the capture tooling, prologue, E02, E16 and the finale.
 Left undone: E08 in 3D, voices for E16, everything in I4 to I6.
 
-### Account A
+### Account A = Fable, session of Sun 14:45 to 16:10
 
-(write here)
+Did: the lanes and start prompts; E08 in 3D in both modes (simulation, set, planning station, content, facts re-read,
+voices); voices for E16; the Thread check from a clean start; the diorama contract with two proving files; the explainer as
+captions; the two lifecycle fixes with their check. Every step was pushed with its captures and deployed.
+Left undone: everything a person must do (section "Team"), the 11 files still off stage, the text of the 13 files, the
+accessibility pass (A-13), the credits from the manifest (A-25), the submission texts (X-01).
 
 ### Team (humans)
 
-**Waiting on you:** T-00 (copy `para_fable/` to machine A), **T-13 (replay E02: is the landing clear now?)**, T-14 (look at the
-captures), T-02 and T-03 (the text and facts of the prologue, E02, E16 and the finale are ready to review; each fact has a
-`note:` saying what was checked), T-04 (listen to the voices; change one in `content/voices.yaml`), T-07 (submit at 14:00).
+**Waiting on you (Sun 16:10):** **T-15 play E08** and say if the planning station is clear · **T-13b replay the landing of
+E02** · **T-06 time the whole Thread with people** (the script needs 3 minutes; a person is the measure) · T-16 review the
+text and facts of E08 · T-02 and T-03 rewrite the text in your own voice and sign `verified:` · T-04 listen to the voices ·
+T-07 submit the form · T-10 and T-13 real hardware and a phone · decide whether GPT Astra starts now (start prompt in section 0).

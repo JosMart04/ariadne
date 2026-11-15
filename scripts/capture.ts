@@ -25,14 +25,14 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 /** `e11`, `e01`...: any file that has no route of its own is walked by the generic route (see `file`). */
 const isFile = (a: string) => /^e\d\d$/.test(a);
-const name = args.find((a) => !isFile(a) && !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale', 'thread'].includes(a)) ?? 'latest';
+const name = args.find((a) => !isFile(a) && !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale', 'thread', 'lifecycle'].includes(a)) ?? 'latest';
 const reduce = args.includes('reduce');
 const route = ['explorer', 'accessible'].find((r) => args.includes(r));
-const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale', 'thread'] as const;
+const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale', 'thread', 'lifecycle'] as const;
 const wanted = SCENES.filter((s) => args.includes(s));
 // `thread` is the whole route from a clean start. It is long, so it only runs when it is asked for.
 const files = args.filter((a) => isFile(a) && !(SCENES as readonly string[]).includes(a));
-const scenes: string[] = wanted.length || files.length ? [...wanted, ...files] : SCENES.filter((s) => s !== 'thread');
+const scenes: string[] = wanted.length || files.length ? [...wanted, ...files] : SCENES.filter((s) => s !== 'thread' && s !== 'lifecycle');
 const BASE = process.env.CAPTURE_URL ?? 'http://localhost:5173/';
 const OUT = join(ROOT, 'docs', 'captures', reduce ? `${name}-reduce` : name);
 
@@ -533,6 +533,67 @@ async function file(page: Page, key: string) {
   }
 }
 
+// ------------------------------------------------------------------ Lifecycle: nothing may leave the player waiting
+
+const LOSE_CONTEXT = `window.__stage.getState().host.renderer.getContext().getExtension('WEBGL_lose_context').loseContext()`;
+const must = (ok: boolean, what: string) => {
+  if (!ok) throw new Error(`lifecycle: expected that ${what}`);
+  console.log(`  ok  ${what}`);
+};
+/** A button of the story whose whole text is `text` (so "Continue in text" is not "Continue"). */
+const hasExactly = (text: string) => [...document.querySelectorAll('main button')].some((b) => !(b as HTMLButtonElement).disabled && (b.querySelector('.choice__label') ?? b).textContent?.trim() === text);
+const clickExactly = (text: string) => ([...document.querySelectorAll('main button')].find((b) => (b.querySelector('.choice__label') ?? b).textContent?.trim() === text) as HTMLButtonElement).click();
+const soon = (page: Page, text: string) =>
+  page.waitForFunction(hasExactly, { timeout: 8000 }, text).then(
+    () => true,
+    () => false,
+  );
+
+/**
+ * The 3D context is lost while the player's own operation is running (F-02a). The wait must close, the decision must
+ * come back as choices, nothing may count as an error or move the state machine, and "Restart 3D" must bring the set back.
+ * Then: leaving a set frees what it put on the graphics card (F-02b).
+ */
+async function lifecycleExplorer(page: Page) {
+  await open(page, 'e08-opportunity');
+  for (let i = 0; i < 5; i++) await press(page, 'Continue');
+  await press(page, 'Drive');
+  await press(page, 'Continue');
+  await press(page, 'Continue');
+  await press(page, 'Plan the sol');
+  await sleep(600);
+  await page.evaluate(LOSE_CONTEXT);
+  must(await soon(page, 'A slope that faces the Sun'), 'after the context is lost during a hand-played operation, the decision comes back as choices');
+  must(!(await page.evaluate(hasButton, 'Plan again')), 'a cancelled operation is not counted as a failed attempt');
+  await press(page, 'Restart 3D');
+  await page.waitForSelector('.set3d--ready', { timeout: 30_000 });
+  must(await soon(page, 'Plan the sol'), 'after "Restart 3D" the planning station is offered again');
+
+  // F-02b: what a set put on the graphics card is freed when the player leaves it.
+  await page.evaluate(`window.__probe = window.__stage.getState().host.renderer`);
+  const before = (await page.evaluate(`JSON.stringify(window.__probe.info.memory)`)) as string;
+  await page.evaluate(`location.hash = '#map'`);
+  await sleep(1200);
+  const after = JSON.parse((await page.evaluate(`JSON.stringify(window.__probe.info.memory)`)) as string) as { geometries: number; textures: number };
+  console.log(`  graphics memory of the set: ${before} while it is shown, ${JSON.stringify(after)} after leaving`);
+  must(after.geometries === 0 && after.textures === 0, 'leaving a set frees its geometries and textures');
+}
+
+/** The context is lost while the scripted operator carries out the player's choice: the choice still counts. */
+async function lifecycleAccessible(page: Page) {
+  await open(page, 'e08-opportunity');
+  for (let i = 0; i < 5; i++) await press(page, 'Continue');
+  await press(page, 'Sleep');
+  await press(page, 'Continue');
+  await press(page, 'Continue');
+  await press(page, 'Flat ground');
+  await sleep(700);
+  await page.evaluate(LOSE_CONTEXT);
+  must(await soon(page, 'Continue'), 'after the context is lost during a scripted run, the chosen answer still plays');
+  await page.evaluate(clickExactly, 'Continue');
+  must(await soon(page, 'A slope that faces the Sun'), 'the puzzle goes on in the text view');
+}
+
 // ------------------------------------------------------------------ The Thread, from a clean start
 
 /**
@@ -614,6 +675,7 @@ const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Pa
   e16: { accessible: e16Accessible, explorer: e16Explorer },
   finale: { accessible: finaleAccessible, explorer: finaleExplorer },
   thread: { accessible: thread },
+  lifecycle: { accessible: lifecycleAccessible, explorer: lifecycleExplorer },
 };
 
 async function run(browser: Browser, play: 'accessible' | 'explorer', scene: string) {

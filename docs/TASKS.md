@@ -51,7 +51,7 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
 - [x] F-03 (Sun 15:40: every assertion passed on the production build, 3 min 3 s by script; `npm run capture -- <name> thread`) **The Thread from a clean start:** a `thread` route in `scripts/capture.ts` with empty storage: title → setup →
   prologue → E02 → E08 → E16 → finale, clews earned by playing. Today `run()` preloads progress and clews, so no capture
   proves the progression. Its duration is a technical minimum, not AC-01: the 12 minutes are timed by people (T-06).
-- [ ] F-02 **Lifecycle, two confirmed defects.** (a) `PuzzleRunner` awaits `act('fly')`; if the WebGL context is lost during
+- [x] F-02 (Sun 16:00; proven by `npm run capture -- <name> lifecycle`; decision F-D14) **Lifecycle, two confirmed defects.** (a) `PuzzleRunner` awaits `act('fly')`; if the WebGL context is lost during
   an operation the promise never settles and the screen has no way forward (breaks pillar 3). Fix: close the wait when the
   stage stops being `ready`; a cancelled hand-played operation returns to the decision without counting an error and never
   moves the state machine. Reproduce with `WEBGL_lose_context` from the capture script. (b) `SceneHost.dispose()` calls the

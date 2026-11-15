@@ -14,7 +14,7 @@
  *    "Let the machine show you" at 90 s or 3 errors (2 skill failures in Explorer, FR-29a); story mode unlocks it at once
  *  - forced historical outcomes are labelled "This is what really happened." (FR-26)
  */
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { audio } from '../audio/bus';
 import { SimBrief, SimConsole, SimHud, hasConsole } from '../consoles';
 import { t } from '../content';
@@ -42,7 +42,29 @@ type Props = {
   voice?: string;
 };
 
-type FlightEnd = { outcome: string | null; miss?: string; sink?: string; drift?: string };
+type FlightEnd = { outcome: string | null; miss?: string; sink?: string; drift?: string; cancelled?: boolean };
+
+/**
+ * Asks the set to carry out an operation and waits for its end. The wait also closes when the stage stops being
+ * ready (the 3D context was lost, or the set was taken down): a cancelled operation must never leave the player
+ * waiting (pillar 3). The caller decides what a cancellation means; it is never an outcome.
+ */
+function flight(arg: unknown): Promise<FlightEnd | undefined> {
+  const run = act<Promise<FlightEnd>>('fly', arg);
+  if (!run) return Promise.resolve(undefined);
+  return new Promise((resolve) => {
+    const stop = useStage.subscribe((s) => {
+      if (s.status === 'ready') return;
+      stop();
+      resolve({ outcome: null, cancelled: true });
+    });
+    const end = (e: FlightEnd | undefined) => {
+      stop();
+      resolve(e);
+    };
+    run.then(end, () => end({ outcome: null, cancelled: true }));
+  });
+}
 
 export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, consoleDef, voice }: Props) {
   const storyMode = useGame((s) => s.settings.storyMode);
@@ -61,6 +83,15 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
   const [guided, setGuided] = useState(false);
   /** A skill failure that is not an outcome (a touchdown that was too hard): say exactly why, then retry from nearby. */
   const [miss, setMiss] = useState<FlightEnd | null>(null);
+
+  /** False once this puzzle has left the screen: an operation that ends later changes nothing. */
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
 
   const state = puzzle.states[cur];
   const region = useFocusOn<HTMLDivElement>(`${cur}-${flying}-${!!miss}`);
@@ -129,10 +160,12 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
       setFlying('machine');
       announce(t(`sim.${state.sim}.auto`));
       try {
-        await act<Promise<FlightEnd>>('fly', { outcome: c.when, speed: 3 });
+        // The run only shows the choice. If it is cut short, the choice the player made still stands.
+        await flight({ outcome: c.when, speed: 3 });
       } finally {
         setFlying(null);
       }
+      if (!alive.current) return;
     }
     move(c.to);
   }
@@ -144,10 +177,12 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
     setFlying('player');
     let end: FlightEnd | undefined;
     try {
-      end = await act<Promise<FlightEnd>>('fly', { player: true, retry });
+      end = await flight({ player: true, retry });
     } finally {
       setFlying(null);
     }
+    // Cut short by the stage, not by the player: no outcome, no error, no lesson. The decision is simply open again.
+    if (!alive.current || end?.cancelled) return;
     const c = end?.outcome ? state?.choices?.find((x) => x.when === end!.outcome) : undefined;
     if (c) return move(c.to);
     // Not an outcome of the puzzle: the state does not change. Teach, count it for help, offer a retry.

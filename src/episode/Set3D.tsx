@@ -82,7 +82,8 @@ export function Set3D({ scene, context }: { scene: string; context?: SetContext 
   const off = textOnly || status === 'failed' || status === 'lost';
   return (
     <div className={`set3d set3d--${off ? 'off' : status}`}>
-      {!textOnly && <canvas ref={canvas} aria-hidden="true" />}
+      {/* A fresh canvas for every attempt: a canvas whose context was lost cannot be given a new one. */}
+      {!textOnly && <canvas key={attempt} ref={canvas} aria-hidden="true" />}
       <p className="sr-only" role="img" aria-label={`${t('set.scene')}: ${describeCue(scene, cue, context)}`} />
       {status === 'loading' && !textOnly && (
         <p className="set3d__note" role="status">

@@ -203,6 +203,14 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   each step. Run on the production build on Sun 15:40: every assertion passed, 3 min 3 s by script. That time is a
   technical minimum; the 12 minutes of AC-01 are still to be timed with people.
 
+- **F-D14 · A cancelled operation is never an outcome and never leaves the player waiting.** `PuzzleRunner` closes the
+  wait for a set when the stage stops being ready. An operation of the player that was cut short returns to the decision,
+  counts no error and does not move the state machine; a scripted run that was cut short keeps the choice the player made.
+  "Restart 3D" gets a fresh canvas, because a canvas whose context was lost cannot be given a new one. `SceneHost.dispose()`
+  now frees geometries, materials and textures before the set takes its root out of the scene (it used to walk an empty
+  scene). Why: both were found by an outside review and confirmed in the code; the first broke pillar 3. Measured after
+  the fix: a set that held 14 geometries and 3 textures holds 0 and 0 after the player leaves it.
+
 ## Pending team confirmation (defaults in use)
 
 - ARIADNE acronym: "Archive for Robotic Instruments And Dormant Network Explorers" (not shown in the game yet).

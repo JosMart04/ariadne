@@ -242,9 +242,9 @@ export class SceneHost {
     this.stop();
     this.observer.disconnect();
     this.canvas.removeEventListener('webglcontextlost', this.onLost);
-    this.set?.dispose();
-    this.set = null;
+    // Free what the set put in the scene BEFORE the set takes it out: after that, this walk would find nothing.
     this.scene.traverse((o) => {
+      if (o instanceof THREE.InstancedMesh) o.dispose();
       const m = o as THREE.Mesh;
       m.geometry?.dispose?.();
       const mat = m.material as THREE.Material | THREE.Material[] | undefined;
@@ -253,6 +253,8 @@ export class SceneHost {
         one.dispose();
       }
     });
+    this.set?.dispose();
+    this.set = null;
     this.renderer.dispose();
   }
 }

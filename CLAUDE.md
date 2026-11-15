@@ -48,7 +48,7 @@ Machines **rest, sleep, go silent**. Never "die", "dead", "killed".
 - `npm run dev` — dev server (recompiles content on change)
 - `npm run content` — validate `content/*.yaml` and compile to `src/generated/content.json`
 - `npm run check` — the full gate: content + `tsc` + tests + build + secret scan. **Run before every push.**
-- `npm run capture -- <name> [reduce] [explorer|accessible]` — plays the route in the installed Chrome and saves one picture per beat in `docs/captures/<name>/`. Needs `npm run dev` running. Fails on any console error.
+- `npm run capture -- <name> [scene] [reduce] [explorer|accessible]` — plays scenes in the installed Chrome or Edge and saves one picture per beat in `docs/captures/<name>/`. Needs `npm run dev` running. Fails on any console error. Scenes: `prologue e02 e08 e16 finale`, any file id such as `e11`, `thread` (the whole route from a clean start, with assertions) and `lifecycle` (a lost 3D context in the middle of an operation).
 
 ## Architecture in one screen
 
@@ -59,7 +59,7 @@ src/engine/             store (settings + progress), hash router, fsm (puzzle gr
 src/sim/                pure deterministic simulations, no DOM, no three: descent, ranging, ... + outcomes.ts
 src/three/              SceneHost: renderer, fixed 60 Hz steps, pause when hidden, Auto quality, context-loss recovery,
                         reduced motion, seeded RNG, particles, GLB loading
-src/scenes/<id>/        one 3D set per folder: { cues, create(host) -> setCue, update, hotspots, describe, dispose }
+src/scenes/<id>/        one 3D set per folder: { cues, create(host, context) -> setCue, step, frame, hotspot, act, dispose }; `diorama` serves every file without a place of its own
 src/consoles/           faithful consoles in HTML/SVG with native buttons: Dsky, LmPanel, TelescopeConsole, ...
 src/input/              Controls (axes + buttons) fed by keyboard, pointer/touch, gamepad and hands
 src/hands/              MediaPipe Hand Landmarker (lazy), gesture classifier (pure), virtual cursor, calibration
@@ -72,7 +72,7 @@ src/ui/parts.tsx        Line (REAL/IMAGINED), Source, Badge, ClewCard, Btn, glos
 tests/                  content gates, puzzle reachability, simulations, gestures
 ```
 
-Built so far: everything above except `src/hands/`; one set (`src/scenes/tranquility/`) and one console (`LmPanel`).
+Built so far: everything above except `src/hands/`; five sets (`tranquility`, `telescope`, `dsn`, `meridiani`, `diorama`) and four consoles.
 **To build a new set, console or episode, follow the recipe in `docs/HANDOFF.md`, section 4, and copy E02.**
 URL switches: `?q=low|medium|high` forces 3D quality, `?fps` shows the frame rate, `?dev` exposes the test hooks.
 
