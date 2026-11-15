@@ -1,0 +1,57 @@
+# Every external asset of the game: where it comes from, who made it, and its licence.
+# `scripts/prep-assets.ts` turns the raw downloads (assets-src/raw/, git-ignored) into public/assets/.
+# NASA material is in the public domain and is credited as NASA asks. No NASA logo is used.
+
+models:
+  mdl_apollo_lm.glb:
+    title: Apollo Lunar Module
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Apollo%20Lunar%20Module
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Lunar%20Module/Apollo%20Lunar%20Module.glb
+    raw: models/apollo_lm.glb
+
+images:
+  img_e02_site_noon.webp:
+    title: High Noon at Tranquility Base (PIA12925)
+    credit: NASA/GSFC/Arizona State University
+    license: Public domain
+    page: https://images.nasa.gov/details/PIA12925
+    url: https://images-assets.nasa.gov/image/PIA12925/PIA12925~orig.jpg
+    raw: img/PIA12925_orig.jpg
+  img_e02_site_labels.webp:
+    title: "Apollo 11: Second Look (PIA12909)"
+    credit: NASA/GSFC/Arizona State University
+    license: Public domain
+    page: https://images.nasa.gov/details/PIA12909
+    url: https://images-assets.nasa.gov/image/PIA12909/PIA12909~orig.jpg
+    raw: img/PIA12909_orig.jpg
+
+textures:
+  tex_tranquility_ground.webp:
+    title: Ground of the Tranquility Base set
+    credit: NASA/GSFC/Arizona State University (PIA12925). The three captions of the release image are painted out.
+    license: Public domain; derived
+    note: Used only as terrain colour. The set is labelled "Terrain approximated from NASA imagery". The untouched image is img_e02_site_noon.webp.
+    raw: img/PIA12925_orig.jpg
+  tex_moon_1k.webp:
+    title: CGI Moon Kit, colour map
+    credit: NASA's Scientific Visualization Studio
+    license: Public domain
+    page: https://svs.gsfc.nasa.gov/4720
+    url: https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_1k.jpg
+    raw: img/moon_color_1k.jpg
+  tex_earth_1k.webp:
+    title: Blue Marble
+    credit: NASA's Scientific Visualization Studio; Blue Marble data courtesy of Reto Stockli (NASA/GSFC)
+    license: Public domain
+    page: https://svs.gsfc.nasa.gov/2915
+    url: https://svs.gsfc.nasa.gov/vis/a000000/a002900/a002915/bluemarble-2048.png
+    raw: img/earth_2k.png
+
+code:
+  public/draco/:
+    title: Draco glTF decoder
+    credit: Google (via three.js examples)
+    license: Apache-2.0
+    note: Served from our own origin so models decode without third-party requests.

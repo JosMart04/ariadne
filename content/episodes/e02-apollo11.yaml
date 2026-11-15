@@ -1,3 +1,6 @@
+# 3D REFERENCE EPISODE. Copy this file's shape for every episode that has a 3D set.
+# Contract: src/content/schema.ts. Cues and hotspots: src/scenes/tranquility/cues.json.
+# Every fact below was read against its source on Nov 15, 2026 (see `note`). `verified:` is for HUMAN initials only.
 id: e02-apollo11
 num: 2
 act: moon
@@ -6,34 +9,301 @@ title: Magnificent Desolation
 slate: { place: Tranquility Base, year: 1969 }
 launched: "1969-07-16"
 key: true
-draft: true
 status: { badge: silent-intact, where: "Sea of Tranquility, the Moon" }
 nssdca: [1969-059C]
 resource: apollo-lm
 
+objectives:
+  - Explain how two people landed a spacecraft on the Moon by hand.
+  - Name what Apollo 11 left on the Moon, and say which part needs no power.
+  - Say where Eagle's lower half is today and how we can still see it.
+
+set:
+  scene: tranquility
+  model: eagle
+  labels: [reconstruction, terrain-approximated]
+
+models:
+  eagle:
+    file: mdl_apollo_lm.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Apollo%20Lunar%20Module
+    license: Public domain (NASA 3D Resources)
+
+images:
+  site-labels:
+    file: img_e02_site_labels.webp
+    alt: "Orbital photo of the Apollo 11 site. Labels point to Eagle's descent stage, the experiments, and the craters Little West and West."
+    credit: NASA/GSFC/Arizona State University
+    source: https://photojournal.jpl.nasa.gov/catalog/PIA12909
+  site-noon:
+    file: img_e02_site_noon.webp
+    alt: "Orbital photo of the Apollo 11 site at noon. A bright dot marks Eagle's descent stage. West Crater, ringed with boulders, lies to the east."
+    credit: NASA/GSFC/Arizona State University
+    source: https://photojournal.jpl.nasa.gov/catalog/PIA12925
+
+cues:
+  passage: passage
+  arrival: arrival
+  operation: alarm
+  discovery: discovery
+  silence: liftoff
+  clew: clew
+  status: status
+  file: file
+
 facts:
+  landing:
+    text: Eagle was the first crewed vehicle to land on the Moon. It landed on July 20, 1969, in the Sea of Tranquility, with Neil Armstrong and Buzz Aldrin on board.
+    source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C
+    note: "Checked: 'first crewed vehicle to land on the Moon', 'landed at 20:17:40 UT on 20 July 1969 in ... the Sea of Tranquility'."
+  alarm:
+    text: "About 10 km above the Moon, the computer raised program alarm 1202: a data overflow. Mission Control answered, \"We're Go on that alarm.\""
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked at 102:38:26 to 102:38:53: 'Altitude 33,500 feet', 'being produced by data overflow in the computer', Duke: 'We're Go on that alarm.' The journal moved from nasa.gov to apollojournals.org; the old nasa.gov/history/alsj URLs now redirect to a landing page."
+  spring-loaded:
+    text: "Armstrong said that in practice runs the crew was ready to abort, but in the real flight they were \"spring-loaded to the land position\"."
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked: post-flight press conference quote in the commentary after 102:38:42."
+  lpd:
+    text: The computer was steering Eagle to a spot just short of a large rocky crater, surrounded by a field of very large rocks.
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked: Armstrong, 1969 Technical Debrief: 'landing just short (and slightly north) of a large rocky crater surrounded with the large boulder field with very large rocks'."
+  boulders:
+    text: The boulder field around West Crater holds rocks 2 to 3 meters across.
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked: 'the boulder field surrounding West Crater contains rocks up to 2 to 3 meters in size, big enough to cause the LM some real problems'."
+  manual:
+    text: About 180 meters above the ground, Armstrong took manual control and flew beyond the boulder field around West Crater.
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked: 102:43:11 Aldrin '600 feet'; 'at 102:43:22, Neil takes over manual control, going into P66'; 'Neil has to take manual control and fly beyond the boulder field surrounding West Crater'. 600 ft = 183 m."
+  fuel:
+    text: "Mission Control counted the fuel aloud: \"60 seconds\", then \"30 seconds\". After that call the crew had to land at once or abort."
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked: 102:45:02 Duke '60 seconds (of fuel left before the Bingo call)'; 102:45:31 '30 seconds'. Wording of what Bingo means: VERIFY with the team."
+  contact:
+    text: "Thin probes, 1.73 meters long, hung under Eagle's footpads. When one touched the ground, Aldrin called \"Contact Light.\""
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked at 102:45:40: 'At least one of the probes hanging from three of the footpads has touched the surface. Each of them is 67 inches (1.73 meters) long.'"
+  eagle-landed:
+    text: "Armstrong reported: \"Houston, Tranquility Base here. The Eagle has landed.\""
+    source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C
+    note: "Checked on NSSDCA and at 102:45:58 in the journal."
+  dsky:
+    text: The DSKY is the display and keypad the crew used to talk to the lunar module's computer.
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked: 'The DSKY is the Display and Keypad, used by the crew to communicate with the LM computer.'"
+  abort-buttons:
+    text: The cabin had an Abort button and an Abort Stage button. They sent the crew back to orbit on the descent engine or on the ascent engine.
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked: 'for a return to orbit using either the descent engine or the ascent engine ... push either the Abort button or Abort Stage button, respectively.'"
+  window-scale:
+    text: Armstrong's window carried a scale marked in degrees. The computer showed a number, and that mark on the window pointed at the place where it planned to land.
+    source: https://apollojournals.org/alsj/a11/a11.landing.html
+    note: "Checked at 102:42:35: 'The window in front of Neil is scribed with vertical and horizontal scales ... Buzz is reading a computer display which indicates where on the vertical scale Neil should look'."
+  samples:
+    text: Armstrong and Aldrin collected 21.55 kg of lunar rock and soil.
+    source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C
+    note: "Checked: 'collected 21.55 kg of lunar rock and soil'."
+  left-behind:
+    text: The crew set up experiments made to stay on the Moon, put up a flag, and lifted off after 21 hours and 36 minutes on the surface.
+    source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C
+    note: "Checked: EASEP 'experiments to be deployed and left on the lunar surface'; 'put up an American flag'; 'lifted off ... after 21 hours, 36 minutes on the lunar surface'."
   descent-stage:
     text: Eagle's descent stage stayed on the Moon and served as the launch platform for the ascent stage.
     source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C
+    note: "VERIFY the exact sentence about the launch platform further down the NSSDCA page."
   retroreflector:
-    text: Apollo 11 left a laser retroreflector with 100 corner-cube mirrors.
-    source: https://www.jpl.nasa.gov/news/apollo-11-experiment-continues-to-return-valuable-data
-    note: VERIFY URL.
-  flags:
-    text: Orbital images show the Apollo flags still cast shadows, except Apollo 11's, which Aldrin saw fall at liftoff.
-    source: https://www.nasa.gov/history/alsj/ApolloFlags-Condition.html
-  alsj:
-    text: Transcripts, photos and audio of the landing are in the Apollo Lunar Surface Journal.
-    source: https://www.nasa.gov/history/alsj/
+    text: Apollo 11 left a laser retroreflector, an array of fused silica cubes. Laser beams from Earth come back from it to the place they were sent from.
+    source: https://nssdc.gsfc.nasa.gov/nmc/experiment/display.action?id=1969-059C-04
+    note: "Checked: 'retroreflector array ... built of cubes of fused silica. Laser ranging beams from earth were reflected back to their point of origin'. The '100 corner-cube mirrors' count moved to the finale, whose JPL source could not be opened by script (403): VERIFY by hand."
+  desolation:
+    text: "Looking at the Moon around him, Buzz Aldrin said: \"Magnificent desolation.\""
+    source: https://apollojournals.org/alsj/a11/a11.step.html
+    note: "Checked at 109:43:24."
+  flag:
+    text: Buzz Aldrin saw the flag knocked over by the rocket blast when Eagle's top half lifted off.
+    source: https://apollojournals.org/alsj/ApolloFlags-Condition.html
+    note: "Checked: 'Buzz Aldrin saw it knocked over by the rocket blast as he and Neil Armstrong left the moon'. The page quotes Air & Space magazine, 2008."
+  seen-from-orbit:
+    text: NASA's Lunar Reconnaissance Orbiter has photographed the site. Its images show Eagle's descent stage and the experiments the crew left.
+    source: https://photojournal.jpl.nasa.gov/catalog/PIA12909
+    note: "Checked on the image itself: labels 'Eagle Descent Stage' and 'LRRR, PSE'. Caption text: VERIFY by hand."
+
+console:
+  name: Lunar module cabin
+  controls:
+    dsky:
+      label: DSKY
+      tag: REAL
+      fact: dsky
+      does: Display and keypad of the guidance computer. Its PROG light warns of a program alarm.
+    abort:
+      label: ABORT
+      tag: REAL
+      fact: abort-buttons
+      does: Ends the landing and returns to orbit on the descent engine.
+    abort-stage:
+      label: ABORT STAGE
+      tag: REAL
+      fact: abort-buttons
+      does: Drops the lower half and returns to orbit on the ascent engine.
+    window-scale:
+      label: Window scale
+      tag: REAL
+      fact: window-scale
+      does: Marks on the window that show where the computer plans to land.
+    hand-controller:
+      label: Hand controller
+      tag: REAL
+      fact: manual
+      does: Tilts the lander to speed up, to brake or to slide sideways.
+    sink-rate:
+      label: Descent rate
+      tag: IMAGINED
+      does: Asks the computer to sink faster or slower. Our switch is a simple stand-in for the real one.
+
+arrival:
+  - { who: machine, tag: IMAGINED, cue: arrival, text: "I am Eagle. Two men ride inside me. Below us is a sea with no water." }
+  - who: ariadne
+    tag: REAL
+    fact: landing
+    cue: arrival
+    text: "July 20, 1969. Eagle carries Neil Armstrong and Buzz Aldrin down to the Moon. No crew has ever landed there."
+  - { who: machine, tag: IMAGINED, cue: alarm, text: "My computer is very busy tonight. A yellow light is about to come on." }
+
+operation:
+  title: The Boulder Field
+  explainer:
+    - text: A computer flew most of the way down. The crew watched it on a small display and keypad called the DSKY.
+      fact: dsky
+    - text: The computer raised an alarm. Mission Control checked it and told the crew to go on.
+      fact: alarm
+    - text: The computer was steering toward a crater ringed with boulders. Armstrong took control and flew past it.
+      fact: manual
+    - text: Fuel was running low. When a probe under a footpad touched the ground, the crew stopped the engine.
+      fact: contact
+  puzzle:
+    archetype: [B, A]
+    initial: alarm
+    maxSteps: 6
+    hints:
+      - Look at where the path ends, and at what lies beyond it.
+      - A lander needs flat ground with no rocks. And the fuel will not last.
+    states:
+      alarm:
+        stage: { kind: scene, cue: alarm }
+        say: "Ten kilometers above the Moon, a yellow light comes on: PROG. The display shows a code. 1202."
+        prompt: What do you do?
+        hints:
+          - You are not alone. Hundreds of engineers are listening.
+          - Mission Control can see what the computer is doing.
+        choices:
+          - { label: Ask Mission Control, detail: "\"Give us a reading on the 1202 program alarm.\"", to: go }
+          - { label: Press ABORT, detail: "Fire the engine and climb back to orbit.", to: abort }
+      abort:
+        wrong: true
+        stage: { kind: scene, cue: alarm }
+        fact: spring-loaded
+        say: "An abort ends the landing for good. In practice runs the crew was ready to abort. In the real flight, Armstrong said, they were \"spring-loaded to the land position\"."
+        next: alarm
+      go:
+        stage: { kind: scene, cue: alarm }
+        fact: alarm
+        say: "Mission Control answers: \"We're Go on that alarm.\" The computer had too much data. It dropped the small jobs and kept flying."
+        next: approach
+      approach:
+        stage: { kind: scene, cue: boulders }
+        fact: lpd
+        say: "Now you are low. Through the window you see where the computer is taking you: just short of a large crater, into a field of boulders."
+        prompt: Where do you land?
+        sim: descent
+        choices:
+          - { label: Stay on the computer's path, detail: "It ends just short of the crater.", to: rocks, when: rough-ground, target: target }
+          - { label: Hover and look for a gap, detail: "Slow down above the boulders.", to: fuel, when: out-of-fuel, target: search }
+          - { label: "Fly long, past the crater", detail: "Smooth ground lies beyond.", to: touchdown, when: landed-safe, target: beyond }
+      rocks:
+        wrong: true
+        stage: { kind: scene, cue: touchdown }
+        fact: boulders
+        say: "Rocks 2 to 3 meters across. A leg on one of them could tip the lander over. Armstrong saw them and took control."
+        next: approach
+      fuel:
+        wrong: true
+        stage: { kind: scene, cue: touchdown }
+        fact: fuel
+        say: "Hovering burns fuel fast. Mission Control was already counting: \"60 seconds.\" Then: \"30 seconds.\" There was no time left to search."
+        next: approach
+      touchdown:
+        stage: { kind: scene, cue: touchdown }
+        fact: contact
+        say: "A thin probe under a footpad touches the dust. \"Contact Light.\" You stop the engine. Eagle settles on four legs."
+        next: landed
+      landed:
+        stage: { kind: scene, cue: landed }
+        fact: eagle-landed
+        say: "Armstrong: \"Houston, Tranquility Base here. The Eagle has landed.\""
+        next: SOLVED
+
+discovery:
+  headline:
+    text: "Armstrong and Aldrin brought home 21.55 kg of the Moon. That is about as heavy as a full suitcase."
+    fact: samples
+  story:
+    text: >-
+      The two astronauts stayed outside for about two hours. They filled boxes with rock and soil,
+      the first pieces of another world that people had ever carried home. Then they set up small experiments
+      that were made to stay behind. One was a tray of mirrors that sends laser light straight back to where
+      it came from. It has no battery and no wires. When the work was done, the top half of Eagle lifted off
+      and took the crew back to orbit. The bottom half had done its job. It was the launch platform.
+      It is still standing where they left it.
+    facts: [samples, left-behind, retroreflector, descent-stage]
+  myth:
+    claim: "The Apollo 11 flag is still standing on the Moon."
+    truth: "Aldrin saw it fall. The blast of Eagle's top half knocked it over at liftoff."
+    fact: flag
+
+silence:
+  epigraph:
+    text: "Two vast and trunkless legs of stone\nStand in the desert."
+    author: Percy Bysshe Shelley
+    work: Ozymandias
+    year: 1818
+  before:
+    - who: ariadne
+      tag: REAL
+      fact: left-behind
+      cue: liftoff
+      text: "After 21 hours and 36 minutes on the Moon, the top half of Eagle lifts off. The crew goes home."
+    - who: ariadne
+      tag: REAL
+      fact: flag
+      cue: liftoff
+      text: "From the window, Aldrin sees the blast knock the flag over."
+    - { who: machine, tag: IMAGINED, cue: desolation, text: "They took my top half home. I am the part that stayed." }
+  last:
+    who: aldrin
+    tag: REAL
+    fact: desolation
+    cue: desolation
+    text: "Magnificent desolation."
+
+statusNow:
+  text: "Eagle's lower half still stands in the Sea of Tranquility. A NASA orbiter has photographed it from space, with the experiments beside it."
+  fact: seen-from-orbit
+  image: site-labels
 
 epigraph:
-  text: "Two vast and trunkless legs of stone\nStand in the desert."
+  text: "Nothing beside remains."
   author: Percy Bysshe Shelley
   work: Ozymandias
   year: 1818
 
-arrival:
-  - who: armstrong
-    tag: REAL
-    fact: alsj
-    text: "Tranquility Base here. The Eagle has landed."
+clew:
+  id: clew-1
+  title: No wires
+  line: "Apollo 11 left a tray of mirrors with no wires and no battery. ARIADNE cannot read it. And yet it feels… awake."
+  teaches: Something on the Moon needs no power at all.
+  rulesOut: That the answer at midnight needs power.
+
+crossThreads: [e03-alsep, e04-lrv]

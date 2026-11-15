@@ -32,6 +32,8 @@ speaker.note: Note from the last operator
 speaker.record: Mission record
 speaker.narrator: Knossos Station
 speaker.armstrong: Neil Armstrong, Apollo 11
+speaker.aldrin: Buzz Aldrin, Apollo 11
+speaker.capcom: Mission Control
 
 # Title
 title.name: ARIADNE
@@ -169,3 +171,36 @@ badge.resting: RESTING
 badge.resting.help: Resting on a small world.
 badge.drifting: DRIFTING
 badge.drifting.help: Drifting through space.
+
+# 3D sets (v1.1)
+label.reconstruction: Reconstruction
+label.terrain-approximated: Terrain approximated from NASA imagery
+label.artistic-view: Artistic view based on NASA data
+label.not-to-scale: Sizes and distances not to scale
+label.time-compressed: Time compressed
+label.simulation: "SIMULATION: the real machine never worked like this"
+set.loading: Restoring the memory…
+set.look: Drag to look around
+set.lost: The 3D view stopped.
+set.restart: Restart 3D
+set.textOnly: Continue in text
+set.none: This device cannot show the 3D scene. The whole story continues in text.
+set.scene: Scene
+flight.skip: Skip the flight
+flight.auto: The machine is flying your choice.
+flight.alt: Altitude
+flight.sink: Descent
+flight.speed: Speed
+flight.fuel: Fuel
+flight.m: m
+flight.ms: m/s
+flight.s: s
+puzzle.choose: Choose a place
+play.title: How will you play?
+play.explorer: Explorer
+play.explorer.help: Fly, turn and press the real controls. Mouse, keyboard, touch or gamepad.
+play.hands: Hands
+play.hands.help: Use your hands in front of the camera. Pinch to press. Make a fist to steer.
+play.accessible: Accessible
+play.accessible.help: Point and choose, with a mouse, a keyboard or one button. Same scenes, same ending.
+evidence.photo: Photographed from orbit

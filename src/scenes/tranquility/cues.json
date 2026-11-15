@@ -1,0 +1,21 @@
+{
+  "cues": {
+    "passage": "From high above, a grey plain covered in craters. One large crater is ringed with boulders. Nothing moves.",
+    "arrival": "The lunar module Eagle flies above the Moon, gold foil shining in hard sunlight. Its engine points down. The ground is far below.",
+    "alarm": "Close on Eagle in flight. A yellow light marked PROG is on, on the small computer keyboard inside.",
+    "boulders": "From behind Eagle, looking ahead. The path leads into a big crater full of boulders as large as cars. Smooth ground lies beyond it.",
+    "flight": "Eagle flies west, low over the crater, tilting to hold its speed.",
+    "touchdown": "Eagle comes down the last few meters. Dust shoots out sideways in flat, straight lines. Then everything is still.",
+    "landed": "Eagle stands on the Moon. Its four legs rest on grey dust. The Sun is low and the shadows are very long. The sky is black.",
+    "discovery": "Seen from the south: Eagle, a flag, and two small instruments set on the ground a short walk away.",
+    "stage": "Close on the lower half of Eagle: an eight-sided box wrapped in gold foil, with four legs and a ladder.",
+    "lrrr": "A flat square tray, tilted toward the sky, covered with small round mirrors. No wire leads to it.",
+    "psep": "A low box with two solar panels like open wings, and a thin antenna.",
+    "liftoff": "The top half of Eagle lifts off without smoke or flame. The blast knocks the flag over. The lower half stays.",
+    "desolation": "The lower half of Eagle stands alone on the plain. The flag lies in the dust. Nothing has moved here since 1969.",
+    "clew": "The mirror tray again, very close. It has no cable, no battery, no solar panel.",
+    "status": "Straight down from orbit: craters, and one small bright dot with a long shadow. That dot is Eagle's lower half.",
+    "file": "The lower half of Eagle turns slowly so you can see every side."
+  },
+  "hotspots": ["target", "search", "beyond", "stage", "lrrr", "psep", "flag"]
+}

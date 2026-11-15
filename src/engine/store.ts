@@ -7,8 +7,15 @@ import { createJSONStorage, persist, type StateStorage } from 'zustand/middlewar
 import { episodes, keyEpisodes } from '../content';
 
 export type InputMode = 'pointer' | 'keyboard' | 'switch' | 'head';
+/** How the player acts on the same scenes and the same puzzle graphs (section 8.0, C-D04). */
+export type PlayMode = 'explorer' | 'hands' | 'accessible';
+export type Quality = 'auto' | 'low' | 'medium' | 'high';
 
 export type Settings = {
+  play: PlayMode;
+  /** 3D quality. Auto lowers the render resolution first, then the tier (10.6.6). */
+  quality: Quality;
+  /** The method inside Accessible. */
   input: InputMode;
   captions: boolean;
   narration: boolean;
@@ -41,6 +48,8 @@ type Actions = {
 const mq = (q: string) => typeof matchMedia === 'function' && matchMedia(q).matches;
 
 const defaultSettings = (): Settings => ({
+  play: 'explorer',
+  quality: 'auto',
   input: 'pointer',
   captions: true,
   narration: true,
@@ -103,6 +112,11 @@ export const useGame = create<{ settings: Settings; progress: Progress } & Actio
       name: 'ariadne-v1',
       storage: createJSONStorage(() => safeStorage),
       partialize: (s) => ({ settings: s.settings, progress: s.progress }),
+      // Saves from an older build lack the newer settings: fill them with defaults.
+      merge: (saved, current) => {
+        const p = (saved ?? {}) as Partial<{ settings: Settings; progress: Progress }>;
+        return { ...current, settings: { ...current.settings, ...p.settings }, progress: { ...current.progress, ...p.progress } };
+      },
     },
   ),
 );

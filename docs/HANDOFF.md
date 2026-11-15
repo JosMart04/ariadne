@@ -17,13 +17,34 @@ Full table and cut ladder: `docs/TASKS.md`.
 - I0 (Sun 00:20): course correction recorded in `docs/DECISIONS.md` (C-D01 to C-D17), `CLAUDE.md` (pillars, screenshot rule,
   operational fidelity, new architecture and ownership) and `docs/TASKS.md` (iteration plan).
 
-**In progress:** I1a, the vertical slice E02 Apollo 11 + finale. Order: B-11 contract → B-12 SceneHost → B-13 Tranquility set →
-B-14 cinema layout → B-15 E02 content → B-16 captures.
+**STOPPED Sun 00:46 by the usage limit of account B, in the middle of I1a. Whoever comes next (A or B) continues here.**
+
+**Written and pushed, gate green (153 tests), but NEVER YET SEEN IN A BROWSER:**
+- B-11 contract v1.1 (`set`, `models`, `cues`, `console`, `stage.kind: scene`, `sim`/`when`/`target`, `silence.before`)
+  and its compiler gates; store `play` and `quality`.
+- B-17 `src/sim/descent.ts` + `tranquility.ts` + `outcomes.ts`, tested: three scripted pilots, one per outcome.
+  The correct flight takes 84 s and lands with 25 s of fuel. `npx tsx scripts/dev/pilots.ts` prints them.
+- B-12 `src/three/` (SceneHost, assets, util). B-13 `src/scenes/tranquility/` (terrain draped with the real LROC image
+  PIA12925 at true scale, official lunar module GLB, flag/LRRR/PSEP reconstructions, 16 cues, scripted flight).
+- B-14 cinema layout: `src/episode/CinemaEpisode.tsx`, `Set3D.tsx`, `setStore.ts`, `PuzzleRunner` scene view,
+  `src/styles/cinema.css`. Episodes without `set` keep the text layout.
+- B-15 `content/episodes/e02-apollo11.yaml` complete, non-draft, every fact read against its source.
+- B-06 started: `assets-src/manifest.yaml`, `scripts/prep-assets.ts`, files in `public/assets/` and `public/draco/`.
 
 **Next 3 steps:**
-1. I1a deployed: E02 complete, in 3D, playable in Accessible.
-2. I1b: piloted descent in Explorer with the lunar module console, dust, sound.
-3. I1c: finale telescope, photons, voices.
+1. **Look at it.** `npm run dev`, open `#e02-apollo11`, play every beat. Expect to fix: the split of the lunar module
+   into ascent and descent stages (`splitY` in `props.ts` is a guess), the model's yaw, light intensity and exposure,
+   camera shots in `SHOTS` (`index.ts`), target positions, lower-third layout. Check the console for errors.
+2. B-16 `scripts/capture.ts` (puppeteer-core is installed; Chrome and Edge exist on machine B) + `#shot/<scene>/<cue>`;
+   commit captures in `docs/captures/i1a/`; review against the screenshot rule. Then I1a is done.
+3. I1b: player-flown descent (`act('fly', { pilot })` already accepts any pilot), `src/input/`, `src/consoles/`
+   (DSKY, LM panel), dust in flat sheets (the journal: "a transparent sheet of moving dust"), `src/audio/`.
+
+**Fact-check findings (B-02):**
+- The Apollo Lunar Surface Journal moved: every `https://www.nasa.gov/history/alsj/...` URL now redirects to a generic
+  landing page. Use `https://apollojournals.org/alsj/...`. E02 is fixed; grep the other episodes.
+- `jpl.nasa.gov/news/...` answers 403 to scripts: the finale's three facts still need a human or a browser check.
+- NSSDCA has no page for the Apollo 11 seismometer under `1969-059C-03`; the retroreflector is `1969-059C-04`.
 
 **Traps:**
 - `src/generated/` is git-ignored: run `npm run content` (or `npm run dev`) before `tsc`.

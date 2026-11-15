@@ -1,8 +1,9 @@
 /** Beat building blocks shared by episodes and free-form scenes (prologue, finale). */
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { t } from '../content';
 import type { FactC, LineT } from '../content/schema';
 import { Btn, FactView, LineView, useFocusOn } from '../ui/parts';
+import { showCue } from './setStore';
 
 /** A beat body + its single way forward. Keeps every beat ending in a clear closing action (Shneiderman). */
 export function BeatFrame({ children, onNext, nextLabel, extra }: { children: ReactNode; onNext?: () => void; nextLabel?: string; extra?: ReactNode }) {
@@ -29,14 +30,21 @@ export function LinesBeat({
   machineName,
   onDone,
   doneLabel,
+  cue,
 }: {
   lines: LineT[];
   facts: Record<string, FactC>;
   machineName?: string;
   onDone: () => void;
   doneLabel?: string;
+  /** In a 3D set: the cue to show when a line names none. */
+  cue?: string;
 }) {
   const [shown, setShown] = useState(1);
+  // Each line can move the camera of the 3D set.
+  useEffect(() => {
+    showCue(lines[shown - 1]?.cue ?? cue);
+  }, [lines, shown, cue]);
   // Focus enters the beat once. After that it stays on Continue, so one key press reveals each line;
   // new lines are announced through the live region.
   const region = useFocusOn<HTMLDivElement>(lines);

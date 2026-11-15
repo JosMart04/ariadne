@@ -11,11 +11,17 @@ import { go } from '../engine/router';
 import { useGame } from '../engine/store';
 import { Badge, Btn, ClewCard, EpigraphView, FactView, LineView, Rich, useFocusOn } from '../ui/parts';
 import { BeatFrame, LinesBeat } from './beats';
+import { CinemaEpisode } from './CinemaEpisode';
 import { PuzzleRunner } from './PuzzleRunner';
 
 type BeatId = 'passage' | 'arrival' | 'operation' | 'discovery' | 'silence' | 'clew' | 'status' | 'file';
 
+/** An episode with a 3D set plays in the cinema layout; the others keep the text layout until their set exists. */
 export function EpisodePlayer({ ep }: { ep: EpisodeC }) {
+  return ep.set ? <CinemaEpisode ep={ep} /> : <TextEpisode ep={ep} />;
+}
+
+function TextEpisode({ ep }: { ep: EpisodeC }) {
   const completeEpisode = useGame((s) => s.completeEpisode);
   const awardClew = useGame((s) => s.awardClew);
   const [assisted, setAssisted] = useState(false);

@@ -36,15 +36,15 @@ Each iteration ends deployed, with the gate green, captures committed and `docs/
 - [x] B-01 Machine setup: pull, `npm ci`, `.env`, `npm run check` green (Sun 00:13).
 
 **I1a**
-- [ ] B-11 Contract v1.1 in `src/content/schema.ts` + compiler gates: `set`, `models`, `stage.kind: scene`, `cue`, `sim`, `when`, `target`, `console.controls`. Store: `play`, `quality`. (FR-29, AC-17, CR-13)
-- [ ] B-12 `src/three/` SceneHost: fixed steps, pause when hidden, Auto quality, context loss → "Restart 3D" or text view, reduced motion, seeded RNG, GLB loader, particles. (NFR-13, 10.6.6)
-- [ ] B-13 `src/scenes/tranquility/`: official lunar module model, deterministic terrain with craters and boulders, low Sun, black sky, Earth. Cues for every E02 beat. (10.6.1)
-- [ ] B-14 Cinema layout in `src/episode/`: full-bleed set, captions with speaker and REAL/IMAGINED tag, slate, HUD, on-screen labels; Accessible targets anchored to scene hotspots; text view as fallback. (AC-15, AX-10, AX-31)
-- [ ] B-15 E02 content complete, non-draft: "The Boulder Field" state machine (1202 alarm, landing zone), all seven beats, `clew-1`. Each new fact with a NASA/ALSJ source and a `note:` of what was checked. (5.1, section 7)
+- [~] (B, written, not yet seen in a browser) B-11 Contract v1.1 in `src/content/schema.ts` + compiler gates: `set`, `models`, `stage.kind: scene`, `cue`, `sim`, `when`, `target`, `console.controls`. Store: `play`, `quality`. (FR-29, AC-17, CR-13)
+- [~] (B, written, not yet seen in a browser) B-12 `src/three/` SceneHost: fixed steps, pause when hidden, Auto quality, context loss → "Restart 3D" or text view, reduced motion, seeded RNG, GLB loader, particles. (NFR-13, 10.6.6)
+- [~] (B, written, not yet seen in a browser) B-13 `src/scenes/tranquility/`: official lunar module model, deterministic terrain with craters and boulders, low Sun, black sky, Earth. Cues for every E02 beat. (10.6.1)
+- [~] (B, written, not yet seen in a browser) B-14 Cinema layout in `src/episode/`: full-bleed set, captions with speaker and REAL/IMAGINED tag, slate, HUD, on-screen labels; Accessible targets anchored to scene hotspots; text view as fallback. (AC-15, AX-10, AX-31)
+- [~] (B, written, not yet seen in a browser) B-15 E02 content complete, non-draft: "The Boulder Field" state machine (1202 alarm, landing zone), all seven beats, `clew-1`. Each new fact with a NASA/ALSJ source and a `note:` of what was checked. (5.1, section 7)
 - [ ] B-16 `scripts/capture.ts` + `npm run capture` + `#shot/<scene>/<cue>`. First captures in `docs/captures/i1a/`. (AC-15, C-D12)
 
 **I1b**
-- [ ] B-17 `src/sim/descent.ts` + `outcomes.ts` + `tests/sim/`: deterministic, every outcome reachable by a scripted pilot, autopilot lands safe. (FR-21, FR-29)
+- [x] B-17 `src/sim/descent.ts` + `outcomes.ts` + `tests/sim/`: deterministic, every outcome reachable by a scripted pilot, autopilot lands safe. (FR-21, FR-29)
 - [ ] B-18 `src/input/` Controls: keyboard, pointer/touch stick, gamepad. (8.0)
 - [ ] B-19 `src/consoles/`: DSKY (VERB/NOUN, PROG light, 1202), LM panel (rate of descent, attitude, guarded ABORT / ABORT STAGE, landing point reticle). Every control `REAL` with a fact. (10.6.2, AC-17)
 - [ ] B-20 Explorer descent wired to the state machine; teach-and-retry; "Let the machine show you"; "Switch to guided choices". (FR-29a, FR-24)
@@ -55,7 +55,7 @@ Each iteration ends deployed, with the gate green, captures committed and `docs/
 - [ ] B-23 `src/scenes/telescope/` + TelescopeConsole + `src/sim/ranging.ts`: slew, zoom, focus on the real LROC image; hold to fire; photons; 2.5 s clock; distance. Finale content updated with `sim`/`when`/`target`. (5.4, AC-13)
 - [ ] B-24 Finale staging: revelation, monologue, synthesised "Daisy Bell" hum that slows down, final pulse. (5.4, 15.3)
 - [ ] B-04 `scripts/gen-voices.ts` + `content/voices.yaml`: ElevenLabs from compiled lines, `--dry-run` first, cache by text hash, ID3 comment "AI-generated voice (ElevenLabs)", adult stock voices. First batch: ARIADNE, E02, finale. (10.5, 15.4, R-08)
-- [ ] B-06 `assets-src/manifest.yaml` + `scripts/fetch-assets.ts`: models, LROC image, Moon and Earth textures, each with credit, licence and source page. (CR-11, R-04)
+- [~] (B, started) B-06 `assets-src/manifest.yaml` + `scripts/fetch-assets.ts`: models, LROC image, Moon and Earth textures, each with credit, licence and source page. (CR-11, R-04)
 
 **I1d**
 - [ ] B-25 `src/hands/`: Hand Landmarker (lazy, same origin), One Euro filter, gesture classifier + `tests/hands/`, cursor + pinch, fist joystick, calibration, skeleton preview, gesture card, `?hands=sim`. (11.3, AC-14)

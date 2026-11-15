@@ -56,6 +56,7 @@ export function App() {
     el.dataset.motion = settings.reduceMotion ? 'reduce' : 'full';
     el.dataset.contrast = settings.highContrast ? 'high' : 'normal';
     el.dataset.input = settings.input;
+    el.dataset.play = settings.play;
   }, [settings]);
 
   useEffect(() => {
@@ -63,9 +64,11 @@ export function App() {
   }, [route.name, route.name === 'episode' ? route.id : '']);
 
   const ep = route.name === 'episode' ? episodeById(route.id) : undefined;
+  /** A 3D set fills the screen and the station bar floats over it. */
+  const cinema = !!ep?.set;
 
   return (
-    <div className={`app route--${route.name}`}>
+    <div className={`app route--${route.name}${cinema ? ' app--cinema' : ''}`}>
       <a className="skip" href="#main" onClick={(e) => (e.preventDefault(), document.getElementById('main')?.focus())}>
         {t('shell.skip')}
       </a>

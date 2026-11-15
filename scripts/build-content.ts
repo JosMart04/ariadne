@@ -7,6 +7,9 @@
  *  - a REAL line or datum has no sourced fact (pillar 2, CR-02, AC-02)
  *  - a puzzle has a dead end or an undefined transition (pillar 3, FR-22, AC-03)
  *  - one of the 13 challenge resources is missing (M6)
+ *  - a simulation outcome has no choice, or a choice names an outcome that does not exist (FR-29, C-D03)
+ *  - a cue or a hotspot is not declared by the 3D set (src/scenes/<id>/cues.json)
+ *  - a REAL console control cites no fact (AC-17)
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
@@ -27,10 +30,25 @@ import {
   type SceneC,
 } from '../src/content/schema.ts';
 import { puzzleProblems } from '../src/engine/fsm.ts';
+import { SIM_OUTCOMES, isSim } from '../src/sim/outcomes.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = join(ROOT, 'content');
 const OUT = join(ROOT, 'src', 'generated', 'content.json');
+const SCENES = join(ROOT, 'src', 'scenes');
+
+/** What a 3D set declares: its cues (with their text description, AX-32) and its hotspots. */
+type SetSheet = { cues: Record<string, string>; hotspots: string[] };
+
+function loadSets(): Record<string, SetSheet> {
+  const out: Record<string, SetSheet> = {};
+  if (!existsSync(SCENES)) return out;
+  for (const id of readdirSync(SCENES)) {
+    const file = join(SCENES, id, 'cues.json');
+    if (existsSync(file)) out[id] = JSON.parse(readFileSync(file, 'utf8')) as SetSheet;
+  }
+  return out;
+}
 
 /** Gentle-vocabulary rule (elicitation 5.5): machines rest, sleep, go silent. */
 const HARSH = /\b(die[sd]?|dying|dead|kill(ed|s)?)\b/i;
@@ -60,10 +78,34 @@ function compileFacts(facts: Record<string, z.infer<typeof Episode>['facts'][str
 export function buildContent(opts: { quiet?: boolean } = {}): Content {
   const problems: string[] = [];
   const warnings: string[] = [];
+  const sets = loadSets();
 
   /** Checks shared by episodes and scenes. `used` collects the fact keys that are actually cited. */
-  const checker = (file: string, facts: Record<string, unknown>, images: Record<string, unknown>) => {
+  const checker = (
+    file: string,
+    facts: Record<string, unknown>,
+    images: Record<string, unknown>,
+    set?: { scene: string; model?: string },
+    models: Record<string, unknown> = {},
+  ) => {
     const used = new Set<string>();
+    const sheet = set ? sets[set.scene] : undefined;
+    if (set && !sheet) problems.push(`${file}: set.scene "${set.scene}" has no src/scenes/${set.scene}/cues.json`);
+    if (set?.model && !(set.model in models)) problems.push(`${file}: set.model "${set.model}" is not in models`);
+    /** A cue must be declared by the set, so a typo can never leave the stage empty. */
+    const cue = (name: string | undefined, where: string) => {
+      if (!name) return;
+      if (!set) problems.push(`${file}: ${where} names cue "${name}" but there is no set`);
+      else if (sheet && !(name in sheet.cues)) problems.push(`${file}: ${where} names unknown cue "${name}" of set "${set.scene}"`);
+    };
+    const control = (id: string, c: { tag: string; fact?: string }) => {
+      if (c.tag === 'REAL' && !c.fact) problems.push(`${file}: console control "${id}" is REAL but cites no fact (AC-17)`);
+      if (c.tag === 'IMAGINED' && c.fact) problems.push(`${file}: console control "${id}" is IMAGINED and must not cite a fact`);
+      if (c.fact) {
+        used.add(c.fact);
+        if (!(c.fact in facts)) problems.push(`${file}: console control "${id}" cites unknown fact "${c.fact}"`);
+      }
+    };
     const cite = (key: string | undefined, where: string) => {
       if (!key) return;
       used.add(key);
@@ -73,6 +115,7 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
       if (l.tag === 'REAL' && !l.fact) problems.push(`${file}: ${where} is REAL but cites no fact`);
       if (l.tag === 'IMAGINED' && l.fact) problems.push(`${file}: ${where} is IMAGINED and must not cite a fact`);
       cite(l.fact, where);
+      cue(l.cue, where);
       if (HARSH.test(l.text)) warnings.push(`${file}: ${where} uses harsh vocabulary ("${l.text.match(HARSH)![0]}")`);
     };
     const puzzle = (p: PuzzleT, where: string) => {
@@ -82,9 +125,28 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
         const img = (s.stage as { image?: unknown } | undefined)?.image;
         if (typeof img === 'string' && !(img in images))
           problems.push(`${file}: ${where}.states.${id} uses unknown image "${img}"`);
+        if (s.stage?.kind === 'scene') {
+          const c = (s.stage as { cue?: unknown }).cue;
+          if (typeof c !== 'string') problems.push(`${file}: ${where}.states.${id} stage kind "scene" needs a cue`);
+          else cue(c, `${where}.states.${id}`);
+        }
+        for (const ch of s.choices ?? []) {
+          if (ch.target && sheet && !sheet.hotspots.includes(ch.target))
+            problems.push(`${file}: ${where}.states.${id} targets unknown hotspot "${ch.target}" of set "${set!.scene}"`);
+          if (ch.when && !s.sim) problems.push(`${file}: ${where}.states.${id} has "when" but no "sim"`);
+        }
+        // FR-29: the outcomes of the simulation and the choices of the decision are the same set.
+        if (s.sim) {
+          if (!isSim(s.sim)) problems.push(`${file}: ${where}.states.${id} names unknown sim "${s.sim}"`);
+          else {
+            const want = [...SIM_OUTCOMES[s.sim]].sort().join(', ');
+            const got = (s.choices ?? []).map((ch) => ch.when ?? '(none)').sort().join(', ');
+            if (want !== got) problems.push(`${file}: ${where}.states.${id} sim "${s.sim}" has outcomes [${want}] but choices map [${got}]`);
+          }
+        }
       }
     };
-    return { used, cite, line, puzzle };
+    return { used, cite, cue, control, line, puzzle };
   };
 
   // ---- Episodes ----
@@ -95,7 +157,9 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     const ep = validate(Episode, load(file), problems);
     if (!ep) continue;
     if (basename(name, '.yaml') !== ep.id) problems.push(`${file}: file name must be ${ep.id}.yaml`);
-    const c = checker(file, ep.facts, ep.images);
+    const c = checker(file, ep.facts, ep.images, ep.set, ep.models);
+    for (const [beat, name] of Object.entries(ep.cues)) c.cue(name, `cues.${beat}`);
+    for (const [id, ctl] of Object.entries(ep.console?.controls ?? {})) c.control(id, ctl);
 
     ep.arrival?.forEach((l, i) => c.line(l, `arrival[${i}]`));
     ep.operation?.explainer.forEach((s, i) => c.cite(s.fact, `operation.explainer[${i}]`));
@@ -106,6 +170,7 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
       c.cite(ep.discovery.myth?.fact, 'discovery.myth');
     }
     if (ep.silence) {
+      ep.silence.before?.forEach((l, i) => c.line(l, `silence.before[${i}]`));
       c.line(ep.silence.last, 'silence.last');
       ep.silence.lines?.forEach((l, i) => c.line(l, `silence.lines[${i}]`));
     }
@@ -118,6 +183,7 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
       for (const beat of ['objectives', 'arrival', 'operation', 'discovery', 'silence', 'statusNow'] as const)
         if (!ep[beat]) problems.push(`${file}: "${beat}" is required once draft is false (AC-07)`);
       if (ep.key && !ep.clew) problems.push(`${file}: key episodes must award a clew`);
+      if (!ep.set) warnings.push(`${file}: no 3D set yet, so it is not linked from the Thread route (C-D15)`);
       for (const k of Object.keys(ep.facts))
         if (!c.used.has(k)) warnings.push(`${file}: fact "${k}" is never cited (it still shows in the Field File)`);
     }
@@ -144,8 +210,10 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     }
     const sc = validate(Scene, load(file), problems);
     if (!sc) return null;
-    const c = checker(file, sc.facts, sc.images);
+    const c = checker(file, sc.facts, sc.images, sc.set, sc.models);
+    for (const [id, ctl] of Object.entries(sc.console?.controls ?? {})) c.control(id, ctl);
     sc.beats.forEach((b, i) => {
+      c.cue(b.cue, `beats[${i}]`);
       if (b.kind === 'lines') b.lines.forEach((l, j) => c.line(l, `beats[${i}].lines[${j}]`));
       if (b.kind === 'puzzle') c.puzzle(b.puzzle, `beats[${i}].puzzle`);
       if (b.kind === 'facts') b.facts.forEach((k) => c.cite(k, `beats[${i}].facts`));
