@@ -5,26 +5,87 @@ name: Kepler
 title: Goodnight, Planet Hunter
 slate: { place: Orbit around the Sun, year: 2009 }
 launched: "2009-03-06"
-draft: true
-status: { badge: drifting, where: "Orbiting the Sun, trailing behind Earth" }
+status: { badge: drifting, where: "In a silent orbit around the Sun" }
 nssdca: [2009-011A]
 resource: kepler
-
+objectives:
+  - Explain why a passing planet can dim a star.
+  - Distinguish a possible transit from a confirmed planet.
+  - Explain how Kepler continued as the K2 mission.
 facts:
-  planets:
-    text: Kepler confirmed more than 2,600 planets beyond our solar system.
+  survey:
+    text: Kepler launched in March 2009. Its original survey watched about 150,000 stars for small changes in brightness.
     source: https://science.nasa.gov/mission/kepler/
+    note: "Checked Nov 15, 2026: Launch and Overview give March 6, 2009 and the initial continuous survey of 150,000 stars."
+  transit:
+    text: Kepler detected planets through transits, small dips in starlight when a planet passes in front of its star.
+    source: https://science.nasa.gov/mission/kepler/
+    note: "Checked Nov 15, 2026: Overview explains the dip in brightness caused by a planet crossing in front of its star."
+  checks:
+    text: Kepler's final primary-mission search required repeated transit signals and statistical checks. Some detected signals were false alarms.
+    source: https://arxiv.org/abs/1604.06140
+    note: "Checked Nov 15, 2026: Twicken et al., abstract, lists periodicity, at least three transits and consistency tests; it warns of false alarms."
+  k2:
+    text: After a second pointing wheel failed in 2013, engineers used sunlight pressure to help steady Kepler for its K2 mission.
+    source: https://science.nasa.gov/mission/kepler/
+    note: "Checked Nov 15, 2026: Planets are Everywhere describes the second wheel failure; K2 describes the use of sunlight pressure for pointing."
+  planets:
+    text: At retirement in 2018, Kepler's legacy included more than 2,600 planet discoveries beyond our solar system.
+    source: https://science.nasa.gov/mission/kepler/
+    note: "Checked Nov 15, 2026: The K2 section gives more than 2,600 discoveries at retirement. This is a historical count, not today's catalog total."
   goodnight:
-    text: Kepler received its final "goodnight" commands on Nov. 15, 2018, the anniversary of Johannes Kepler's death.
+    text: Kepler received final commands on November 15, 2018, after running out of fuel. The commands shut down its radio transmitters.
     source: https://www.jpl.nasa.gov/news/kepler-telescope-bids-goodnight-with-final-commands/
-
-epigraph:
-  text: "Bright star, would I were stedfast as thou art."
-  author: John Keats
-  work: Bright star
-  year: 1838
-
+    note: "Checked Nov 15, 2026: The Nov. 16 release dates the commands to the previous evening and describes disabling safety modes and shutting down transmitters."
+  orbit:
+    text: Kepler retired in a safe orbit around the Sun. Its collected data remained available for further discoveries.
+    source: https://www.jpl.nasa.gov/news/kepler-telescope-bids-goodnight-with-final-commands/
+    note: "Checked Nov 15, 2026: The closing paragraphs describe a safe solar orbit and future research with the archived data; the 2018 distance is omitted."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "I stared at one small patch of sky for years and watched stars blink when worlds passed in front of them."
+  - { who: machine, tag: IMAGINED, text: "Stay with the light. A small change may hold a large question." }
+  - { who: ariadne, tag: REAL, fact: survey, text: "You join a survey begun in 2009. Kepler watches about 150,000 stars in its original field." }
+operation:
+  title: Read a dip in starlight
+  explainer:
+    - { text: "You measure a star's brightness. A planet crossing in front of it can block a little light.", fact: transit }
+    - { text: "You look for a repeating pattern. The final primary-mission search required at least three transit events.", fact: checks }
+    - { text: "You test whether the signals agree. Passing a detection test does not remove every false alarm.", fact: checks }
+    - { text: "When a second pointing wheel fails, engineers use sunlight pressure to help steady the telescope for K2.", fact: k2 }
+discovery:
+  headline: { text: "Kepler retired with more than 2,600 planet discoveries.", fact: planets }
+  story:
+    text: >-
+      You begin with a change in light, not a close-up photograph of a planet.
+      Repeated signals and consistency tests help separate possible transits from noise.
+      Some signals remain false alarms.
+      By retirement in 2018, Kepler had contributed more than 2,600 planet discoveries.
+    facts: [transit, checks, planets]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: goodnight, text: "Kepler runs out of fuel. On November 15, 2018, the team sends its final commands through the Deep Space Network." }
+    - { who: ariadne, tag: REAL, fact: goodnight, text: "The team disables automatic restart modes and shuts down the radio transmitters." }
+  last: { who: machine, tag: IMAGINED, text: "You have the light I gathered. Look again." }
+statusNow:
+  text: "Kepler rests in an orbit around the Sun. You can study its stored observations after its radio has gone silent."
+  fact: orbit
+# Text and first publication (Sept. 27, 1838) checked Nov 15, 2026:
+# https://johnkeats.uvic.ca/1819-10-11.html
+epigraph:
+  text: "Bright star, would I were stedfast as thou art—"
+  author: John Keats
+  work: Bright Star
+  year: 1838
+set:
+  scene: diorama
+  model: telescope
+  alt: "NASA's Kepler model shows a long telescope body wrapped in gold insulation beside a broad solar panel."
+  labels: [artistic-view]
+  options: { size: 0.85, yaw: 30, float: true }
+models:
+  telescope:
+    file: mdl_kepler.glb
+    credit: NASA/Brian E. Kumanchik; NASA/Christian A. Lopez
+    source: https://science.nasa.gov/3d-resources/kepler-a/
+    license: Public domain (NASA 3D Resources)
+crossThreads: [e15-dawn]
+

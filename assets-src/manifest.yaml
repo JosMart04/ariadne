@@ -3,6 +3,13 @@
 # NASA material is in the public domain and is credited as NASA asks. No NASA logo is used.
 
 models:
+  mdl_kepler.glb:
+    title: Kepler (A)
+    credit: NASA/Brian E. Kumanchik; NASA/Christian A. Lopez
+    license: Public domain (NASA 3D Resources)
+    page: https://science.nasa.gov/3d-resources/kepler-a/
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Kepler%20(A)/Kepler%20(A).glb
+    raw: models/kepler.glb
   mdl_pioneer.glb:
     title: Pioneer 10
     credit: NASA
