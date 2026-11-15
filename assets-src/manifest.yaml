@@ -3,6 +3,13 @@
 # NASA material is in the public domain and is credited as NASA asks. No NASA logo is used.
 
 models:
+  mdl_near.glb:
+    title: NEAR Shoemaker
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/NEAR%20Shoemaker
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/NEAR%20Shoemaker/NEAR%20Shoemaker.glb
+    raw: models/near.glb
   mdl_dawn.glb:
     title: Dawn
     credit: NASA

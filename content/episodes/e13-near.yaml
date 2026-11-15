@@ -5,23 +5,82 @@ name: NEAR Shoemaker
 title: A Gentle Touch on Eros
 slate: { place: Asteroid 433 Eros, year: 2001 }
 launched: "1996-02-17"
-draft: true
 status: { badge: resting, where: "On the surface of asteroid 433 Eros" }
 nssdca: [1996-008A]
 resource: near
-
+objectives:
+  - Explain how laser timing measured an asteroid's shape.
+  - Describe how reflected light reveals surface minerals.
+  - Explain why an orbiter's landing produced extra science.
 facts:
   orbit-landing:
-    text: NEAR entered orbit around asteroid Eros on Feb. 14, 2000, and touched down on Feb. 12, 2001.
+    text: NEAR launched on February 17, 1996. It orbited Eros on February 14, 2000, and landed there on February 12, 2001.
     source: https://science.nasa.gov/mission/near-shoemaker/
-  descent-images:
-    text: It took 69 images during its final descent and kept sending data from the surface.
-    source: https://pubs.usgs.gov/publication/70023090
+    note: "Checked Nov 15, 2026: Launch and Key Dates give all three dates. The overview identifies the first asteroid orbit and landing."
+  ranging:
+    text: NEAR timed laser pulses traveling to Eros and back. Combined with radio tracking, these measurements revealed surface heights and the asteroid's shape.
+    source: https://nssdc.gsfc.nasa.gov/planetary/mission/near/near_science.html
+    note: "Checked Nov 15, 2026: Measuring Topography describes round-trip laser timing, radio-derived spacecraft position and the construction of shape models."
+  minerals:
+    text: NEAR measured infrared sunlight reflected by Eros. Features in this light revealed the minerals olivine and pyroxene.
+    source: https://nssdc.gsfc.nasa.gov/planetary/mission/near/near_science.html
+    note: "Checked Nov 15, 2026: Eros Spectrum describes the infrared measurement and absorption bands from olivine and pyroxene."
+  descent:
+    text: NEAR took 69 high-resolution photographs during its controlled descent. Although designed as an orbiter, it kept returning data after landing.
+    source: https://science.nasa.gov/mission/near-shoemaker/
+    note: "Checked Nov 15, 2026: In Depth describes 69 descent images, touchdown and about two weeks of additional data; overview says it was not designed as a lander."
+  surface:
+    text: From the surface, NEAR's gamma-ray instrument recorded clear signs of chemical elements. These data helped compare Eros with meteorites.
+    source: https://nssdc.gsfc.nasa.gov/planetary/mission/near/near_science.html
+    note: "Checked Nov 15, 2026: Gamma-Ray Readings describes seven days of surface measurements, signatures of key elements and comparison with meteorite composition."
   last-contact:
-    text: Last contact was on Feb. 28, 2001.
+    text: NEAR's last contact was February 28, 2001. A later attempt to contact it in December 2002 received no reply.
     source: https://science.nasa.gov/mission/near-shoemaker/
-
+    note: "Checked Nov 15, 2026: The final mission paragraphs give Feb. 28, 2001 and the unsuccessful Dec. 10, 2002 recovery attempt."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "I reached an asteroid named for the god of love on Valentine's Day, 2000. A year later, they asked me to land on it. I had no legs."
+  - { who: machine, tag: IMAGINED, text: "You came close enough to ask the shape of a small world." }
+  - { who: ariadne, tag: REAL, fact: orbit-landing, text: "You reach Eros with NEAR in February 2000. It becomes the first spacecraft to orbit an asteroid." }
+operation:
+  title: Measure a world with light
+  explainer:
+    - { text: "You send a short laser pulse toward Eros. The instrument times its journey to the surface and back.", fact: ranging }
+    - { text: "You combine that distance with radio tracking of the spacecraft. Repeated measurements build a model of the asteroid's shape.", fact: ranging }
+    - { text: "You inspect reflected infrared light. Its absorption patterns reveal minerals in the surface.", fact: minerals }
+    - { text: "During the final descent, you receive 69 close photographs. The orbiter reaches the surface and keeps sending data.", fact: descent }
+discovery:
+  headline: { text: "A spacecraft designed to orbit Eros also returned measurements from its surface.", fact: descent }
+  story:
+    text: >-
+      You can study an asteroid without bringing a sample home.
+      Reflected infrared light reveals olivine and pyroxene.
+      After landing, the gamma-ray instrument records clear signs of chemical elements.
+      Those measurements help scientists compare Eros with meteorites found on Earth.
+    facts: [minerals, surface]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: descent, text: "The landing adds about two weeks of data to the orbital mission." }
+    - { who: ariadne, tag: REAL, fact: last-contact, text: "You hear from NEAR for the last time on February 28, 2001. The December 2002 contact attempt brings no reply." }
+  last: { who: machine, tag: IMAGINED, text: "You do not have to carry a world home to remember its shape." }
+statusNow:
+  text: "NEAR rests on Eros. Its contact record ends in 2001, and the later recovery attempt received no answer."
+  fact: last-contact
+# Poems, Third Series (1896), Nature XX; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "Could I but ride indefinite,\nAs doth the meadow-bee,"
+  author: Emily Dickinson
+  work: Poems, Third Series
+  year: 1896
+set:
+  scene: diorama
+  model: probe
+  alt: "NASA's NEAR Shoemaker model shows a box-shaped body, a dish antenna and four broad solar panels."
+  labels: [artistic-view]
+  options: { size: 1.0, yaw: 25, float: true }
+models:
+  probe:
+    file: mdl_near.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/NEAR%20Shoemaker
+    license: Public domain (NASA 3D Resources)
+crossThreads: [e15-dawn]
