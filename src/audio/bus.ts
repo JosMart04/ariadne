@@ -15,7 +15,7 @@ export type Channel = 'voice' | 'music' | 'sfx' | 'ambience';
 export type AudioSettings = { sound: boolean; narration: boolean; mono: boolean };
 
 /** Named effects that content can ask for with `sfx: <name>`. Checked by the content compiler. */
-export const SFX = ['key', 'confirm', 'wrong', 'alarm', 'quindar', 'contact', 'catch', 'pulse', 'static'] as const;
+export const SFX = ['key', 'confirm', 'wrong', 'alarm', 'quindar', 'contact', 'catch', 'pulse', 'echo', 'laser', 'daisy', 'static'] as const;
 export type SfxName = (typeof SFX)[number];
 
 const VOLUME: Record<Channel, number> = { voice: 1, music: 0.45, sfx: 0.7, ambience: 0.5 };
@@ -30,6 +30,7 @@ class AudioBus {
   private engineGain: GainNode | null = null;
   private engineSrc: AudioBufferSourceNode | null = null;
   private noise: AudioBuffer | null = null;
+  private music: GainNode | null = null;
 
   /** Call on the first click or key press. Safe to call many times. */
   unlock() {
@@ -158,9 +159,74 @@ class AudioBus {
         this.tone(880, t, 0.5, 0.12);
         this.tone(1760, t, 0.3, 0.04);
         break;
+      case 'echo': // the answer: the same note, fainter
+        this.tone(880, t, 0.5, 0.045);
+        this.tone(1760, t, 0.3, 0.015);
+        break;
+      case 'laser': // the station's laser: a short charge, then a click
+        this.tone(220, t, 0.35, 0.05, 'sawtooth');
+        this.tone(1320, t + 0.35, 0.12, 0.08);
+        this.burst(t + 0.35, 0.08, 0.2, 6000, 2000);
+        break;
+      case 'daisy':
+        this.daisy(t);
+        break;
       case 'static':
         this.burst(t, 0.7, 0.08, 4000, 800);
         break;
+    }
+  }
+
+  /**
+   * "Daisy Bell" (Harry Dacre, 1892, public domain), hummed by ARIADNE as she shuts down: each note a little
+   * longer and a little lower than the last. Our own synthesis; no recording of any kind is used (15.3).
+   * In 1961 an IBM 7094 sang this song: the first song ever performed by a computer.
+   */
+  private daisy(start: number) {
+    const ctx = this.ctx!;
+    // "Dai-sy, Dai-sy, give me your an-swer, do": note (Hz) and length in beats, in G major, three beats to the bar.
+    const tune: [number, number][] = [
+      [587.33, 3], [493.88, 3], [392.0, 3], [293.66, 3],
+      [329.63, 1], [369.99, 1], [392.0, 1], [329.63, 2], [392.0, 1], [293.66, 5],
+    ];
+    const bus = ctx.createGain();
+    bus.gain.value = 1;
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 900;
+    bus.connect(lp).connect(this.gain.music);
+    this.music = bus;
+    let at = start + 0.2;
+    let beat = 0.42;
+    let droop = 1;
+    for (const [freq, beats] of tune) {
+      const dur = beats * beat;
+      for (const [mult, level, type] of [[1, 0.11, 'sine'], [2, 0.02, 'triangle']] as [number, number, OscillatorType][]) {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = type;
+        o.frequency.setValueAtTime(freq * droop * mult, at);
+        // The voice sags within each note, like a tape slowing down.
+        o.frequency.linearRampToValueAtTime(freq * droop * mult * 0.985, at + dur);
+        g.gain.setValueAtTime(0, at);
+        g.gain.linearRampToValueAtTime(level, at + 0.08);
+        g.gain.setValueAtTime(level, at + dur * 0.75);
+        g.gain.linearRampToValueAtTime(0, at + dur);
+        o.connect(g).connect(bus);
+        o.start(at);
+        o.stop(at + dur + 0.05);
+      }
+      at += dur;
+      beat *= 1.09;
+      droop *= 0.972;
+    }
+  }
+
+  /** Stops a tune that is still playing (the player moved on). */
+  stopMusic() {
+    if (this.music && this.ctx) {
+      this.music.gain.setTargetAtTime(0, this.ctx.currentTime, 0.15);
+      this.music = null;
     }
   }
 

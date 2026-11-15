@@ -16,7 +16,7 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { audio } from '../audio/bus';
-import { SimConsole, hasConsole } from '../consoles';
+import { SimConsole, SimHud, hasConsole } from '../consoles';
 import { t } from '../content';
 import type { ChoiceT, ConsoleT, FactC, PuzzleT } from '../content/schema';
 import { voiceId } from '../content/voice';
@@ -42,7 +42,6 @@ type Props = {
   voice?: string;
 };
 
-type FlightReadout = { alt: number; sink: number; speed: number; fuel: number };
 type FlightEnd = { outcome: string | null };
 
 export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, consoleDef, voice }: Props) {
@@ -128,7 +127,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
   async function choose(c: ChoiceT) {
     if (scene && stage3d && state?.sim && c.when) {
       setFlying('machine');
-      announce(t('flight.auto'));
+      announce(t(`sim.${state.sim}.auto`));
       try {
         await act<Promise<FlightEnd>>('fly', { outcome: c.when, speed: 3 });
       } finally {
@@ -155,7 +154,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
     setErrors((e) => e + 1);
     setMiss(true);
     audio.play('wrong');
-    announce(t('flight.hard'));
+    announce(t(`sim.${state?.sim}.miss`));
   }
 
   /** "Let the machine show you": the scripted pilot flies the way that reaches SOLVED. Recorded without penalty. */
@@ -181,7 +180,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
       <div className="puzzle__view" ref={region} tabIndex={-1} role="group" aria-label={t('beat.operation')} aria-live="polite">
         {state.forced && <p className="puzzle__forced">{t('puzzle.forced')}</p>}
         <Stage stage={state.stage} />
-        {showText && miss && <p className="puzzle__say puzzle__say--wrong">{t('flight.hard')}</p>}
+        {showText && miss && <p className="puzzle__say puzzle__say--wrong">{t(`sim.${state.sim}.miss`)}</p>}
         {showText && !miss && state.say && (
           <p className={`puzzle__say${state.wrong ? ' puzzle__say--wrong' : ''}`}>
             <Rich text={state.say} />
@@ -193,19 +192,19 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
             <Rich text={state.prompt} />
           </p>
         )}
-        {flying === 'machine' && <FlightHud />}
+        {flying === 'machine' && state.sim && <SimHud sim={state.sim} />}
         {flying === 'player' && state.sim && <SimConsole sim={state.sim} def={consoleDef} facts={facts} />}
       </div>
 
       {flying === 'machine' ? (
         <div className="actions">
           <Btn kind="ghost" onClick={() => act('skip')}>
-            {t('flight.skip')}
+            {t(`sim.${state.sim}.skip`)}
           </Btn>
         </div>
       ) : flying === 'player' ? null : byHand && state.choices ? (
         <div className="actions">
-          <Btn onClick={() => takeControl(miss)}>{miss ? t('flight.retry') : t('flight.take')}</Btn>
+          <Btn onClick={() => takeControl(miss)}>{t(`sim.${state.sim}.${miss ? 'retry' : 'take'}`)}</Btn>
           {level >= 3 && !assist && (
             <Btn kind="ghost" onClick={showMe}>
               {t('puzzle.showMe')}
@@ -265,37 +264,5 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
         </div>
       )}
     </div>
-  );
-}
-
-/** The four numbers the crew called out on the way down. Read from the simulation, a few times per second. */
-function FlightHud() {
-  const [r, setR] = useState<FlightReadout | null>(null);
-  useEffect(() => {
-    const read = () => {
-      const s = act<{ x: number; y: number; vx: number; vy: number; fuel: number; agl?: number }>('state');
-      if (s) setR({ alt: Math.max(0, s.agl ?? s.y), sink: Math.max(0, -s.vy), speed: Math.abs(s.vx), fuel: Math.max(0, s.fuel) });
-    };
-    read();
-    const id = setInterval(read, 120);
-    return () => clearInterval(id);
-  }, []);
-  if (!r) return null;
-  const cell = (label: string, value: string, unit: string, warn = false) => (
-    <div className={`tape${warn ? ' tape--warn' : ''}`}>
-      <dt>{label}</dt>
-      <dd>
-        {value}
-        <span className="tape__unit"> {unit}</span>
-      </dd>
-    </div>
-  );
-  return (
-    <dl className="tapes" aria-live="off">
-      {cell(t('flight.alt'), r.alt.toFixed(0), t('flight.m'))}
-      {cell(t('flight.sink'), r.sink.toFixed(1), t('flight.ms'))}
-      {cell(t('flight.speed'), r.speed.toFixed(1), t('flight.ms'))}
-      {cell(t('flight.fuel'), r.fuel.toFixed(0), t('flight.s'), r.fuel < 30)}
-    </dl>
   );
 }

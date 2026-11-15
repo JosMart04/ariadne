@@ -85,7 +85,7 @@ export function App() {
 
   const ep = route.name === 'episode' ? episodeById(route.id) : undefined;
   /** A 3D set fills the screen and the station bar floats over it. */
-  const cinema = !!ep?.set;
+  const cinema = !!ep?.set || (route.name === 'finale' && !!content.finale.set) || (route.name === 'prologue' && !!content.prologue.set);
 
   return (
     <div className={`app route--${route.name}${cinema ? ' app--cinema' : ''}`}>

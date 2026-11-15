@@ -226,3 +226,29 @@ flight.call60: "60 seconds."
 flight.call30: "30 seconds."
 flight.prog: Program
 flight.commanded: asked
+
+# Wording per simulation (src/consoles/index.tsx)
+sim.descent.take: Take control
+sim.descent.retry: Try again from higher up
+sim.descent.skip: Skip the flight
+sim.descent.auto: The machine is flying your choice.
+sim.descent.miss: Too hard for the landing legs. Come down more slowly, then try again.
+sim.ranging.take: Use the telescope
+sim.ranging.retry: Aim again
+sim.ranging.skip: Skip
+sim.ranging.auto: The telescope turns to your choice.
+sim.ranging.miss: Aim again.
+scope.zoom: Zoom
+scope.aim: Aim
+scope.from: from Eagle's lower half
+scope.east: east
+scope.west: west
+scope.north: north
+scope.south: south
+scope.point: Pointing
+scope.closer: Closer
+scope.wider: Wider
+scope.laser: Laser
+scope.fire: Fire
+scope.keys: "Drag the map to move · wheel or + / − to zoom · arrows also move"
+scene.station: Knossos Station

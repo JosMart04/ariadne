@@ -1,66 +1,127 @@
+# The finale: the player deduces who answers at midnight, then measures it with the station's laser.
+# Set: src/scenes/telescope (cues and hotspots in its cues.json). Simulation: src/sim/ranging.ts.
+# Every fact below was read against its source on Nov 15, 2026 (see `note`). `verified:` is for HUMAN initials only.
 id: finale
 title: The Center of the Labyrinth
 
+set:
+  scene: telescope
+  labels: [artistic-view, not-to-scale]
+
+images:
+  site-noon:
+    file: img_e02_site_noon.webp
+    alt: "Orbital photo of the Apollo 11 site at noon. A bright dot marks Eagle's descent stage. Two smaller dots lie just south of it."
+    credit: NASA/GSFC/Arizona State University
+    source: https://photojournal.jpl.nasa.gov/catalog/PIA12925
+
 facts:
-  still-working:
-    text: The laser retroreflectors left on the Moon by Apollo are the only Apollo science experiments still returning data. Observatories on Earth still bounce lasers off them.
-    source: https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving
-    note: VERIFY URL and wording.
+  ranging:
+    text: Scientists have used reflectors on the Moon since the Apollo era. They aim a beam of light at a reflector and clock the time the light takes to come back.
+    source: https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/
+    note: "Checked: 'Scientists have been using reflectors on the Moon since the Apollo era ... Aim a beam of light at the reflector and clock the amount of time it takes for the light to come back.'"
+  round-trip:
+    text: The light takes about 2.5 seconds to go to the Moon and come back. From that time, scientists know the distance to within a few millimeters.
+    source: https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/
+    note: "Checked: 'By measuring how long it takes laser light to bounce back — about 2.5 seconds on average — researchers can calculate the distance ... down to less than a few millimeters.'"
   receding:
-    text: Laser ranging shows the Moon is moving away from Earth by about 3.8 cm per year.
-    source: https://www.jpl.nasa.gov/news/apollo-11-experiment-continues-to-return-valuable-data
-    note: VERIFY URL.
+    text: Decades of this one measurement showed that the Earth and the Moon drift apart by 3.8 cm each year. That is as fast as your fingernails grow.
+    source: https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/
+    note: "Checked: 'the Earth and Moon are slowly drifting apart at the rate that fingernails grow, or 1.5 inches (3.8 centimeters) per year.'"
   arrays:
-    text: Apollo 11 left 100 corner-cube mirrors. Apollo 14 left another 100-mirror array and Apollo 15 one with 300 mirrors.
-    source: https://www.jpl.nasa.gov/news/apollo-11-experiment-continues-to-return-valuable-data
-    note: VERIFY URL.
+    text: The panels left by Apollo 11 and Apollo 14 have 100 mirrors each. Apollo 15 left a panel with 300.
+    source: https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/
+    note: "Checked: 'They are each made of 100 mirrors that scientists call corner cubes ... Another panel with 300 corner cubes was dropped off by Apollo 15 astronauts in 1971.' The sentence before reads: 'Two were delivered by Apollo 11 and 14 crews in 1969 and 1971, respectively.'"
+  corner-cube:
+    text: Each mirror is a corner cube, the corner of a glass cube. It sends light back in the direction it came from, whatever that direction is.
+    source: https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/
+    note: "Checked: 'corner cubes, as they are corners of a glass cube; the benefit of these mirrors is that they can reflect light back to any direction it comes from.'"
+  weak:
+    text: The old reflectors return a weak signal today. Some send back only a tenth of the light that scientists expect.
+    source: https://www.nasa.gov/missions/lro/laser-beams-reflected-between-earth-and-moon-boost-science/
+    note: "Checked: 'These older reflectors are returning a weak signal' and 'returning only a 10th of the expected signal'."
+
+console:
+  name: Station telescope
+  controls:
+    slew:
+      label: Pointing
+      tag: IMAGINED
+      does: Turns the telescope. Knossos Station is fiction. Real stations point by coordinates, not by a photograph.
+    zoom:
+      label: Zoom
+      tag: IMAGINED
+      does: Magnifies the aiming map.
+    laser:
+      label: Laser
+      tag: REAL
+      fact: ranging
+      does: Fires a short pulse of light at a reflector on the Moon and clocks its return.
 
 beats:
   - kind: lines
+    cue: sky
     lines:
       - { who: ariadne, tag: IMAGINED, text: "You hold every clew now. Let's find out who answers at midnight." }
 
   - kind: puzzle
+    cue: where
     title: Who answers at midnight?
     puzzle:
       archetype: [B]
       initial: where
-      maxSteps: 6
+      maxSteps: 7
       hints:
         - Open your Logbook. Each clew rules something out.
         - It needs no power, and it is 2.5 light-seconds away, there and back.
       states:
         where:
+          stage: { kind: scene, cue: where }
           prompt: Where is the answer coming from?
           choices:
-            - { label: A rover on Mars, to: not-mars }
-            - { label: A satellite with batteries, to: not-battery }
-            - { label: A mirror on the Moon, to: aim }
+            - { label: A rover on Mars, to: not-mars, target: mars }
+            - { label: A satellite with batteries, to: not-battery, target: satellite }
+            - { label: A mirror on the Moon, to: turn, target: moon }
         not-mars:
           wrong: true
+          stage: { kind: scene, cue: where }
           say: "A signal to Mars and back takes many minutes. The answer comes in 2.5 seconds. Distance is time."
           next: where
         not-battery:
           wrong: true
+          stage: { kind: scene, cue: where }
           say: "Batteries run out, and solar machines go silent in the dark. This answer has never stopped."
           next: where
+        turn:
+          stage: { kind: scene, cue: moon }
+          say: "The telescope turns. The Moon fills the eyepiece, in tonight's light."
+          next: aim
         aim:
-          say: "The telescope shows Tranquility Base, seen from orbit."
+          stage: { kind: scene, cue: aim }
+          say: "The console shows Tranquility Base, photographed from orbit. The bright dot is Eagle's lower half."
           prompt: Where do you point the laser?
+          sim: ranging
+          hints:
+            - The mirror is small. Zoom in.
+            - It lies a few steps south of the big bright dot.
           choices:
-            - { label: The descent stage, detail: "The dark square in the middle.", to: aim-stage }
-            - { label: The small bright panel, detail: "A few steps from the descent stage.", to: fire }
-            - { label: The long shadow, to: aim-shadow }
+            - { label: The big bright dot, detail: "Eagle's lower half.", to: aim-stage, when: on-stage, target: stage }
+            - { label: The small dot just south, detail: "A few steps from Eagle.", to: fire, when: on-mirror, target: mirror }
+            - { label: The small crater, detail: "Bare ground to the east.", to: aim-ground, when: on-ground, target: ground }
         aim-stage:
           wrong: true
-          say: "The descent stage is foil and bare metal. It scatters light in every direction."
+          stage: { kind: scene, cue: aim }
+          say: "Eagle's lower half is foil and bare metal. It scatters your light in every direction. Nothing comes back."
           next: aim
-        aim-shadow:
+        aim-ground:
           wrong: true
-          say: "Only a shadow. Nothing there can send light back."
+          stage: { kind: scene, cue: aim }
+          say: "Dust and rock scatter your light too. Nothing comes back. Only something made to return light can answer."
           next: aim
         fire:
-          say: "You fire. Billions of photons leave the station. Only a few come home. The clock reads 2.5 seconds."
+          stage: { kind: scene, cue: beam }
+          fact: round-trip
+          say: "You fire. The light crosses to the Moon. Almost all of it is lost. A few points of light come home. The clock stops near 2.5 seconds."
           prompt: "Distance = speed of light × time ÷ 2. How far away is the mirror?"
           choices:
             - { label: "38,400 km", to: too-near }
@@ -68,21 +129,26 @@ beats:
             - { label: "3,844,000 km", to: too-far }
         too-near:
           wrong: true
+          stage: { kind: scene, cue: beam }
           say: "Too close. From there, light would return in a quarter of a second."
           next: fire
         too-far:
           wrong: true
+          stage: { kind: scene, cue: beam }
           say: "Too far. From there, light would need about 25 seconds."
           next: fire
         found:
+          stage: { kind: scene, cue: found }
           say: "About 384,400 km. The distance to the Moon. The answer at midnight was your own light, coming home."
           next: SOLVED
 
   - kind: facts
+    cue: found
     title: A mirror from 1969
-    facts: [arrays, still-working, receding]
+    facts: [arrays, corner-cube, ranging, receding, weak]
 
   - kind: lines
+    cue: monologue
     lines:
       - { who: ariadne, tag: IMAGINED, text: "I have seen a mirror return our light for fifty-seven years." }
       - { who: ariadne, tag: IMAGINED, text: "I have felt the Moon tremble for an hour after a fall." }
@@ -92,14 +158,17 @@ beats:
       - { who: ariadne, tag: IMAGINED, text: "You hold the thread now." }
 
   - kind: special
+    cue: dim
     name: daisy-bell
     text: "ARIADNE hums an old song, slower and slower, until her voice stops."
 
   - kind: special
+    cue: pulse
     name: pulse
     text: "Midnight. A pulse of light. Two and a half seconds. The pulse returns. The console keeps going, alone."
 
   - kind: lines
+    cue: sky
     lines:
       - who: narrator
         tag: IMAGINED

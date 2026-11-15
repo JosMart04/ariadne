@@ -155,3 +155,35 @@ export function LmPanel({ def, facts }: { def?: ConsoleT; facts: Record<string, 
     </div>
   );
 }
+
+/** The four numbers the crew called out on the way down, shown while a scripted pilot flies the player's choice. */
+export function LmHud() {
+  const [r, setR] = useState<Readout | null>(null);
+  useEffect(() => {
+    const read = () => {
+      const s = act<Readout>('state');
+      if (s) setR(s);
+    };
+    read();
+    const id = setInterval(read, 120);
+    return () => clearInterval(id);
+  }, []);
+  if (!r) return null;
+  const cell = (label: string, value: string, unit: string, warn = false) => (
+    <div className={`tape${warn ? ' tape--warn' : ''}`}>
+      <dt>{label}</dt>
+      <dd>
+        {value}
+        <span className="tape__unit"> {unit}</span>
+      </dd>
+    </div>
+  );
+  return (
+    <dl className="tapes" aria-live="off">
+      {cell(t('flight.alt'), Math.max(0, r.agl).toFixed(0), t('flight.m'))}
+      {cell(t('flight.sink'), Math.max(0, -r.vy).toFixed(1), t('flight.ms'))}
+      {cell(t('flight.speed'), Math.abs(r.vx).toFixed(1), t('flight.ms'))}
+      {cell(t('flight.fuel'), Math.max(0, r.fuel).toFixed(0), t('flight.s'), r.fuel < 30)}
+    </dl>
+  );
+}

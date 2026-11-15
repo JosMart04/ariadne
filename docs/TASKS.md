@@ -62,14 +62,14 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
 - [x] B-22 `src/audio/bus.ts` + procedural effects; Sound and Mono toggles. (FR-33, FR-34)
 
 **I1c (07:30–09:30)**
-- [~] (B, started Sun 07:40) B-23 **Finale telescope.** `src/scenes/telescope/` (the Moon in the eyepiece, then the real orbital image
+- [x] B-23 **Finale telescope.** `src/scenes/telescope/` (the Moon in the eyepiece, then the real orbital image
   `img_e02_site_noon.webp` as the aiming map, labelled as an orbiter image) + `src/consoles/TelescopeConsole.tsx` (slew,
   zoom, focus, hold to fire) + `src/sim/ranging.ts` (outcomes already declared in `outcomes.ts`: `on-mirror`, `on-stage`,
   `on-ground`). Update `content/finale.yaml`: add `set`, cues, `sim: ranging` with `when`/`target` on the `aim` state, and
   reword `aim-shadow` so it fits "anything that is not the mirror or the stage". Photons: thousands leave, a few return;
   the clock reads 2.5 s (the real wait is fine: it is not a time limit). Make `ScenePlayer` use the cinema layout when
   the scene has a `set` (today it is still the text layout). (5.4, AC-13)
-- [ ] B-24 Finale staging: revelation facts as captions, the monologue, the "Daisy Bell" hum that slows down (synthesise
+- [x] B-24 Finale staging: revelation facts as captions, the monologue, the "Daisy Bell" hum that slows down (synthesise
   it: public domain, 1892; never the 1961 recording), the final pulse, the closing line. (5.4, 15.3)
 - [ ] B-04 **Voices.** `content/voices.yaml` (speaker → ElevenLabs stock voice id) + `scripts/gen-voices.ts`: reads
   `voiceLines(content, only)` from `src/content/voice.ts`, `--dry-run` prints the character count, cache by text hash,

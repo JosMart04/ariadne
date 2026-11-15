@@ -18,7 +18,7 @@ done / in progress / next steps / traps. Once both accounts work, each edits **o
 | **E02 Apollo 11** | **Done in 3D, both modes, with sound.** The reference for everything else. 36 captures in `docs/captures/i1b/`. No voice files yet. |
 | E08 Opportunity | Complete in text only (state machine and facts exist). Needs its 3D planning station (B-27). |
 | E16 Voyager 1 | A draft: 3 facts and one line. Needs content and its set (B-28). |
-| Finale | Text only (state machine and facts exist). **Next task: B-23.** |
+| **Finale** | **Done in 3D, both modes, with sound** (Sun 07:50): sky with the three suspects, the Moon in tonight's phase, the aiming map on the real orbital photo, the laser with photons and a real-time 2.56 s clock, the telescope console, the monologue, the "Daisy Bell" hum, the midnight pulse. 31 captures in `docs/captures/i1c/`. No voice files yet. The postcard and the Voyager coda are not built (their beats are skipped). |
 | The other 13 machines | Drafts with a few facts each. |
 
 What E02 proves and the rest must match:
@@ -80,9 +80,12 @@ npm run dev            # http://localhost:5173/?q=high&fps#e02-apollo11  → pla
    `stage: { kind: scene, cue }` on puzzle states, `sim` + `when` + `target` on the decision that is played by hand,
    `console.controls` with `REAL` (needs a `fact`) or `IMAGINED`. Model: `content/episodes/e02-apollo11.yaml`.
    The compiler tells you about every unknown cue, hotspot, outcome or unsourced control.
-7. **Scenes (prologue, finale)** still render through `src/episode/ScenePlayer.tsx` in the old text layout. For B-23, give
-   `ScenePlayer` the same shell as `CinemaEpisode` (`<Set3D>`, `.cinema`, lower third) when `scene.set` exists; the schema
-   already accepts `set`, `models`, `console` and a `cue` on every beat of a scene.
+7. **Scenes (prologue, finale)** render through `src/episode/ScenePlayer.tsx`: with a `set` they use the cinema layout
+   (model: `content/finale.yaml` + `src/scenes/telescope/`), without one the old text layout. A `special` beat with no
+   `text` is skipped in the cinema layout, so unfinished set pieces never show a placeholder.
+   A second example of a simulation with its console: `src/sim/ranging.ts` + `src/consoles/TelescopeConsole.tsx` (the set
+   itself handles drag and wheel; the console calls `act('slew' | 'zoom' | 'fire')`). Wording per simulation:
+   `sim.<name>.take | retry | skip | auto | miss` in `content/ui.yaml`.
 8. **Sound.** `audio.play('key' | 'confirm' | 'wrong' | 'alarm' | 'quindar' | 'contact' | 'catch' | 'pulse' | 'static')`,
    `audio.engine(level)`, `audio.speak(id)`. Add new effects in `src/audio/bus.ts`. No recordings.
 9. **Every fact you write:** open the source, read the sentence that supports it, and put what you checked in `note:`.
@@ -112,11 +115,11 @@ npm run dev            # http://localhost:5173/?q=high&fps#e02-apollo11  → pla
 
 ## 6. Next steps, in order (details in `docs/TASKS.md`)
 
-1. **B-23 + B-24: the finale in 3D** (telescope console, laser, photons, measurement, monologue). It resolves the mystery;
-   without it the Thread has no ending worth showing.
+1. Done: B-23 + B-24 (the finale in 3D) and A-23 (Explorer / Hands / Accessible on the Setup screen).
 2. **B-04: voices** for the prologue, E02 and the finale. Ids already exist; files just need to appear.
-3. **A-23: Setup screen** with Explorer / Hands / Accessible (30 minutes, high value for judges).
-4. **B-28: E16 Voyager 1**, content then set. **A-28: prologue on the telescope console.**
+3. **A-28: prologue on the telescope console.** The set is ready: `src/scenes/telescope` has the cues `sky`, `pulse`, `moon`
+   and the console. Give `content/prologue.yaml` a `set`, cues, and replace "Tune the station".
+4. **B-28: E16 Voyager 1**, content then set.
 5. **B-27: E08 from Earth.** Then the 13:00 cut-rule check: play the Thread end to end with a stopwatch.
 6. I4 submission build, then I5 (Orrery, the 13 files, Hands).
 
@@ -154,7 +157,7 @@ Paste this to start the next session on any machine (the team talks to Claude in
 
 ### Account B (machines, consoles, content, assets)
 
-**Done:** I0, I1a, I1b (see `docs/TASKS.md`). **Stopped at:** Sun 07:35, about to start B-23.
+**Done:** I0, I1a, I1b, the finale (B-23, B-24), A-23. **Working on (Sun 07:50):** B-04 voices.
 **Requests to account A:** if you take A-23, keep `settings.play` as the single source of truth for the mode; the lunar
 module panel and `PuzzleRunner` already read it. If you take A-20, keep `MapScreen`'s list as the Accessible view.
 

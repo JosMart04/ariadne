@@ -1,0 +1,14 @@
+{
+  "cues": {
+    "sky": "Night at Knossos Station. Above the dark tube of the telescope: stars, a small red point, a moving point of light, and the Moon.",
+    "where": "The same sky. Three things could be answering: the red point that is Mars, a satellite crossing the stars, and the Moon.",
+    "moon": "The telescope closes in on the Moon until it fills the view. Tonight's phase: part of it is in sunlight, part in shadow.",
+    "aim": "The aiming map: a real photograph of Tranquility Base taken from orbit. A bright dot is Eagle's lower half. Two smaller dots lie just south of it. A crosshair marks where the laser points.",
+    "beam": "The Earth on the left, the Moon on the right. A pulse of light leaves the Earth. It takes more than a second to cross. A few points of light come back. A clock stops at 2.56 seconds.",
+    "found": "The Moon fills the view again. A small gold ring marks Tranquility Base, in the Sea of Tranquility.",
+    "monologue": "The Moon, alone in the dark, very slowly growing in the view.",
+    "dim": "The lights of the station console go down, one by one.",
+    "pulse": "The sky above the station. A flash leaves the telescope. Two and a half seconds later, a faint flash answers from the Moon."
+  },
+  "hotspots": ["mars", "satellite", "moon", "mirror", "stage", "ground", "base"]
+}
