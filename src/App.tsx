@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { content, episodeById, t } from './content';
 import { EpisodePlayer } from './episode/EpisodePlayer';
-import { mountAnnouncer } from './engine/announce';
+import { announce, mountAnnouncer } from './engine/announce';
+import { useScanning } from './engine/input/scan';
 import { useRoute } from './engine/router';
 import { dawnClock, useGame } from './engine/store';
 import { Credits, Finale, MapScreen, Prologue, Setup, Title } from './screens/screens';
@@ -38,6 +39,15 @@ export function App() {
   const route = useRoute();
   const settings = useGame((s) => s.settings);
   const progress = useGame((s) => s.progress);
+  const set = useGame((s) => s.set);
+
+  // One-button mode. Escape always returns to mouse and keyboard, so nobody can get trapped in it.
+  const scanning = settings.input === 'switch';
+  const leaveScanning = useCallback(() => {
+    set({ input: 'pointer' });
+    announce(t('scan.left'));
+  }, [set]);
+  useScanning(scanning, settings.scanSpeed, leaveScanning);
 
   // Accessibility settings become attributes that the stylesheet reads (AX-30, AX-34).
   useEffect(() => {
@@ -76,6 +86,12 @@ export function App() {
           </a>
         </nav>
       </header>
+
+      {scanning && (
+        <p className="scanbar" role="status">
+          {t('scan.bar')}
+        </p>
+      )}
 
       <main id="main" tabIndex={-1}>
         {route.name === 'title' && <Title />}

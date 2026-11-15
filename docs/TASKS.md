@@ -6,7 +6,7 @@ IDs in brackets are requirement ids from the requirements document. T1 must ship
 ## Front A · Engine
 
 - [x] A-01 Walking skeleton deployed: repo, CI, contract, compiler, full flow, tests. (NFR-01, NFR-05, NFR-12)
-- [ ] A-02 **One-button scanning**: auto-scan targets at the chosen speed; Space, Enter or a click anywhere chooses. Done when the prologue and E08 are completed with Space only. (AX-14, AC-04)
+- [~] A-02 **One-button scanning**: built in `src/engine/input/scan.ts`. Verified: the whole prologue completes with Space only. NOT yet verified: a full E08 run with Space only, a real mouse click as the switch, Escape leaving the mode. Done when those three pass. (AX-14, AC-04)
 - [ ] A-03 Stage primitives `figure`, `hotspots`, `cards`, `trace`, each with a text equivalent. (8.1, AX-31)
 - [ ] A-04 Labyrinth map: classical seven-circuit SVG, three act rings, nodes as links, golden thread woven in launch order; list view stays as the accessible equivalent. (FR-01, FR-02)
 - [ ] A-05 The Silence: rain of light gathered into the thread on "Catch it"; static transition with reduced motion. (FR-04, AX-30)

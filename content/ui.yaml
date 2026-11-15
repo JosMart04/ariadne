@@ -56,6 +56,11 @@ input.keyboard.help: Tab to move, Enter or Space to choose.
 input.switch.help: Options light up one by one. Press Space, or click anywhere, to choose.
 input.head.help: Coming soon.
 setup.scanSpeed: Scanning speed
+scan.slow: Slow
+scan.medium: Medium
+scan.fast: Fast
+scan.bar: "One-button mode. Wait for your choice to light up, then press Space or click anywhere. Esc goes back to mouse and keyboard."
+scan.left: One-button mode is off. Mouse and keyboard are back.
 setup.captions: Captions
 setup.narration: Voice narration
 setup.textSize: Text size

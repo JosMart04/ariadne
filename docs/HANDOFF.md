@@ -14,12 +14,14 @@ Schedule (UTC−5): I1 Thread playable in text → Sun 02:00 · I2 whole cast + 
   Finale (deduction + measurement), Credits with the generated fact counter, Logbook with clews, Dawn clock.
 - E08 Opportunity is complete and is the reference episode.
 
-**In progress:** nothing.
+**In progress (session stopped by the usage limit, Sat 22:35):** A-02 one-button scanning. Code is in and the gate is green.
+The prologue was completed with Space only. The E08 run with Space only was still in the Operation beat when the session
+ended, so it is unverified; so are "real click as the switch" and "Escape leaves the mode".
 
 **Next 3 steps:**
-1. A-02 one-button scanning (`src/engine/input/scan.ts`): works on `[data-scan]`, buttons and links inside `main`.
-2. A-04 stage primitives `figure`, `hotspots`, `cards`, `trace`.
-3. A-05 labyrinth SVG map with the golden thread in launch order.
+1. Finish verifying A-02 (see TASKS). In a background browser tab timers are throttled, so test with the tab visible.
+2. A-03 stage primitives `figure`, `hotspots`, `cards`, `trace`.
+3. A-04 labyrinth SVG map with the golden thread in launch order.
 
 **Traps:**
 - `src/generated/` is git-ignored: run `npm run content` (or `npm run dev`) before `tsc`.

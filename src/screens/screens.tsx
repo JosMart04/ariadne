@@ -41,6 +41,12 @@ export function Title() {
 
 const INPUTS: InputMode[] = ['pointer', 'keyboard', 'switch', 'head'];
 const SCALES = [1, 1.25, 1.5, 2];
+/** Seconds per target in one-button scanning (AX-14: 0.8 to 3 s). Radios, so the choice never needs a drag. */
+const SPEEDS: [string, number][] = [
+  ['slow', 3],
+  ['medium', 1.6],
+  ['fast', 0.8],
+];
 
 function Toggle({ label, help, value, onChange }: { label: string; help?: string; value: boolean; onChange: (v: boolean) => void }) {
   return (
@@ -82,13 +88,24 @@ export function Setup() {
             </label>
           ))}
         </div>
-        {settings.input === 'switch' && (
-          <label className="range">
-            {t('setup.scanSpeed')}: {settings.scanSpeed.toFixed(1)} s
-            <input type="range" min={0.8} max={3} step={0.2} value={settings.scanSpeed} onChange={(e) => set({ scanSpeed: Number(e.target.value) })} />
-          </label>
-        )}
       </fieldset>
+
+      {settings.input === 'switch' && (
+        <fieldset>
+          <legend>{t('setup.scanSpeed')}</legend>
+          <div className="options options--row">
+            {SPEEDS.map(([id, s]) => (
+              <label key={id} className="option">
+                <input type="radio" name="speed" checked={settings.scanSpeed === s} onChange={() => set({ scanSpeed: s })} />
+                <span className="option__label">
+                  {t(`scan.${id}`)}
+                  <span className="option__help">{s} s</span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
 
       <fieldset>
         <legend>{t('setup.textSize')}</legend>
