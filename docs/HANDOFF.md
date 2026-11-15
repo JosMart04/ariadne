@@ -1,96 +1,170 @@
 # Handoff: live project state
 
-Keep it short: done / in progress / next 3 steps / traps. Once both accounts work, each edits **only its own section**.
+Written Sun Nov 15, 07:35 UTC−5 by account B, for whoever continues (account A, or account B again).
+Everything needed to go on is in this file, `CLAUDE.md`, `docs/TASKS.md` and `docs/DECISIONS.md`. Keep this file current:
+done / in progress / next steps / traps. Once both accounts work, each edits **only its own section** at the bottom.
 
-**Who is working (Sun Nov 15, 00:20 UTC−5): account B leads the whole project, both fronts.** Account A ran out of
-quota on Sat 22:35. When it returns it takes the `→A` tasks (see "Requests to Front A" below).
+**Deadlines (UTC−5): cut rule 13:00 · first submission 14:00 · text freeze 15:00 · feature freeze 17:00 · final submission 22:30.**
 
-**Schedule (UTC−5), re-based Sun 00:15 after the v1.1 course correction:**
-I1 vertical slice E02 + finale → 07:00 · I2 Orrery + Knossos Station → 10:00 · I3 E08 + E16, Thread complete → 13:00 ·
-**cut rule 13:00 · first submission 14:00 · text freeze 15:00 · feature freeze 17:00 · Look Up on a phone 18:00 · final submission 22:30.**
-Full table and cut ladder: `docs/TASKS.md`.
+## 1. Where the project stands
 
-## Front B · Machines, consoles, content, assets (account B)
+**Live:** https://josmart04.github.io/ariadne/ · the slice: https://josmart04.github.io/ariadne/#e02-apollo11
+**Last commit of account B:** see `git log -1`. Gate green, 153 tests, deploy green.
 
-**Done:**
-- B-01 machine ready (Sun 00:13): `npm ci`, `.env` present, `npm run check` green on Node 22.16 (CI uses 24).
-- I0 (Sun 00:20): course correction recorded in `docs/DECISIONS.md` (C-D01 to C-D17), `CLAUDE.md` (pillars, screenshot rule,
-  operational fidelity, new architecture and ownership) and `docs/TASKS.md` (iteration plan).
+| Part of the Thread route | State |
+|---|---|
+| Title, Setup, Map | Iteration-0 text screens. Setup has no Explorer / Hands / Accessible choice yet (A-23). The map is a card list (A-20 replaces it). |
+| Prologue | Text, with the forbidden "Tune the station" puzzle. To be restaged on the telescope console (A-28). |
+| **E02 Apollo 11** | **Done in 3D, both modes, with sound.** The reference for everything else. 36 captures in `docs/captures/i1b/`. No voice files yet. |
+| E08 Opportunity | Complete in text only (state machine and facts exist). Needs its 3D planning station (B-27). |
+| E16 Voyager 1 | A draft: 3 facts and one line. Needs content and its set (B-28). |
+| Finale | Text only (state machine and facts exist). **Next task: B-23.** |
+| The other 13 machines | Drafts with a few facts each. |
 
-**I1a closed Sun 02:55. I1b in progress (account B).**
+What E02 proves and the rest must match:
+- A full-screen 3D set (official NASA lunar module, the real orbital photo as the ground), captions in a lower third with
+  speaker and REAL / IMAGINED tag, on-screen labels for what is reconstructed.
+- **Accessible:** the landing decision is three large targets inside the scene; a scripted pilot flies the choice.
+- **Explorer:** "Take control" opens the lunar module panel; the player flies with W / S and R / F, the on-screen stick or a
+  gamepad; the outcome of the simulation picks the transition of the same state machine. A hard touchdown teaches and retries.
+- Lunar dust in flat ballistic sheets, the rain of light gathered into the golden thread, synthesised sound.
 
-**Done and seen in a real browser (captures in `docs/captures/i1b/`, 36 pictures, no console errors):**
-- E02 Apollo 11 plays in 3D from title card to Field File, in the cinema layout. Every beat reviewed against the screenshot rule.
-- Accessible: the landing decision is three targets inside the scene; a scripted pilot flies the choice.
-- Explorer: "Take control" opens the lunar module panel (program 66, hand controller, descent rate, readouts, Mission
-  Control's fuel calls, contact light). The player's flight outcome picks the transition. A touchdown that is too hard
-  teaches and retries from about ten seconds earlier. After two failures: "Let the machine show you" and "Switch to guided choices".
-- `npm run capture -- <name> [reduce] [explorer|accessible]` plays the routes in the installed Chrome and saves the pictures.
-  It needs a server: `npm run dev`, or `npm run preview` with `CAPTURE_URL=http://localhost:4173/`.
-- `?q=high` forces 3D quality, `?fps` shows the frame rate, `?dev` exposes `__stage` and `__controls` for tests.
+## 2. First ten minutes on a new machine
 
-**Next 3 steps:**
-1. Rest of I1b: lunar dust in flat sheets on the last metres, the rain of light in The Silence, `src/audio/` (AudioBus,
-   procedural sfx), the DSKY graphic for the alarm decision, Explorer / Hands / Accessible on the Setup screen.
-2. I1c: finale telescope (`src/scenes/telescope/`, `src/sim/ranging.ts` outcomes are already declared), photons, voices.
-3. I1d: Hands (`src/hands/`): it only has to write `controls.setPitch('hands', v)`, `controls.click()` and click DOM buttons.
+```bash
+git pull --rebase
+npm ci
+npm run check          # content + tsc + 153 tests + build + secret scan: must be green before you change anything
+npm run dev            # http://localhost:5173/?q=high&fps#e02-apollo11  → play E02 once, in both modes
+```
+- `para_fable/` is git-ignored. **Machine A still has requirements v1.0.** Ask the team for v1.1 (task T-00), then read its
+  "Cambios en la v1.1" block and sections 3, 8.0, 10.6, 10.7, 11.3, 12, 16, 17.3, 17.5. If you cannot get it, this
+  repository already encodes it: `CLAUDE.md` (rules), `docs/DECISIONS.md` (C-D01 to C-D17, B-D01 to B-D12), `docs/TASKS.md`.
+- `.env` (git-ignored) must hold `ELEVENLABS_API_KEY` for B-04. Copy `.env.example` and ask the team for the key.
+- To change the play mode before A-23 exists: Settings do not show it yet. In the browser console:
+  `localStorage.setItem('ariadne-v1', JSON.stringify({state:{settings:{setupDone:true,play:'accessible'},progress:{}},version:0}))` and reload
+  (`play: 'explorer'` is the default).
 
-**Traps found today:**
-- In a hidden or background tab the browser slows the animation loop, and the simulation with it. Test flights with the tab in front.
-- The first load of a texture is cached hard by the browser: after `npx tsx scripts/prep-assets.ts`, reload with the cache disabled.
-- Never name two files in one folder with names that differ only in case (`Stage.tsx` / `stage.ts`): Windows and TypeScript disagree.
-- The orbital photo contains the real hardware as bright dots; `prep-assets.ts` paints them out of the terrain texture only.
-- The far plain has a hole under the photographed square, or it hides the inside of the craters.
+## 3. How to see and prove your work (do this for every beat)
 
-**Fact-check findings (B-02):**
-- The Apollo Lunar Surface Journal moved: every `https://www.nasa.gov/history/alsj/...` URL now redirects to a generic
-  landing page. Use `https://apollojournals.org/alsj/...`. E02 is fixed; grep the other episodes.
-- `jpl.nasa.gov/news/...` answers 403 to scripts: the finale's three facts still need a human or a browser check.
-- NSSDCA has no page for the Apollo 11 seismometer under `1969-059C-03`; the retroreflector is `1969-059C-04`.
+1. `npm run dev`, open the beat with `?q=high` (forces full 3D quality) and, if you want, `?fps`.
+2. Jump to any camera shot from the console: `__stage.getState().set.setCue('landed', true)`.
+3. `npm run capture -- <name>` plays E02 in the installed Chrome (Accessible, every beat) and then flies it by hand
+   (Explorer). Options: `reduce` (reduced motion), `explorer` or `accessible` (one route only). It fails on any console error.
+   Pictures go to `docs/captures/<name>/`. Against a production build: `npm run build && npm run preview -- --port 4173`, then
+   `CAPTURE_URL=http://localhost:4173/ npm run capture -- <name>`.
+4. `npx tsx scripts/dev/contact.ts docs/captures/<name> <some folder>` makes contact sheets: look at every picture.
+   **If one could be mistaken for a form, a quiz or a documentation page, the beat is not done (AC-15).**
+5. Add your new scene to `scripts/capture.ts` (copy the `e02` function) and commit the captures with the code.
 
-**Traps:**
-- `src/generated/` is git-ignored: run `npm run content` (or `npm run dev`) before `tsc`.
-- Toolchain is very new (Vite 8, Vitest 5, TypeScript 7, Zod 4, React 19, three 0.187). Check docs before assuming an API.
-- Zod 4: use `z.strictObject`, `z.record(key, value)`, `z.looseObject`.
-- The Logbook `<dialog>` lives in the header; scope DOM queries to `main`.
-- In a background browser tab timers are throttled: test scanning and 3D with the tab visible.
-- Official models found (github.com/nasa/NASA-3D-Resources, `3D Models/`): `Apollo Lunar Module.glb` 717 KB,
-  `Deep Space Network 70-meter.glb` 1.9 MB, `Voyager Probe (A).glb` 286 KB, `Mars Exploration Rover - Opportunity (MER-B).glb` 37 KB.
-  Also Viking Lander, Pioneer 10, NEAR Shoemaker, Kepler, Dawn, Ingenuity, InSight.
-- Claude cannot test a webcam or a phone: Hands (T-11), Look Up (T-12) and frame rate (T-13) need a person.
+## 4. Recipe: a new 3D set, its console and its content (copy E02)
 
-**Requests to Front A (read this first when account A returns):**
-1. `git pull --rebase`, then read in this order: `CLAUDE.md` (rewritten), the "Course correction v1.1" block of
-   `docs/DECISIONS.md`, this file, `docs/TASKS.md`. The local requirements are now v1.1: read its "Cambios en la v1.1"
-   block and sections 3, 8.0, 10.6, 10.7, 11.3, 11.4, 12, 16, 17.3, 17.5.
-2. Your front is now **Cosmos, station, shell** (folder ownership in `CLAUDE.md`). Take the first open `→A` task in
-   `docs/TASKS.md` that account B has not marked `[~]`. Expected first task: A-20 Orrery, then A-21, A-22, A-23.
-3. Build your scenes on `src/three/` (SceneHost) and follow the shape of `src/scenes/tranquility/`. Do not edit those
-   folders: if SceneHost lacks something, write it under "Requests to Front B" in your section.
-4. Do not start what is marked `[~] (B)`. Mark your own task `[~] (A)` and push that line before coding.
-5. The contract (`src/content/schema.ts`) changes in B-11. After that it is yours again and frozen: later changes need a
-   line in `docs/DECISIONS.md`.
+1. **Numbers first, if there is a simulation.** `src/sim/<name>.ts`: pure, deterministic, no DOM, no three. Declare its outcomes
+   in `src/sim/outcomes.ts`. Write `tests/sim/<name>.test.ts`: one scripted "pilot" per outcome, and determinism.
+   Model: `src/sim/descent.ts` (`step`, `outcome`, `PILOTS`, `fly`).
+2. **The set.** `src/scenes/<id>/cues.json` lists every cue with its written description (the text equivalent, AX-32) and
+   the hotspots. `src/scenes/<id>/index.ts` exports `create(host): Promise<SetController>`. Model: `src/scenes/tranquility/index.ts`:
+   a `SHOTS` table (one camera per cue: position, look-at, field of view, slow drift or orbit, `follow`, `shift`), `setCue`,
+   `step` (fixed 60 Hz logic), `frame` (camera damping, placing things), `hotspot(name)`, `act(name, arg)` for commands.
+   Sets are found by `import.meta.glob`: there is no registry to edit.
+3. **`act` contract used by `PuzzleRunner`:** `act('fly', { outcome, speed })` plays a scripted run and resolves to
+   `{ outcome }`; `act('fly', { player: true, retry })` lets the player's `controls` drive it and resolves to `{ outcome }`
+   or `{ outcome: null }` for a slip that is not an outcome; `act('skip')`; `act('reset')`; `act('state')` for readouts.
+   Reuse these names in a new set and `PuzzleRunner` needs no change.
+4. **The console.** `src/consoles/<Name>.tsx`, registered in `src/consoles/index.tsx` under the simulation's name. Native
+   buttons only. It reads `act('state')` and writes `controls` (`src/input/controls.ts`). Model: `LmPanel.tsx`.
+5. **Assets.** Add the source to `assets-src/manifest.yaml`, download into `assets-src/raw/` (git-ignored), convert in
+   `scripts/prep-assets.ts`, run `npx tsx scripts/prep-assets.ts`. Official models: `https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/<folder>/<file>.glb`
+   (they are Draco-compressed; `src/three/assets.ts` already decodes them). Images: `https://images-api.nasa.gov/search?q=...`.
+6. **Content.** In the YAML: `set: { scene, model, labels }`, `models`, `images`, `cues` per beat, `cue:` on lines,
+   `stage: { kind: scene, cue }` on puzzle states, `sim` + `when` + `target` on the decision that is played by hand,
+   `console.controls` with `REAL` (needs a `fact`) or `IMAGINED`. Model: `content/episodes/e02-apollo11.yaml`.
+   The compiler tells you about every unknown cue, hotspot, outcome or unsourced control.
+7. **Scenes (prologue, finale)** still render through `src/episode/ScenePlayer.tsx` in the old text layout. For B-23, give
+   `ScenePlayer` the same shell as `CinemaEpisode` (`<Set3D>`, `.cinema`, lower third) when `scene.set` exists; the schema
+   already accepts `set`, `models`, `console` and a `cue` on every beat of a scene.
+8. **Sound.** `audio.play('key' | 'confirm' | 'wrong' | 'alarm' | 'quindar' | 'contact' | 'catch' | 'pulse' | 'static')`,
+   `audio.engine(level)`, `audio.speak(id)`. Add new effects in `src/audio/bus.ts`. No recordings.
+9. **Every fact you write:** open the source, read the sentence that supports it, and put what you checked in `note:`.
+   Never fill `verified:`. No source, no REAL line.
 
-## Front A · Cosmos, station, shell (account A)
+## 5. Traps (each one cost time)
 
-**Done (iteration 0, Sat 22:10):**
-- Repo, CI gate and GitHub Pages deploy. `npm run check` = content + tsc + 118 tests + build + secret scan.
-- Contract in `src/content/schema.ts`; compiler in `scripts/build-content.ts`.
-- Playable text skeleton, title to credits: Title, Setup, Prologue, Map (16 machines), 7-beat EpisodePlayer,
-  PuzzleRunner (hints at 30/60/90 s or 1/2/3 errors, "Let the machine show you", story mode, forced outcomes),
-  Finale (deduction + measurement), Credits with the generated fact counter, Logbook with clews, Dawn clock.
-- E08 Opportunity is complete in text.
+- **Heredocs.** On machine B, long `bash` heredocs that contain JavaScript failed twice with "unexpected EOF". Write helper
+  scripts with the editor's file tool, then run them.
+- **Line endings.** The working tree is CRLF on Windows (`core.autocrlf=true`). A script that edits files must normalise
+  `\r\n` first, or exact-text replacements silently miss.
+- **File names.** Never two files in one folder that differ only in case (`Stage.tsx` and `stage.ts`): TypeScript refuses.
+- **Hidden tabs.** A background tab slows the animation loop, and the simulation with it. Test flights in a visible tab,
+  or with `npm run capture`.
+- **Auto quality.** A slow machine drops to half resolution and no shadows within seconds, by design. Review with `?q=high`.
+- **Texture cache.** After `prep-assets.ts`, reload with the cache disabled or you will keep seeing the old picture.
+- **The orbital photo shows the real hardware** as bright dots. `prep-assets.ts` paints them out of the terrain texture only;
+  the evidence images (`img_*`) are never touched.
+- **The far plain has a hole** under the photographed square, or it hides the inside of the craters.
+- **Sources that moved or block scripts.** `nasa.gov/history/alsj/...` now redirects to a landing page: use
+  `apollojournals.org/alsj/...`. `jpl.nasa.gov/news/...` answers 403 to `curl`: the three facts of the finale are still
+  unchecked. NSSDCA (`nssdc.gsfc.nasa.gov`) answers scripts and is the best official source found so far.
+- **Toolchain is very new** (Vite 8, Vitest 5, TypeScript 7, Zod 4, React 19, three 0.187). three 0.187 has no
+  `PCFSoftShadowMap`. Zod 4: `z.strictObject`, `z.partialRecord`, `z.looseObject`.
+- `src/generated/` is git-ignored: `npm run content` (or `npm run dev`) before `tsc`.
+- Claude cannot test a webcam, a phone or a real GPU laptop. Hands, Look Up and frame rate need a person (T-11, T-12, T-13).
 
-**In progress (session stopped by the usage limit, Sat 22:35):** A-02 one-button scanning. Code is in and the gate is green.
-The prologue was completed with Space only. The E08 run with Space only was still in the Operation beat when the session
-ended, so it is unverified; so are "real click as the switch" and "Escape leaves the mode".
+## 6. Next steps, in order (details in `docs/TASKS.md`)
 
-**Next 3 steps:** see "Requests to Front A" above.
+1. **B-23 + B-24: the finale in 3D** (telescope console, laser, photons, measurement, monologue). It resolves the mystery;
+   without it the Thread has no ending worth showing.
+2. **B-04: voices** for the prologue, E02 and the finale. Ids already exist; files just need to appear.
+3. **A-23: Setup screen** with Explorer / Hands / Accessible (30 minutes, high value for judges).
+4. **B-28: E16 Voyager 1**, content then set. **A-28: prologue on the telescope console.**
+5. **B-27: E08 from Earth.** Then the 13:00 cut-rule check: play the Thread end to end with a stopwatch.
+6. I4 submission build, then I5 (Orrery, the 13 files, Hands).
 
-**Requests to Front B:** (write here)
+## 7. Continuation prompt
 
-## Team (humans)
+Paste this to start the next session on any machine (the team talks to Claude in Spanish; the repository stays English):
 
-**Waiting on you:** see the Team section of `docs/TASKS.md`. New since the course correction: T-11 (test Hands with a
-webcam), T-12 (test Look Up on a phone), T-13 (frame rate on an integrated GPU), T-14 (review the captures).
-The voices are generated with stock voices picked by Claude; listen to them and say if you want others (T-04).
+> You are continuing ARIADNE (NASA Space Apps 2026, challenge "Abandoned but not Forgotten") in the repository
+> https://github.com/JosMart04/ariadne. Another Claude session built the vertical slice and wrote the handoff.
+> 1. Set up: `git pull --rebase`, `npm ci`, `npm run check` (must be green), `npm run dev`.
+> 2. Read, in this order: `CLAUDE.md`, `docs/HANDOFF.md` (all of it), `docs/TASKS.md`, the "Course correction v1.1" and
+>    "Front B" blocks of `docs/DECISIONS.md`. If `para_fable/1_obligatorio/ARIADNE_ELICITACION.md` is v1.1, read its
+>    "Cambios en la v1.1" block and sections 3, 8.0, 10.6, 10.7, 16 and 17.3; if it is v1.0 or missing, say so and go on
+>    with what the repository records.
+> 3. Play E02 once in the browser (`http://localhost:5173/?q=high#e02-apollo11`) and look at `docs/captures/i1b/`:
+>    that is the quality bar. Read `src/scenes/tranquility/index.ts`, `src/episode/CinemaEpisode.tsx`,
+>    `src/episode/PuzzleRunner.tsx`, `src/consoles/LmPanel.tsx`, `src/sim/descent.ts` and `content/episodes/e02-apollo11.yaml`
+>    before writing any new set.
+> 4. Check whether the other account is working (`git log -3 --format='%h %ad %s' --date=format:%H:%M origin/main`).
+>    If it pushed in the last 45 minutes, take your lane from "Two lanes" in `docs/TASKS.md`; otherwise you lead the whole
+>    project: follow the iteration table from the top. Mark your task `[~] (A)` or `[~] (B)` and push that line first.
+> 5. Re-check the clock against the deadlines (UTC−5: cut rule 13:00, first submission 14:00, text freeze 15:00, feature
+>    freeze 17:00, final 22:30) and apply the cut ladder of `docs/TASKS.md` without asking: cut playable episodes, never the
+>    visual quality or the interaction of what is shown.
+> 6. Work in small steps: after each one `npm run check`, look at it in the browser, `npm run capture`, review the pictures
+>    against the screenshot rule, commit with the captures, `git pull --rebase`, push. Update `docs/HANDOFF.md` and
+>    `docs/TASKS.md` at the end of every iteration and before your quota runs out.
+> 7. Never break: English only in the repository and the game; every REAL line cites an https source you actually opened;
+>    no NASA logo; no copyrighted text or music; no generated voice for a real person; no human on Mars; every machine
+>    operated the way it really was; every rich interaction has its Accessible version, a reduced-motion version and a
+>    text equivalent.
+> Start now with the first open task, and report in Spanish.
+
+## 8. Sections by account
+
+### Account B (machines, consoles, content, assets)
+
+**Done:** I0, I1a, I1b (see `docs/TASKS.md`). **Stopped at:** Sun 07:35, about to start B-23.
+**Requests to account A:** if you take A-23, keep `settings.play` as the single source of truth for the mode; the lunar
+module panel and `PuzzleRunner` already read it. If you take A-20, keep `MapScreen`'s list as the Accessible view.
+
+### Account A (cosmos, station, shell)
+
+**Done (iteration 0, Sat 22:10):** repository, CI gate, Pages deploy, contract, compiler, text skeleton from title to
+credits, one-button scanning (built; verified on the prologue only).
+**Requests to account B:** (write here)
+
+### Team (humans)
+
+**Waiting on you now:** T-00 (copy `para_fable/` to machine A), T-13 (play E02 on a normal laptop and report the frame rate
+and how the landing feels), T-14 (look at the 36 captures), T-02 and T-03 for E02 (its text and facts are ready to review).

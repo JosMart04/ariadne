@@ -97,7 +97,41 @@ Approved by the human team after reviewing the iteration-0 build. Requirements v
 
 ## Front B · Machines, consoles, content, assets
 
-(append here)
+Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
+
+- **B-D01 · The ground of Tranquility Base is the real orbital photograph** (PIA12925, 0.533 m per pixel), draped at true
+  scale. Craters are placed where the image shows them, with estimated depths. Why: real terrain without a 300 MB
+  elevation model. The set says "Terrain approximated from NASA imagery". `src/sim/tranquility.ts` holds the numbers
+  and is shared by the simulation and the 3D set, so what the player flies over is what the simulation judges.
+- **B-D02 · The descent simulation copies landing program P66:** the hand controller tilts the lander, a descent-rate
+  switch asks the computer for a sink rate, the computer works the throttle. Why: FR-60. Our descent-rate switch is a
+  simple stand-in and is labelled `IMAGINED`; program 66 and the hand controller are `REAL` and sourced.
+- **B-D03 · A touchdown that is too hard is not an outcome of the puzzle.** The state machine does not move; the view
+  teaches the limit and restarts about ten seconds earlier (FR-29a). Why: the three outcomes of the decision stay the
+  same in every mode (C-D03), and a slip of the hand never costs the whole flight.
+- **B-D04 · In Accessible the scripted flight plays at three times real speed and can be skipped; with reduced motion it
+  is skipped.** In Explorer the player always flies in real time (about 85 s). Why: FR-28 and AX-30.
+- **B-D05 · Real people are never voiced by a generated voice.** Armstrong, Aldrin and Mission Control stay as captions,
+  or ARIADNE reports their words inside her own narration. Why: contest rule (no cloned or imitated voices).
+  `src/content/voice.ts` skips every speaker that is not in `content/voices.yaml`.
+- **B-D06 · Every spoken text has a stable id assigned by the compiler** (`<episode>.arrival.0`, `<episode>.op.<state>`,
+  `<episode>.discovery.story.2`, `clew.clew-1`, ...). The game and the voice script share `src/content/voice.ts`.
+  Why: NFR-07; voice files arrive without touching code, and a missing file is silent (FR-34).
+- **B-D07 · "Tell me more" is a sequence of captions with camera cues, not a text panel.** `discovery.story.cues` names
+  what the set shows for each caption. Why: the first version looked like a documentation page (AC-15).
+- **B-D08 · Sound is synthesised (Web Audio), in four channels, and starts after the first interaction.** There is no
+  sound on the lunar surface: only cabin, radio and station sounds exist. Why: A-D15, FR-33, and the physics we teach.
+- **B-D09 · Captures are JPEG, 1280×720, made by `npm run capture` in the installed Chrome**, one real click included so
+  audio code runs. Two routes: Accessible (every beat) and Explorer (the flight by hand, driven by a scripted "hand"
+  that moves the on-screen stick). Why: AC-15 needs pictures of the real thing; PNG would add 30 MB per run.
+- **B-D10 · `?q=low|medium|high` forces 3D quality, `?fps` shows the frame rate, `?dev` exposes `__stage` and `__controls`.**
+  Why: captures, AC-16 measurements by the team, and tests that fly like a player. No secret is exposed.
+- **B-D11 · Eagle faces west, the Sun is 10.8° above the east, the Earth is 1.9° wide and high in the west, there are
+  no stars on the surface.** Why: "accuracy is important throughout"; each of these is how it was on July 20, 1969.
+- **B-D12 · Schedule re-based again on Sun 07:30, after 4 h 20 min lost to a usage limit** (table in `docs/TASKS.md`).
+  The cut ladder is applied in advance: Knossos Station is a console set, not a walkable room, and the prologue is
+  staged on the same telescope console as the finale. Order of work: finale, then E16, then E08, then the Orrery.
+  Why: the 13:00 cut rule is about the Thread route being playable end to end.
 
 ## Pending team confirmation (defaults in use)
 

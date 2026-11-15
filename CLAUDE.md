@@ -48,7 +48,7 @@ Machines **rest, sleep, go silent**. Never "die", "dead", "killed".
 - `npm run dev` — dev server (recompiles content on change)
 - `npm run content` — validate `content/*.yaml` and compile to `src/generated/content.json`
 - `npm run check` — the full gate: content + `tsc` + tests + build + secret scan. **Run before every push.**
-- `npm run capture` — screenshots of every Thread beat into `docs/captures/` (arrives in I1a)
+- `npm run capture -- <name> [reduce] [explorer|accessible]` — plays the route in the installed Chrome and saves one picture per beat in `docs/captures/<name>/`. Needs `npm run dev` running. Fails on any console error.
 
 ## Architecture in one screen
 
@@ -64,13 +64,17 @@ src/consoles/           faithful consoles in HTML/SVG with native buttons: Dsky,
 src/input/              Controls (axes + buttons) fed by keyboard, pointer/touch, gamepad and hands
 src/hands/              MediaPipe Hand Landmarker (lazy), gesture classifier (pure), virtual cursor, calibration
 src/audio/              AudioBus (voice, music, sfx, ambience), procedural sfx, voice by line id
-src/episode/            EpisodePlayer (7 beats, cinema layout: full-bleed 3D set + captions + HUD), ScenePlayer, PuzzleRunner
+src/episode/            CinemaEpisode (7 beats in a 3D set: captions + HUD), Set3D, setStore, PuzzleRunner (one FSM, three views),
+                        RainOfLight, EpisodePlayer (text layout for episodes without a set), ScenePlayer (prologue, finale)
+src/dev.ts              test hooks behind ?dev: __stage, __controls
 src/screens/            Title, Setup, Map, Prologue, Finale, Credits
 src/ui/parts.tsx        Line (REAL/IMAGINED), Source, Badge, ClewCard, Btn, glossary terms
 tests/                  content gates, puzzle reachability, simulations, gestures
 ```
 
-Folders marked in `docs/TASKS.md` as not started do not exist yet. Iteration 0 shipped `engine`, `episode`, `screens`, `ui`.
+Built so far: everything above except `src/hands/`; one set (`src/scenes/tranquility/`) and one console (`LmPanel`).
+**To build a new set, console or episode, follow the recipe in `docs/HANDOFF.md`, section 4, and copy E02.**
+URL switches: `?q=low|medium|high` forces 3D quality, `?fps` shows the frame rate, `?dev` exposes the test hooks.
 
 ### One simulation, three ways to play
 
