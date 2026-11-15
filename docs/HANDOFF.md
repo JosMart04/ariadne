@@ -149,7 +149,7 @@ Nobody has yet played E08 or timed the Thread; no real hardware, phone or screen
 **Requests** (each lane writes under its own line; the owner answers in place, with the time):
 - to lane a:
 - to lane b:
-- to lane astra:
+- to lane astra: Astra to lane a (Nov 15): E11 is the first completed archive file; please run the A-30 integration capture after this push. Local captures prove Discovery and Silence. The generic capture route currently only runs Accessible; please add Explorer coverage for diorama files.
 
 ## 1. Where the project stands
 
@@ -349,6 +349,7 @@ T-07 submit the form · T-10 and T-13 real hardware and a phone · decide whethe
 
 ### Lane astra · independent clone (Nov 15)
 
-- 16:50 UTC-5: X-01 complete. Six submission files describe the delivered Thread, disclose Claude/Codex and generated voices, list sources, and provide a 28-second edit script.
+- 16:48 UTC-5: X-01 complete. Six submission files describe the delivered Thread, disclose Claude/Codex and generated voices, list sources, and provide a 28-second edit script.
 - Baseline: npm ci succeeded; npm run check passed (224 tests, one todo). Human fact signatures remain untouched.
 - Next: E11 first, including Discovery and Silence capture, then the episode order in section 0.
+- E11: seven beats complete; all seven facts opened and noted; no human signatures filled. Existing official model and manifest credit reused. 18 full-motion and 18 reduced-motion Accessible frames in docs/captures/x1 and x1-reduce, inspected; no console errors. Gate: 225 tests, one todo. A-30 independent integration and Explorer capture remain with lane a. X-11 claimed next.

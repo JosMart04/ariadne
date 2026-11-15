@@ -1,3 +1,4 @@
+# Facts checked against the linked NASA/JPL pages on November 15, 2026. Human signatures remain separate.
 id: e11-ingenuity
 num: 11
 act: mars
@@ -5,68 +6,100 @@ name: Ingenuity
 title: Thin Air
 slate: { place: Jezero Crater, year: 2021 }
 launched: "2020-07-30"
-draft: true
 status: { badge: grounded, where: "Valinor Hills, Jezero Crater, Mars" }
 nssdca: [2020-052A]
 resource: ingenuity
 
+objectives:
+  - Explain how a small helicopter flew without a pilot on Mars.
+  - Compare the planned five flights with the completed 72.
+  - Distinguish the end of flight from the plan to store data.
+
 facts:
   flights:
-    text: Ingenuity was planned for up to five flights and flew 72 times, for about 129 minutes, covering about 17 km.
+    text: Ingenuity launched on July 30, 2020. Planned for five test flights, it completed 72 and became a scout for Perseverance.
     source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
-    note: "Checked Nov 15, 2026: 'would make no more than five test flights in 30 days, the helicopter eventually completed 72 flights across nearly three years' and 'Completed 128.8 flying minutes, covering 10.5 miles (17.0 kilometers)'. The same page says 'Successfully flying in the extremely thin Martian atmosphere.'"
+    note: "Checked Nov 15, 2026: Key Facts gives the launch date; The Legacy of Ingenuity describes five planned tests, 72 completed flights, and aerial scouting."
   build:
-    text: Ingenuity has a mass of 1.8 kilograms. Its rotors measure about 1.2 meters from tip to tip.
+    text: Ingenuity has a mass of 1.8 kilograms. Its rotors span about 1.2 meters, and it flew in Mars's extremely thin atmosphere.
     source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
-    note: "Checked Nov 15, 2026: 'Mass 3.97 pounds (1.8 kilograms)' and 'Total length of rotors: Approximately 4 feet (approximately 1.2 meters) tip to tip'."
+    note: "Checked Nov 15, 2026: Tech Specs lists mass 1.8 kg and rotor length about 1.2 m; 5 Things to Know describes flight in thin air."
   power:
-    text: A solar panel charges Ingenuity's batteries. They hold enough energy for one 90-second flight per Martian day.
-    source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
-    note: "Checked Nov 15, 2026: 'Solar panel charges Lithium-ion batteries, providing enough energy for one 90-second flight per Martian day'."
+    text: A solar array charged six batteries. Stored energy powered the flight and heaters for cold Martian nights.
+    source: https://www.jpl.nasa.gov/news/press_kits/mars_2020/ingenuity/landing/mission/spacecraft/
+    note: "Checked Nov 15, 2026: Power describes six lithium-ion batteries recharged daily by the solar array, supplying heaters and flight operations."
+  relay:
+    text: Commands reached Ingenuity through Perseverance. The rover's base station stored the helicopter's transmissions and sent them toward Earth.
+    source: https://www.jpl.nasa.gov/news/press_kits/mars_2020/ingenuity/landing/mission/spacecraft/
+    note: "Checked Nov 15, 2026: Telecommunications describes the Deep Space Network, optional orbiter relay, rover computer, helicopter base station and return path."
+  first-flight:
+    text: Ingenuity made the first powered, controlled flight on another planet on April 19, 2021. Onboard systems flew it autonomously.
+    source: https://www.nasa.gov/news-release/nasas-ingenuity-mars-helicopter-succeeds-in-historic-first-flight/
+    note: "Checked Nov 15, 2026: The release records the first flight and says onboard guidance, navigation and control flew it; Earth could not use a joystick."
   flight72:
-    text: Flight 72 on Jan. 18, 2024 damaged its rotor blades. The mission ended a week later.
-    source: https://nasaspaceflight.com/2024/01/ingenuity-final-flight
-    note: Secondary source. Look for the NASA/JPL release.
-  wright:
-    text: Ingenuity carries a swatch of fabric from the Wright brothers' 1903 Flyer.
-    source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
-    note: VERIFY.
+    text: Rotor damage during the January 18, 2024 landing ended Ingenuity's ability to fly. NASA announced the mission's end on January 25.
+    source: https://www.nasa.gov/news-release/after-three-years-on-mars-nasas-ingenuity-helicopter-mission-ends/
+    note: "Checked Nov 15, 2026: The Jan. 25 release says imagery of the Jan. 18 landing showed rotor damage and the helicopter could no longer fly."
   storing-data:
-    text: The helicopter can keep storing data on board for a future visitor.
-    source: https://www.livescience.com/space/space-exploration/nasas-downed-ingenuity-helicopter-has-a-last-gift-for-humanity-but-well-have-to-go-to-mars-to-get-it
-    note: Secondary source. Never claim it still transmits weekly (disputed).
+    text: Ingenuity rests at Valinor Hills. In April 2024, engineers confirmed software for collecting and storing data after the rover moved beyond radio range.
+    source: https://www.jpl.nasa.gov/news/nasas-ingenuity-mars-helicopter-team-says-goodbye-for-now/
+    note: "Checked Nov 15, 2026: The April 16 report places Ingenuity at Valinor Hills and confirms the update. Bytes and Cake describes daily equipment checks, images and temperatures; it does not establish present operation."
 
+arrival:
+  - { who: machine, tag: IMAGINED, text: "You came looking for wheels. Look a little higher." }
+  - { who: ariadne, tag: REAL, fact: build, text: "You meet a helicopter with a mass of 1.8 kilograms. Its rotors stretch about 1.2 meters across." }
+  - { who: ariadne, tag: REAL, fact: first-flight, text: "On April 19, 2021, it made the first powered, controlled flight on another planet." }
+
+operation:
+  title: Fly without a pilot
+  explainer:
+    - { text: "You begin with sunlight. A solar array charges batteries for flight and for heaters during the cold night.", fact: power }
+    - { text: "You send commands through Perseverance. Its base station passes them to the helicopter.", fact: relay }
+    - { text: "During flight, onboard systems guide the helicopter. You cannot fly it from Earth with a live joystick.", fact: first-flight }
+    - { text: "You wait for the record. Perseverance stores the helicopter's transmissions and passes the data toward Earth.", fact: relay }
+
+discovery:
+  headline:
+    text: "Five planned flights became 72. A flight experiment became a scout."
+    fact: flights
+  story:
+    text: >-
+      You see a new way to explore Mars.
+      Ingenuity proved that powered, controlled flight could work on another planet.
+      The plan called for five test flights.
+      The helicopter completed 72 and helped scout places for Perseverance.
+      You can trace that change from a first experiment to a useful view from above.
+    facts: [first-flight, flights]
+
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: flight72, text: "The last landing damaged the rotors on January 18, 2024. Ingenuity could no longer fly." }
+    - { who: machine, tag: IMAGINED, text: "Keep the sky in your memory. I will keep this patch of ground." }
+  last:
+    who: record
+    tag: REAL
+    fact: storing-data
+    text: "In April 2024, engineers confirmed a new role: collect and store data after the rover moves beyond radio range."
+
+statusNow:
+  text: "Ingenuity rests at Valinor Hills. Its final software was designed to store data locally. You are reading a mission record, not live telemetry."
+  fact: storing-data
+
+# Epigraph checked in Poems, Second Series (1891), Life VI, Hope:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+# The early printed edition has no quotation marks around Hope.
 epigraph:
-  text: "\"Hope\" is the thing with feathers."
+  text: "Hope is the thing with feathers"
   author: Emily Dickinson
   work: Poems, Second Series
   year: 1891
 
-arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "They said five flights. Just five. I flew seventy-two."
-
-# Three steps of how it flew, each one read against NASA's page. Proving content of F-04 (the explainer as captions).
-# The rest of the text of this file is still to be written (task X-02).
-operation:
-  title: How it flew
-  explainer:
-    - text: Ingenuity is small and light. It has a mass of 1.8 kilograms, and its rotors measure about 1.2 meters from tip to tip.
-      fact: build
-    - text: A solar panel on top charges its batteries. One charge is enough for one 90-second flight per Martian day.
-      fact: power
-    - text: It was built to prove one thing. A machine can fly in the extremely thin air of Mars. It was planned for five flights and made 72.
-      fact: flights
-
-# On stage: NASA's official model, on the stand of the diorama set (src/scenes/diorama). Proving file of F-01 (model).
 set:
   scene: diorama
   model: helicopter
-  alt: "A small helicopter on four thin legs: a box-shaped body, two long rotors one above the other, and a small solar panel on top."
+  alt: "A small helicopter has four thin legs, a box-shaped body, two stacked rotors and a solar panel on top."
   labels: [artistic-view]
   options: { size: 0.95, yaw: 25 }
-
 models:
   helicopter:
     file: mdl_ingenuity.glb
