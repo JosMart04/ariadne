@@ -152,6 +152,43 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   staged on the same telescope console as the finale. Order of work: finale, then E16, then E08, then the Orrery.
   Why: the 13:00 cut rule is about the Thread route being playable end to end.
 
+## Lane Fable · Thread and core (from Sun Nov 15, 14:50)
+
+- **F-D01 · Lanes replace fronts.** Several AI sessions (Claude Fable, GPT Astra) may work at once. One owner per file,
+  a claim is pushed before coding and is released only in writing, each session works in its own clone (`CLAUDE.md`).
+  Why: two agents of different makers share no memory; only the repository can coordinate them.
+- **F-D02 · Schedule re-based on Sun 14:50.** The plan of this session waited for approval from 10:55 to 14:45, so the
+  13:00 cut rule, the 14:00 first submission and the 15:00 text freeze passed. Frozen: Hands, Look Up, Gaze, every T2
+  operation and the Orrery (the card map stays). E08 text changed after 15:00 because the set needed it; the team reviews it.
+- **F-D03 · E08 is operated the only way a Mars rover is operated: planned from Earth.** The player places a waypoint and
+  sends one sequence. Then three things happen, each named on screen: the command travels, the rover drives on its own,
+  the telemetry travels back. The outcome is fixed when the sequence leaves; skipping a wait only shortens the show.
+  There is no joystick, no tau control and no human on Mars (FR-60 to FR-62). The storm is watched, never steered.
+- **F-D04 · The ground of E08 is a reconstruction, and says so.** It is a procedural plain with one crater, not an
+  elevation model and not draped with an orbital image, so the label is `reconstruction`, not `terrain-approximated`.
+  `src/sim/meridiani.ts` holds the heights and the shadow test; the set builds its mesh and bakes its shadows from
+  them, so what the player sees is what the simulation judges (same principle as B-D01).
+- **F-D05 · The winter Sun of E08 stands 20 degrees high. That is illustrative,** and the Field File says so. At
+  Opportunity's latitude the real winter Sun is higher at noon; a low Sun makes slope and shadow readable. The lesson it
+  carries is sourced: NASA says the north-facing outcrop Greeley Haven "optimizes Opportunity solar energy as winter approaches".
+- **F-D06 · The light time on the planning station is an estimate for the device's date,** from JPL's approximate planet
+  elements (valid 1800 to 2050). It is tested against four close approaches published by NASA (within 1.5 %) and three
+  landing-day light times away from close approach (within 2 %). The screen says "estimated", "today" and "one way";
+  it never claims the geometry of 2018. The date is an argument of the function, so tests and captures are reproducible.
+- **F-D07 · Energy percentages are teaching values, not telemetry.** The meter says "illustrative". A puzzle state of
+  `kind: scene` may now carry `label`, `value`, `unit`, `note` (a meter over the scene) and `tau: true` (a live readout
+  from the set). They are readouts, never controls. Additive: no other episode uses them.
+- **F-D08 · A claim without a source is narrowed or removed, never relabelled IMAGINED.** In E08: the myth check about
+  the rover's "last words" was removed (no source opened for how the sentence was made); "gypsum veins" became NASA's
+  own sentence about ancient water at Endeavour Crater; "a normal day is tau 0.5" and the Feb. 13, 2019 date were
+  removed; the "whirlwind" became wind, which is what NASA reports; `status.where` names only Perseverance Valley.
+  IMAGINED is kept for the machine's voice and for game conventions (the waypoint and the forecast of the console).
+- **F-D09 · `scripts/prep-assets.ts` keeps a committed file when its raw download is not on the machine, and fails when
+  neither exists.** Why: it used to stop on any machine without the raw files of E02.
+- **F-D10 · Reduced-motion captures include E08's Explorer route.** Why: its planning station works the same with
+  reduced motion (the drive is not animated; the three phases still appear). The other Explorer routes are still
+  captured only in full motion.
+
 ## Pending team confirmation (defaults in use)
 
 - ARIADNE acronym: "Archive for Robotic Instruments And Dormant Network Explorers" (not shown in the game yet).

@@ -55,7 +55,7 @@ Rules that keep parallel work safe:
 
 ## 1. Where the project stands
 
-**Live:** https://josmart04.github.io/ariadne/ · Gate green, 196 tests, deploy green on every push so far.
+**Live:** https://josmart04.github.io/ariadne/ · Gate green, 220 tests (Sun 15:30).
 
 | Part of the Thread route | State |
 |---|---|
@@ -64,11 +64,15 @@ Rules that keep parallel work safe:
 | **Prologue** | **Done in 3D** on the telescope console: the note, the midnight pulse, clew 0, the thread. No radio is tuned. With voices. |
 | **E02 Apollo 11** | **Done in 3D, both modes, with voices and sound.** The reference for everything else. |
 | **E16 Voyager 1** | **Done in 3D, both modes** (Sun 10:00): the 70-metre antenna turned by hand to the predicted position, the 2023–24 chip fault, clew III. **No voice files yet** (the browser reads aloud). Not yet reviewed by the team. |
-| **E08 Opportunity** | **Text only.** State machine and facts exist; no 3D set. **This is the next task (B-27).** |
+| **E08 Opportunity** | **Done in 3D, both modes** (Sun 15:30, Fable): planned from Earth on the planning station (`src/consoles/PlanStation.tsx`), set `src/scenes/meridiani/`, simulation `src/sim/meridiani.ts`, the official MER-B model, the real orbital photo in Status Now. Every fact re-read against its source. **Not yet played by a person.** |
 | **Finale** | **Done in 3D, both modes, with voices and sound.** Postcard and Voyager coda are not built (their beats are skipped). |
 | The other 13 machines | Drafts with a few facts each. |
 
-So the Thread is: prologue ✓ → E02 ✓ → **E08 ✗ (text)** → E16 ✓ → finale ✓. One key episode is missing its set.
+So the Thread is: prologue ✓ → E02 ✓ → E08 ✓ → E16 ✓ → finale ✓, each in 3D and in both modes. What is proven and how:
+- **By tests (220):** content gates, puzzle reachability of every graph, four simulations including E08's ground, outcomes and light time.
+- **By captures:** every beat of E08 in Accessible and in Explorer, in full and in reduced motion (`docs/captures/i3/`, `i3-reduce/`),
+  with no console error. The captures of the other scenes are from before this session (`i1d/`, `i1e/`).
+- **Not proven yet:** the whole Thread from a clean start (F-03), the 12 minutes with real people (T-06), real hardware and phones (T-10, T-13).
 
 What the team asked for in its playtest on Sun 09:40, and what was done (all pushed):
 - **"The landing is not intuitive, I always lose, even at 0.3 m/s."** Cause: a touchdown also fails when the lander still moves

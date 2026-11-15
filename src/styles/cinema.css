@@ -1306,3 +1306,99 @@ kbd {
   box-shadow: 0 0 1.6rem rgba(255, 182, 72, 0.55);
   font-size: 0.95rem;
 }
+
+/* ---------- E08 Opportunity: planning station and scene readouts (set `meridiani`) ---------- */
+.tapes--stage {
+  margin-bottom: 0.9rem;
+}
+.tapes--stage .tape dd {
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+}
+/* The line the forecast has to reach. */
+.meter--need {
+  position: relative;
+}
+.meter--need::after {
+  content: '';
+  position: absolute;
+  left: var(--need, 50%);
+  top: -0.3rem;
+  bottom: -0.3rem;
+  width: 0.125rem;
+  background: #fff;
+}
+.phases__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+  font-family: var(--f-mono);
+}
+.phase {
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 19rem) 9rem auto;
+  gap: 0.2rem 0.9rem;
+  align-items: center;
+  color: #a79c88;
+  font-size: 0.95rem;
+}
+.phase .meter {
+  margin: 0;
+  height: 0.7rem;
+}
+.phase__n {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 0.0625rem solid currentColor;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+.phase.is-now {
+  color: #fff;
+}
+.phase.is-now .phase__n {
+  color: #1a1206;
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.phase.is-done {
+  color: var(--real);
+}
+.phase.is-done .meter__fill {
+  background: repeating-linear-gradient(90deg, var(--real) 0 0.4rem, #2f7a52 0.4rem 0.5rem);
+}
+.phase__note,
+.phases__note {
+  font-family: var(--f-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.03em;
+  color: #c9bfab;
+}
+.phases__note {
+  margin: 0.6rem 0 0;
+  max-width: 44rem;
+}
+@media (max-width: 46rem) {
+  .phase {
+    grid-template-columns: 1.7rem minmax(0, 1fr);
+  }
+  .phase .meter,
+  .phase__note {
+    grid-column: 2;
+  }
+}
+
+/* A bright daytime sky sits behind the slate of this set: a soft dark band keeps it readable (AX: contrast). */
+.cinema.act--mars .cinema__top {
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.9), 0 0.06rem 0.12rem rgba(0, 0, 0, 0.9);
+}
+.cinema.act--mars .cinema__shade::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 12rem;
+  background: linear-gradient(180deg, #000, rgba(0, 0, 0, 0));
+}

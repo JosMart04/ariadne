@@ -11,6 +11,7 @@ import type { ComponentType } from 'react';
 import type { ConsoleT, FactC } from '../content/schema';
 import { DsnBrief, DsnConsole } from './DsnConsole';
 import { LmBrief, LmHud, LmPanel } from './LmPanel';
+import { PlanBrief, PlanHud, PlanStation } from './PlanStation';
 import { TelescopeBrief, TelescopeConsole } from './TelescopeConsole';
 
 export type ConsoleProps = { def?: ConsoleT; facts: Record<string, FactC> };
@@ -19,6 +20,7 @@ const SIMS: Record<string, { Console: ComponentType<ConsoleProps>; Brief?: Compo
   descent: { Console: LmPanel, Brief: LmBrief, Hud: LmHud },
   ranging: { Console: TelescopeConsole, Brief: TelescopeBrief },
   dsn: { Console: DsnConsole, Brief: DsnBrief },
+  traverse: { Console: PlanStation, Brief: PlanBrief, Hud: PlanHud },
 };
 
 /** True when a simulation can be played by hand, with its own console. */

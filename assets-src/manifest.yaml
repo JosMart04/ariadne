@@ -24,6 +24,13 @@ models:
     page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Voyager%20Probe%20(A)
     url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(A)/Voyager%20Probe%20(A).glb
     raw: models/voyager.glb
+  mdl_mer_b.glb:
+    title: Mars Exploration Rover - Opportunity (MER-B)
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B).glb
+    raw: models/mer_b.glb
 
 images:
   img_e02_site_noon.webp:
@@ -40,6 +47,14 @@ images:
     page: https://images.nasa.gov/details/PIA12909
     url: https://images-assets.nasa.gov/image/PIA12909/PIA12909~orig.jpg
     raw: img/PIA12909_orig.jpg
+  img_e08_after_storm.webp:
+    title: Opportunity After the Dust Storm (PIA22549)
+    credit: NASA/JPL-Caltech/Univ. of Arizona
+    license: Public domain
+    page: https://images.nasa.gov/details/PIA22549
+    url: https://images-assets.nasa.gov/image/PIA22549/PIA22549~orig.jpg
+    raw: img/PIA22549_orig.jpg
+    note: Untouched, resized to 1600 px wide.
 
 textures:
   tex_tranquility_ground.webp:

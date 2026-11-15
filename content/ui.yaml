@@ -306,3 +306,41 @@ brief.dsn.signal.title: Watch the signal.
 brief.dsn.signal: The bar fills as you get closer. A check mark means it is locked.
 brief.dsn.listen.title: Listen.
 brief.dsn.listen: Press Listen. What you hear left Voyager almost a day ago.
+
+# E08 Opportunity: the planning station (sim `traverse`)
+sim.traverse.take: Plan the sol
+sim.traverse.retry: Plan again
+sim.traverse.skip: Skip the wait
+sim.traverse.auto: Your sequence is on its way to Mars.
+sim.traverse.miss: The sequence did not leave. Plan the sol again.
+plan.tilt: Lean toward the Sun
+plan.tilt.need: "a good slope: +{n}° or more"
+plan.light: Sunlight forecast
+plan.light.ok: enough for the winter
+plan.light.low: "too little: winter needs {n}%"
+plan.light.shadow: in shadow
+plan.lighttime: Light time to Mars today
+plan.min: min
+plan.lighttime.note: "one way, estimated · drive: {m} m"
+plan.waypoint: Waypoint
+plan.sequence: Sequence
+plan.send: Send
+plan.left: Move the waypoint left
+plan.right: Move the waypoint right
+plan.away: Move the waypoint farther away
+plan.near: Move the waypoint nearer
+plan.keys: "Drag the scene, or use the arrows, to move the gold waypoint"
+plan.locked: Sent. The plan cannot change now.
+plan.phase.uplink: The command travels to Mars
+plan.phase.drive: The rover drives on its own
+plan.phase.downlink: The telemetry travels back to Earth
+plan.delay: "about {t}, one way"
+plan.delay.note: "Light time between Earth and Mars estimated for today, {date}. The waits on this screen are shortened."
+stage.tau: Dust in the sky (tau)
+stage.tau.normal: "June 10, 2018: about 10.8"
+brief.traverse.goal.title: Goal.
+brief.traverse.goal: Park where the solar panels will catch enough winter sunlight.
+brief.traverse.plan.title: Plan.
+brief.traverse.plan: Move the gold waypoint. Watch the sunlight forecast. A check mark means enough for the winter.
+brief.traverse.send.title: Send, then wait.
+brief.traverse.send: Nobody drives the rover. You send one sequence. The answer comes back at the speed of light.

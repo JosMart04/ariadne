@@ -118,11 +118,11 @@ export const PLAN_START: Spot = { x: 60, z: -20 };
 /** One waypoint per outcome: what the scripted operator sends in the Accessible view, and where its targets stand. */
 export const SPOTS: Record<OutcomeOf<'traverse'>, Spot> = {
   // The near wall of the crater: it faces the Sun.
-  'on-slope': { x: CRATER.x + 10.5, z: CRATER.z + 18.2 },
+  'on-slope': { x: CRATER.x + 12, z: CRATER.z + 20.8 },
   // The open plain.
   'on-flat': { x: 78, z: -28 },
   // The foot of the far wall: the rim hides the Sun.
-  'in-shadow': { x: CRATER.x - 10, z: CRATER.z - 17.3 },
+  'in-shadow': { x: CRATER.x - 14, z: CRATER.z - 24.2 },
 };
 
 // ---------- Distance is time: how long a command takes to reach Mars ----------

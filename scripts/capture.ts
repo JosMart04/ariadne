@@ -4,7 +4,7 @@
  *
  *   npm run dev                            (in another terminal)
  *   npm run capture -- i1c                 -> every scene, both routes, into docs/captures/i1c/
- *   npm run capture -- i1c finale          -> only the finale (also: prologue, e02)
+ *   npm run capture -- i1c finale          -> only the finale (also: prologue, e02, e08, e16)
  *   npm run capture -- i1c explorer        -> only the Explorer route (also: accessible)
  *   npm run capture -- i1c reduce          -> reduced motion, into docs/captures/i1c-reduce/
  *
@@ -22,10 +22,10 @@ import puppeteer, { type Browser, type Page } from 'puppeteer-core';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
-const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e16', 'finale'].includes(a)) ?? 'latest';
+const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale'].includes(a)) ?? 'latest';
 const reduce = args.includes('reduce');
 const route = ['explorer', 'accessible'].find((r) => args.includes(r));
-const SCENES = ['prologue', 'e02', 'e16', 'finale'] as const;
+const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale'] as const;
 const wanted = SCENES.filter((s) => args.includes(s));
 const scenes = wanted.length ? wanted : [...SCENES];
 const BASE = process.env.CAPTURE_URL ?? 'http://localhost:5173/';
@@ -291,6 +291,119 @@ async function e16Explorer(page: Page) {
   await shot('heard', 1500);
 }
 
+// ------------------------------------------------------------------ E08 Opportunity
+
+/** Every beat. The winter plan is sent three times: flat ground and the shadow teach, the slope works. */
+async function e08Accessible(page: Page) {
+  const shot = shooter(page, 'e08-accessible');
+  await open(page, 'e08-opportunity');
+  await shot('passage', 2500);
+  await press(page, 'Continue');
+  await shot('arrival', 2500);
+  await press(page, 'Continue');
+  await press(page, 'Continue');
+  await shot('arrival-planned-from-earth', 3000);
+  await press(page, 'Continue');
+  await press(page, 'Continue');
+  await shot('sol1-what-to-send', 3000);
+  await press(page, 'Science');
+  await shot('science-blueberries', 5500);
+  await press(page, 'Continue');
+  await shot('wind-sweeps-the-panels', 4200);
+  await shot('panels-clean', 5500);
+  await press(page, 'Continue');
+  await shot('winter-where-to-park', 3000);
+  await press(page, 'Flat ground');
+  await shot('command-travels', 900);
+  await waitFor(page, 'Continue');
+  await shot('flat-teaches', 2000);
+  await press(page, 'Continue');
+  await press(page, 'In the shadow');
+  await shot('rover-drives-alone', 4200);
+  await waitFor(page, 'Continue');
+  await shot('shadow-teaches', 2000);
+  await press(page, 'Continue');
+  await press(page, 'A slope that faces the Sun');
+  await waitFor(page, 'Continue');
+  await shot('slope-enough-power', 2500);
+  await press(page, 'Continue');
+  await shot('storm-begins', 1200);
+  await shot('storm-noon-like-night', 9000);
+  await press(page, 'Continue');
+  await shot('last-power', 2500);
+  await press(page, 'Take one last picture');
+  await shot('final-communication', 2500);
+  await press(page, 'Continue');
+  await shot('discovery', 3000);
+  await press(page, 'Tell me more');
+  for (let i = 1; i <= 8; i++) {
+    const done = await page.evaluate(() => !document.querySelector('.line__count'));
+    if (done) break;
+    await shot(`discovery-story-${i}`, 2800);
+    await press(page, 'Continue');
+  }
+  await shot('silence-last-pictures', 3500);
+  await press(page, 'Continue');
+  await shot('silence-rest-for-a-while', 2500);
+  await press(page, 'Continue');
+  await shot('silence-last-message', 3000);
+  await press(page, 'Catch it');
+  await shot('silence-caught', 2500);
+  await press(page, 'Continue');
+  await shot('clew', 3000);
+  await press(page, 'Continue');
+  await shot('status-now', 3500);
+  await press(page, 'Open the Field File');
+  await shot('field-file', 3500);
+}
+
+/** The operator's own hands on the planning station: send a careless plan and skip the wait, then drag the waypoint to the slope. */
+async function e08Explorer(page: Page) {
+  const shot = shooter(page, 'e08-explorer');
+  await open(page, 'e08-opportunity');
+  for (let i = 0; i < 5; i++) await press(page, 'Continue');
+  await press(page, 'Drive');
+  await shot('sol1-drive', 3500);
+  await press(page, 'Continue');
+  await press(page, 'Continue');
+  await shot('plan-the-sol', 3000);
+  await press(page, 'Plan the sol');
+  await shot('station', 1800);
+  // Send at once, without planning: the waypoint is on flat ground. Skipping the wait does not change the answer.
+  await press(page, 'Send');
+  await shot('sent-plan-is-locked', reduce ? 250 : 1500);
+  // With reduced motion the three phases are over in under two seconds, so there may be nothing left to skip.
+  if (await page.evaluate(hasButton, 'Skip the wait')) await page.evaluate(clickButton, 'Skip the wait');
+  await waitFor(page, 'Continue');
+  await shot('flat-teaches', 1500);
+  await press(page, 'Continue');
+  await press(page, 'Plan the sol');
+  await sleep(600);
+  // Drag the scene until the waypoint sits on the wall that faces the Sun.
+  const gap = () =>
+    page.evaluate(`(function () {
+      var s = window.__stage.getState();
+      var a = s.host.project(s.set.hotspot('waypoint'));
+      var b = s.host.project(s.set.hotspot('slope'));
+      return { dx: b.x - a.x, dy: b.y - a.y, enough: s.set.act('state').enough };
+    })()`) as Promise<{ dx: number; dy: number; enough: boolean }>;
+  for (let i = 0; i < 8; i++) {
+    const g = await gap();
+    if (Math.abs(g.dx) < 6 && Math.abs(g.dy) < 6) break;
+    await page.mouse.move(640, 300);
+    await page.mouse.down();
+    await page.mouse.move(640 + g.dx * 0.8, 300 + g.dy * 0.8, { steps: 12 });
+    await page.mouse.up();
+    await sleep(250);
+  }
+  await shot('waypoint-on-the-slope', 1200);
+  await press(page, 'Send');
+  await shot('command-travels', 1300);
+  await shot('rover-drives-alone', 3600);
+  await waitFor(page, 'Continue');
+  await shot('enough-power', 2000);
+}
+
 // ------------------------------------------------------------------ Finale
 
 /** Every beat of the finale; one wrong answer at each of the three decisions. */
@@ -391,6 +504,7 @@ async function finaleExplorer(page: Page) {
 const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Page) => Promise<void>>>> = {
   prologue: { accessible: prologue },
   e02: { accessible: e02Accessible, explorer: e02Explorer },
+  e08: { accessible: e08Accessible, explorer: e08Explorer },
   e16: { accessible: e16Accessible, explorer: e16Explorer },
   finale: { accessible: finaleAccessible, explorer: finaleExplorer },
 };
@@ -431,8 +545,9 @@ async function main() {
   console.log(`capturing ${scenes.join(', ')} into ${OUT.slice(ROOT.length + 1)} (${reduce ? 'reduced motion' : 'full motion'})`);
   for (const scene of scenes) {
     if (route !== 'explorer' && ROUTES[scene].accessible) await run(browser, 'accessible', scene);
-    // With reduced motion the scripted runs are skipped, so the Explorer route is only captured in full motion.
-    if (route !== 'accessible' && !reduce && ROUTES[scene].explorer) await run(browser, 'explorer', scene);
+    // With reduced motion the scripted flights of E02, E16 and the finale are skipped, so their Explorer routes are only
+    // captured in full motion. E08's planning station works the same in both, so it is captured in both.
+    if (route !== 'accessible' && (!reduce || scene === 'e08') && ROUTES[scene].explorer) await run(browser, 'explorer', scene);
   }
   await browser.close();
 

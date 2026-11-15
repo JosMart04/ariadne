@@ -1,0 +1,21 @@
+{
+  "cues": {
+    "passage": "A wide, flat plain of dark red sand under a butterscotch sky. One small machine stands on it, beside its own long shadow.",
+    "arrival": "Opportunity, close: a rover the size of a golf cart, with six wheels, a flat deck of dark blue solar panels and a camera mast. Its tracks lead away behind it.",
+    "sol1": "The rover on the plain, seen from above. Three places are marked: the open plain ahead, a pale rock beside the rover, and the rover itself.",
+    "drive": "The rover rolls slowly across the plain. Two thin tracks grow behind its wheels.",
+    "science": "The rover has stopped at a pale rock. In the sand around it lie tiny round gray grains, smaller than peas.",
+    "rest": "The rover stands still on the plain. A thin layer of tan dust covers its solar panels.",
+    "wind": "A gust of wind carries pale dust low across the plain and over the rover. Behind it the solar panels are dark blue and clean again.",
+    "plan": "The planner's view from high above: a crater on the plain, and the rover near it inside a white ring. One wall of the crater is bright with sunlight. The floor under the opposite wall lies in shadow. A gold ring marks the waypoint.",
+    "parked": "The rover stands where the sequence sent it. A long shadow shows that the Sun is low.",
+    "storm": "The view from the rover's camera mast, toward the Sun. The sky turns from butterscotch to dark brown. The Sun shrinks until it is one faint dot.",
+    "dark": "Noon looks like night. The rover is a dark shape in brown air full of dust.",
+    "berries": "Very close to the ground: tiny gray spheres lie in the sand and stick out of a pale rock.",
+    "rim": "The edge of the crater. Its walls are pale rock, brighter than the sand of the plain.",
+    "clew": "The rover, small and far away, in dim brown light.",
+    "status": "Opportunity stands still in thin haze. Tan dust covers its solar panels.",
+    "file": "The rover turns slowly so you can see every side."
+  },
+  "hotspots": ["plain", "rock", "rover", "slope", "flat", "shadow"]
+}
