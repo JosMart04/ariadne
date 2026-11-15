@@ -36,6 +36,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = join(ROOT, 'content');
 const OUT = join(ROOT, 'src', 'generated', 'content.json');
 const SCENES = join(ROOT, 'src', 'scenes');
+const VOICES = join(ROOT, 'public', 'assets', 'vo');
 
 /** What a 3D set declares: its cues (with their text description, AX-32) and its hotspots. */
 type SetSheet = { cues: Record<string, string>; hotspots: string[] };
@@ -261,6 +262,7 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     finale,
     ui,
     glossary,
+    voiced: existsSync(VOICES) ? readdirSync(VOICES).flatMap((f) => /^vo_(.+)_en\.mp3$/.exec(f)?.[1] ?? []).sort() : [],
     stats,
   };
 

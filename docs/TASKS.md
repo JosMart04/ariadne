@@ -71,7 +71,10 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
   the scene has a `set` (today it is still the text layout). (5.4, AC-13)
 - [x] B-24 Finale staging: revelation facts as captions, the monologue, the "Daisy Bell" hum that slows down (synthesise
   it: public domain, 1892; never the 1961 recording), the final pulse, the closing line. (5.4, 15.3)
-- [ ] B-04 **Voices.** `content/voices.yaml` (speaker → ElevenLabs stock voice id) + `scripts/gen-voices.ts`: reads
+- [~] (B) B-04 **Voices. BLOCKED on quota (Sun 07:46): the ElevenLabs key has 50 credits left of 10,000.** The script
+  and the casting are done and tested up to the API call: `npx tsx scripts/gen-voices.ts --dry-run prologue e02-apollo11 finale`
+  lists 54 lines, 4,763 characters. With a key that has quota, drop `--dry-run`. Until then the browser reads aloud (B-D13).
+  Original task: `content/voices.yaml` (speaker → ElevenLabs stock voice id) + `scripts/gen-voices.ts`: reads
   `voiceLines(content, only)` from `src/content/voice.ts`, `--dry-run` prints the character count, cache by text hash,
   writes `public/assets/vo/vo_<id>_en.mp3`. Read the key from `.env`; never print it. Check the current ElevenLabs API
   docs first (`GET /v1/voices`, `GET /v1/user/subscription` for the quota). If ffmpeg exists, add the ID3 comment
@@ -108,7 +111,7 @@ A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)`
 - [ ] B-02 Fact verification pass: every `note: VERIFY`, the 15 items of section 18.1, and **every source that points to
   `nasa.gov/history/alsj/`** (moved to `apollojournals.org/alsj/`). Never fill `verified:` (humans only). (CR-02, CR-12)
 - [ ] B-08 `scripts/check-links.ts`. (CR-02)
-- [ ] B-30 Read aloud with the browser's own speech for text without a voice file. (AX-33)
+- [x] B-30 Read aloud with the browser's own speech for text without a voice file. (AX-33)
 - [ ] B-31 Procedural leitmotif per act. (10.5)
 
 ## Lane A · Cosmos, station, shell
@@ -148,6 +151,9 @@ A-27 Gaze (no time; it stays in the pitch as the next step).
 - [ ] T-02 Rewrite and approve all text in your own voice. Text freeze Sunday 15:00. E02 is ready for you now. (R-09)
 - [ ] T-03 Verify every REAL fact against its source and sign `verified: <initials>` in the YAML. E02 has a `note:` on
   each fact saying what was checked and where. Anything unverified at 15:00 is reworded as IMAGINED or removed. (CR-12)
+- [ ] T-04b **ElevenLabs quota.** The key in `.env` has 50 credits left of 10,000. The Thread needs about 4,800 characters
+  (prologue, E02, finale) and about 3,000 more for E08 and E16. Put a key with quota in `.env` (a key that can only do
+  text to speech is enough), or decide to ship with the browser's own read-aloud voice, which already works.
 - [ ] T-04 Listen to the generated voices once B-04 lands. To change one, edit `content/voices.yaml`. Adult stock voices only. (R-05)
 - [ ] T-06 Timed playtest of the Thread with 3 adults (never minors). Record the median. (AC-01, M1)
 - [ ] T-07 **Submit the form at 14:00 Sunday** with the build of that moment; resubmit the final at 22:30. (R-01)

@@ -51,8 +51,8 @@ export function CinemaEpisode({ ep }: { ep: EpisodeC }) {
 
   // Beats that do not drive the camera line by line show their own cue.
   useEffect(() => {
-    if (beat === 'clew' && ep.clew) audio.speak(voiceId.clew(ep.clew.id));
-    if (beat === 'status') audio.speak(voiceId.status(ep.id));
+    if (beat === 'clew' && ep.clew) audio.speak(voiceId.clew(ep.clew.id), ep.clew.line, 'ariadne');
+    if (beat === 'status' && ep.statusNow) audio.speak(voiceId.status(ep.id), ep.statusNow.text, 'ariadne');
     if (beat === 'passage' || beat === 'file') audio.stopVoice();
     if (beat === 'passage' || beat === 'discovery' || beat === 'clew' || beat === 'status' || beat === 'file') showCue(cueOf(beat));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -220,7 +220,9 @@ function Discovery({ ep, onNext }: { ep: EpisodeC; onNext: () => void }) {
 
   useEffect(() => {
     if (k >= 0 && k < parts.length) showCue(d.story?.cues?.[Math.min(k, (d.story.cues?.length ?? 1) - 1)]);
-    audio.speak(k === -1 ? voiceId.headline(ep.id) : k < parts.length ? voiceId.story(ep.id, k) : voiceId.myth(ep.id));
+    if (k === -1) audio.speak(voiceId.headline(ep.id), d.headline.text, 'ariadne');
+    else if (k < parts.length) audio.speak(voiceId.story(ep.id, k), parts[k], 'ariadne');
+    else if (d.myth) audio.speak(voiceId.myth(ep.id), `${t('ep.myth.claim')}: ${d.myth.claim} ${t('ep.myth.truth')}: ${d.myth.truth}`, 'ariadne');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [k]);
 
@@ -302,7 +304,8 @@ function Silence({ ep, cue, onCaught, onNext }: { ep: EpisodeC; cue: string; onC
 
   useEffect(() => {
     showCue((atLast ? s.last.cue : before[n].cue) ?? cue);
-    audio.speak(atLast ? s.last.id : before[n].id);
+    const line = atLast ? s.last : before[n];
+    audio.speak(line.id, line.text, line.who === 'machine' || line.who === 'ariadne' ? line.who : 'narrator');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [n, atLast]);
 

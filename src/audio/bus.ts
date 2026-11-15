@@ -9,7 +9,9 @@
  * On the lunar surface there is silence. Sound only exists where there was air or a radio:
  * inside the cabin, on the loop with Mission Control, inside Knossos Station.
  */
+import { content } from '../content';
 import { asset } from '../content/assets';
+import { spoken } from '../content/voice';
 
 export type Channel = 'voice' | 'music' | 'sfx' | 'ambience';
 export type AudioSettings = { sound: boolean; narration: boolean; mono: boolean };
@@ -19,6 +21,15 @@ export const SFX = ['key', 'confirm', 'wrong', 'alarm', 'quindar', 'contact', 'c
 export type SfxName = (typeof SFX)[number];
 
 const VOLUME: Record<Channel, number> = { voice: 1, music: 0.45, sfx: 0.7, ambience: 0.5 };
+
+const VOICED = new Set(content.voiced ?? []);
+/** How the browser's own speech tells speakers apart when there is no voice file: pitch and pace. */
+const READ_ALOUD: Record<string, { pitch: number; rate: number }> = {
+  ariadne: { pitch: 1.05, rate: 0.95 },
+  machine: { pitch: 0.6, rate: 0.88 },
+  note: { pitch: 1.2, rate: 0.95 },
+  narrator: { pitch: 0.85, rate: 0.92 },
+};
 
 class AudioBus {
   private ctx: AudioContext | null = null;
@@ -263,19 +274,38 @@ class AudioBus {
   }
 
   /**
-   * Speaks a line by its id: public/assets/vo/vo_<id>_en.mp3. If the file is missing, or narration is off,
-   * nothing happens and nothing waits (FR-34).
+   * Speaks a text (FR-34, AX-33).
+   *  - If the line has a voice file (public/assets/vo/vo_<id>_en.mp3), that file plays.
+   *  - If not, the browser's own speech reads it aloud, on the device, with no download.
+   * Nothing waits for it and nothing breaks without it: the caption is already on screen.
+   * A real person's words are read in the neutral narrator voice; no voice ever pretends to be them.
    */
-  speak(id: string | undefined) {
+  speak(id: string | undefined, text?: string, who = 'narrator') {
     this.stopVoice();
-    if (!id || !this.unlocked || !this.settings.sound || !this.settings.narration) return;
-    const el = new Audio(asset(`assets/vo/vo_${id}_en.mp3`));
-    el.volume = VOLUME.voice;
-    el.addEventListener('error', () => {
-      if (this.voice === el) this.voice = null;
-    });
-    this.voice = el;
-    void el.play().catch(() => {});
+    if (!this.unlocked || !this.settings.sound || !this.settings.narration) return;
+    if (id && VOICED.has(id)) {
+      const el = new Audio(asset(`assets/vo/vo_${id}_en.mp3`));
+      el.volume = VOLUME.voice;
+      el.addEventListener('error', () => {
+        if (this.voice === el) this.voice = null;
+      });
+      this.voice = el;
+      void el.play().catch(() => {});
+      return;
+    }
+    if (!text || typeof speechSynthesis === 'undefined') return;
+    try {
+      const u = new SpeechSynthesisUtterance(spoken(text));
+      const how = READ_ALOUD[who] ?? READ_ALOUD.narrator;
+      u.lang = 'en-US';
+      u.pitch = how.pitch;
+      u.rate = how.rate;
+      const english = speechSynthesis.getVoices().find((v) => v.lang.startsWith('en') && v.localService) ?? speechSynthesis.getVoices().find((v) => v.lang.startsWith('en'));
+      if (english) u.voice = english;
+      speechSynthesis.speak(u);
+    } catch {
+      /* speech is a bonus, never a requirement */
+    }
   }
 
   stopVoice() {
@@ -283,6 +313,7 @@ class AudioBus {
       this.voice.pause();
       this.voice = null;
     }
+    if (typeof speechSynthesis !== 'undefined' && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
   }
 }
 

@@ -87,7 +87,7 @@ export function PuzzleRunner({ puzzle, facts, onSolved, scene = false, cue, cons
   // Narration, and a sound for what just happened. The first alarm state rings the master alarm once.
   useEffect(() => {
     if (!state) return;
-    if (voice && state.say) audio.speak(voiceId.say(voice, cur));
+    if (voice && state.say) audio.speak(voiceId.say(voice, cur), state.say, 'ariadne');
     if (state.wrong) audio.play('wrong');
     else if ((state.stage as { cue?: string } | undefined)?.cue === 'alarm' && cur === puzzle.initial) audio.play('alarm');
     // eslint-disable-next-line react-hooks/exhaustive-deps

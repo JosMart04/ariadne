@@ -323,5 +323,7 @@ export type Content = {
   finale: SceneC;
   ui: Record<string, string>;
   glossary: Record<string, { def: string }>;
+  /** Ids of the lines that have a voice file in public/assets/vo/. The others are read by the browser's own speech. */
+  voiced: string[];
   stats: ContentStats;
 };

@@ -111,7 +111,7 @@ function ClewBeat({ beat, onNext, onClew }: { beat: Extract<BeatT, { kind: 'clew
   const region = useFocusOn<HTMLDivElement>(beat.clew.id);
   useEffect(() => {
     showCue(beat.cue);
-    audio.speak(voiceId.clew(beat.clew.id));
+    audio.speak(voiceId.clew(beat.clew.id), beat.clew.line, 'ariadne');
   }, [beat]);
   return (
     <>
@@ -141,14 +141,15 @@ function SetPiece({ beat, id, onNext }: { beat: Extract<BeatT, { kind: 'special'
   const region = useFocusOn<HTMLDivElement>(id);
   useEffect(() => {
     showCue(beat.cue ?? (beat.name === 'pulse' ? 'pulse' : undefined));
-    let echo = 0;
+    // The words first; the pulse and the song come in under them.
+    audio.speak(id, beat.text, 'narrator');
+    const timers: number[] = [];
     if (beat.name === 'pulse') {
-      audio.play('pulse');
-      echo = window.setTimeout(() => audio.play('echo'), 2560);
-    } else if (beat.name === 'daisy-bell') audio.play('daisy');
-    else audio.speak(id);
+      timers.push(window.setTimeout(() => audio.play('pulse'), 800));
+      timers.push(window.setTimeout(() => audio.play('echo'), 800 + 2560));
+    } else if (beat.name === 'daisy-bell') timers.push(window.setTimeout(() => audio.play('daisy'), 4200));
     return () => {
-      clearTimeout(echo);
+      timers.forEach(clearTimeout);
       audio.stopMusic();
     };
   }, [beat, id]);

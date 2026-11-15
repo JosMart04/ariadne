@@ -128,6 +128,11 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   Why: captures, AC-16 measurements by the team, and tests that fly like a player. No secret is exposed.
 - **B-D11 · Eagle faces west, the Sun is 10.8° above the east, the Earth is 1.9° wide and high in the west, there are
   no stars on the surface.** Why: "accuracy is important throughout"; each of these is how it was on July 20, 1969.
+- **B-D13 · Voice has two layers.** A line with a file in `public/assets/vo/` plays that file. A line without one is read
+  aloud by the browser's own speech, on the device (AX-33), with pitch and pace per speaker. The compiler lists the files
+  that exist (`content.voiced`), so the game never requests a missing file. Why: the ElevenLabs key had 50 credits left
+  of 10,000 on Sun 07:46, and the Thread needs about 4,800 characters; the game must not be mute while the team finds quota.
+  A real person's words are read in the neutral narrator voice.
 - **B-D12 · Schedule re-based again on Sun 07:30, after 4 h 20 min lost to a usage limit** (table in `docs/TASKS.md`).
   The cut ladder is applied in advance: Knossos Station is a console set, not a walkable room, and the prologue is
   staged on the same telescope console as the finale. Order of work: finale, then E16, then E08, then the Orrery.

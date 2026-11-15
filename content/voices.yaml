@@ -1,0 +1,32 @@
+# Who speaks with which voice. Read by scripts/gen-voices.ts (not by the game).
+#
+# Rules (contest and team):
+#  - Stock library voices of adult voice actors only. Never a cloned voice, never a minor.
+#  - Real people (Armstrong, Aldrin, Mission Control) are NOT listed here on purpose: a generated voice never
+#    speaks for a real person. Their words stay as captions.
+#  - Every file is labelled "AI-generated voice (ElevenLabs)" in its ID3 tag, in the README and in the credits.
+#
+# To change a voice: edit the id, then run `npx tsx scripts/gen-voices.ts <scenes>`. Only changed lines are redone.
+# The team chooses by ear (task T-04); these are Claude's first picks.
+
+model: eleven_multilingual_v2
+format: mp3_44100_64
+settings: { stability: 0.55, similarity_boost: 0.75, style: 0 }
+
+voices:
+  ariadne:
+    name: Lily
+    id: pFZP5JQG7iQjIQuC4Bku
+    why: Warm, calm, unhurried. The archive mind of an old station on its last night.
+  machine:
+    name: Bill
+    id: pqHfZKP75CvOlQylNhV4
+    why: An older, steady voice for machines that have been silent for decades. One voice per machine can come later.
+  narrator:
+    name: George
+    id: JBFqnCBsd6RMkjVDRZzb
+    why: Knossos Station itself, when ARIADNE is spoken about in the third person.
+  note:
+    name: Alice
+    id: Xb7hH8MSUJpSbSDYk0k2
+    why: The note left by the last human operator, R.
