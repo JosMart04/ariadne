@@ -43,11 +43,12 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
 
 ### Lane Fable · Thread and core
 
-- [~] (Fable) B-27 **E08 Opportunity from Earth** (details under Lane B, I3). **"E08 complete" means:** the winter plan made
-  by hand on the planning station in Explorer + targets in the scene in Accessible + the three named phases after sending
-  (command on its way, rover drives alone, telemetry on its way back) with a wait the player can skip + the storm +
-  reduced motion + captures of both modes. Without the hand-operated station it is "E08, guided version" and this stays open.
-- [ ] F-03 **The Thread from a clean start:** a `thread` route in `scripts/capture.ts` with empty storage: title → setup →
+- [x] B-27 **E08 Opportunity from Earth: complete** (Sun 15:31, deployed). The winter plan is made by hand on the planning
+  station in Explorer and with targets in the scene in Accessible; after sending, three named phases (the command travels,
+  the rover drives on its own, the telemetry travels back) with the estimated light time of today and a wait the player
+  can skip; the storm seen from the mast; the real orbital photo in Status Now; reduced motion; 39 + 39 captures of both
+  modes in `docs/captures/i3/` and `i3-reduce/`. Decisions F-D03 to F-D08. **Not yet played by a person (T-15).**
+- [~] (Fable) F-03 **The Thread from a clean start:** a `thread` route in `scripts/capture.ts` with empty storage: title → setup →
   prologue → E02 → E08 → E16 → finale, clews earned by playing. Today `run()` preloads progress and clews, so no capture
   proves the progression. Its duration is a technical minimum, not AC-01: the 12 minutes are timed by people (T-06).
 - [ ] F-02 **Lifecycle, two confirmed defects.** (a) `PuzzleRunner` awaits `act('fly')`; if the WebGL context is lost during
@@ -56,12 +57,13 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
   moves the state machine. Reproduce with `WEBGL_lose_context` from the capture script. (b) `SceneHost.dispose()` calls the
   set's `dispose` (which removes its root) before it walks the scene to free geometries, materials and textures, so nothing
   is freed. Fix: walk first. Reproduce by mounting and leaving sets twenty times. Recapture E02 and E16 afterwards.
-- [ ] B-04b Voices for E16 and E08: `npx tsx scripts/gen-voices.ts e16-voyager1 e08-opportunity`, then `npm run content`.
+- [x] B-04b Voices for E16 and E08 (Sun 15:35): 58 new files. **All 102 spoken lines of the game now have a voice file.**
+  A line whose text changes is made again by `npx tsx scripts/gen-voices.ts <episode>`, then `npm run content`.
 - [ ] A-13 Accessibility pass on the Thread (see Lane A).
 
-### Lane Fable · diorama (open: a second Fable session, or this one after E08)
+### Lane Fable · diorama (taken by the E08 session on Sun 15:36; no second Fable session is needed for it)
 
-- [ ] F-01 **The diorama contract: a new file is one YAML and one manifest row, with no engine change.**
+- [~] (Fable) F-01 **The diorama contract: a new file is one YAML and one manifest row, with no engine change.**
   1. `SetFactory` becomes `(host, context?)`. `SetContext = { id, model?, images, options }`: the episode id, the hero model
      declared in YAML (`set.model` → `models[...]`), its images, and free presentation options (`set.options`). `Set3D` takes
      a `context` prop from `CinemaEpisode` and `ScenePlayer`. The four existing sets ignore it.
@@ -211,3 +213,7 @@ A-27 Gaze (no time; it stays in the pitch as the next step).
 - [ ] T-13 **Play E02 now** on a laptop with an integrated GPU: https://josmart04.github.io/ariadne/?fps#e02-apollo11 and
   write the frame rate here. Fly the landing by hand (W / S, R / F). Say what felt wrong. (AC-16)
 - [ ] T-14 Review the captures in `docs/captures/i1d/` and `docs/captures/i1e/` against the screenshot rule. (AC-15)
+- [ ] T-15 **Play E08 Opportunity** (https://josmart04.github.io/ariadne/#e08-opportunity) in Explorer and say whether the
+  planning station is clear: do you know what to do, what "enough" means, and what happens after you press Send?
+- [ ] T-16 Review the new text and facts of E08 (changed after the 15:00 freeze because the set needed it): each fact has
+  a `note:` with the sentence that was checked. The myth check was removed for lack of a source (decision F-D08).
