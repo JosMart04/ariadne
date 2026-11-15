@@ -346,3 +346,9 @@ accessibility pass (A-13), the submission texts (X-01). Also done at 16:06: cred
 E02** · **T-06 time the whole Thread with people** (the script needs 3 minutes; a person is the measure) · T-16 review the
 text and facts of E08 · T-02 and T-03 rewrite the text in your own voice and sign `verified:` · T-04 listen to the voices ·
 T-07 submit the form · T-10 and T-13 real hardware and a phone · decide whether GPT Astra starts now (start prompt in section 0).
+
+### Lane astra · independent clone (Nov 15)
+
+- 16:50 UTC-5: X-01 complete. Six submission files describe the delivered Thread, disclose Claude/Codex and generated voices, list sources, and provide a 28-second edit script.
+- Baseline: npm ci succeeded; npm run check passed (224 tests, one todo). Human fact signatures remain untouched.
+- Next: E11 first, including Discovery and Silence capture, then the episode order in section 0.
