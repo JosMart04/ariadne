@@ -76,9 +76,9 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 
 ### Lane astra · Astra: the 13 files and the submission
 
-- [ ] X-01 `docs/submission/`: `summary.md`, `description.md`, `ai-disclosure.md`, `nasa-data.md`, `references.md`,
+- [~] X-01 (Astra) `docs/submission/`: `summary.md`, `description.md`, `ai-disclosure.md`, `nasa-data.md`, `references.md`,
   `video-script.md` (30 seconds at most). Say what is built and what is not. 30 minutes at most, then the files.
-- [ ] X-10 E11 Ingenuity · [ ] X-11 E07 Spirit · [ ] X-12 E05 Viking · [ ] X-13 E12 Pioneer · [ ] X-14 E14 Kepler ·
+- [~] X-10 (Astra) E11 Ingenuity · [ ] X-11 E07 Spirit · [ ] X-12 E05 Viking · [ ] X-13 E12 Pioneer · [ ] X-14 E14 Kepler ·
   [ ] X-15 E15 Dawn · [ ] X-16 E13 NEAR · [ ] X-17 E10 InSight · [ ] X-18 E01 Surveyor · [ ] X-19 E09 Phoenix ·
   [ ] X-20 E06 Sojourner · [ ] X-21 E03 ALSEP · [ ] X-22 E04 Lunar rovers.
   For each, in this order, one file per commit: facts opened and noted → seven beats of text → on stage (recipe in
