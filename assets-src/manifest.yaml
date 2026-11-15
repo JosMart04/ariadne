@@ -124,6 +124,15 @@ images:
     raw: img/PIA10903_orig.jpg
     note: Untouched; resized only. The June 13 photograph records the trench before the later disappearance comparison.
 
+  img_e06_yogi.webp:
+    title: Sojourner Does a Wheelie on Yogi (PIA00670)
+    credit: NASA/JPL
+    license: Public domain
+    page: https://science.nasa.gov/resource/sojourner-does-a-wheelie-on-yogi/
+    url: https://images-assets.nasa.gov/image/PIA00670/PIA00670~orig.jpg
+    raw: img/PIA00670_orig.jpg
+    note: Untouched archive photograph; no enlargement.
+
 textures:
   tex_tranquility_ground.webp:
     title: Ground of the Tranquility Base set

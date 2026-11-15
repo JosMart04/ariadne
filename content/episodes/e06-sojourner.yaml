@@ -1,30 +1,88 @@
 id: e06-sojourner
 num: 6
 act: mars
-name: Pathfinder & Sojourner
+name: Sojourner
 title: The Bounce
 slate: { place: Ares Vallis, year: 1997 }
 launched: "1996-12-04"
-draft: true
 status: { badge: silent-intact, where: "Ares Vallis, Mars" }
 nssdca: [1996-068A]
 resource: sojourner
-
+objectives:
+  - Explain how airbags protected a Mars landing.
+  - Describe how a rover followed commands while checking for obstacles.
+  - Connect rock measurements with evidence of an older, wetter Mars.
 facts:
-  airbags:
-    text: Mars Pathfinder landed on July 4, 1997, using airbags for the first time.
-    source: https://www.nasa.gov/image-article/july-4-1997-sojourner-arrives-red-planet
-  lifetime:
-    text: Sojourner was designed for 7 sols and worked for 83. Contact ended on Sept. 27, 1997.
+  landing:
+    text: Mars Pathfinder launched on December 4, 1996, and landed in Ares Vallis on July 4, 1997. It carried the Sojourner rover.
     source: https://science.nasa.gov/mission/mars-pathfinder/
-  distance:
-    text: Sojourner drove about 100 m in total and never went more than about 12 m from the lander.
-    source: https://www.space.com/17745-mars-pathfinder-sojourner-rover.html
-    note: Secondary source. Look for a NASA equivalent.
-
+    note: "Checked Nov 15, 2026: Key Facts gives launch, landing and site; the overview identifies Sojourner as the carried rover."
+  airbags:
+    text: A parachute slowed Pathfinder's descent. Airbags cushioned the landing as the spacecraft bounced across the surface before coming to rest.
+    source: https://science.nasa.gov/mission/mars-pathfinder/
+    note: "Checked Nov 15, 2026: Airbag Landing describes parachute slowing, inflatable protection and repeated bounces before the spacecraft stopped."
+  autonomy:
+    text: Operators chose Sojourner's targets and paths from lander images. The rover used cameras and laser stripes to detect obstacles while following commands.
+    source: https://www-robotics.jpl.nasa.gov/what-we-do/flight-projects/pathfinder/software-electronics/
+    note: "Checked Nov 15, 2026: Software and Electronics describes commanded objectives, onboard navigation, laser-based terrain sensing and operator planning from lander images."
+  chemistry:
+    text: Sojourner's Alpha Proton X-ray Spectrometer measured the chemical elements in rocks and soil. The rover approached rocks closely to use it.
+    source: https://science.nasa.gov/resource/sojourner-does-a-wheelie-on-yogi/
+    note: "Checked Nov 15, 2026: The Yogi caption explains the close approach for APXS chemical study; the opened mission page lists elemental composition as its measurement."
+  range:
+    text: Sojourner traveled more than 100 meters in total while staying within about 12 meters of the lander.
+    source: https://www-robotics.jpl.nasa.gov/what-we-do/flight-projects/pathfinder/software-electronics/
+    note: "Checked Nov 15, 2026: The operations paragraph gives more than 100 metres of travel and a 12-metre line-of-sight limit."
+  water-history:
+    text: Rounded pebbles and other observations at the landing site suggested that running water shaped the area during a warmer past.
+    source: https://science.nasa.gov/mission/mars-pathfinder/
+    note: "Checked Nov 15, 2026: Science Highlights identifies rounded pebbles and cobbles as evidence suggesting formation in running water."
+  last-contact:
+    text: Sojourner worked for 83 days instead of its planned seven. Pathfinder's last data arrived on September 27, 1997; recovery efforts ended in March 1998.
+    source: https://science.nasa.gov/resource/sojourner-does-a-wheelie-on-yogi/
+    note: "Checked Nov 15, 2026: The Photojournal note says 83 days, planned seven days, last data Sept. 27 and termination March 10, 1998. Days are not relabelled sols."
 arrival:
-  - who: machine
-    tag: IMAGINED
-    text: "I was the size of a microwave oven. I arrived on the Fourth of July, 1997, bouncing across Mars inside a cluster of balloons."
-
+  - { who: machine, tag: IMAGINED, text: "You do not need a long road to begin a journey." }
+  - { who: ariadne, tag: REAL, fact: landing, text: "You reach Ares Vallis with Pathfinder and Sojourner on July 4, 1997." }
+operation:
+  title: Plan a small rover's next steps
+  explainer:
+    - { text: "You land inside protective airbags after slowing with a parachute. Pathfinder bounces, then comes to rest.", fact: airbags }
+    - { text: "From Earth, you inspect lander images and choose a target and path. You send commands for the rover to follow.", fact: autonomy }
+    - { text: "Sojourner checks the terrain with cameras and projected laser stripes. Its onboard software responds to obstacles.", fact: autonomy }
+    - { text: "You bring the rover close to a rock. Its spectrometer measures the chemical elements there.", fact: chemistry }
+discovery:
+  headline: { text: "The landing site's rounded stones helped reveal an older, wetter Mars.", fact: water-history }
+  story:
+    text: >-
+      You explore a small area with several kinds of evidence.
+      The spectrometer measures elements in rocks and soil.
+      Rounded pebbles and other observations suggest a past shaped by running water.
+      Sojourner travels more than 100 meters in total while remaining close to its lander.
+    facts: [chemistry, water-history, range]
+silence:
+  before:
+    - { who: ariadne, tag: REAL, fact: last-contact, text: "A planned seven-day rover mission becomes 83 days of work. You receive Pathfinder's last data on September 27, 1997." }
+    - { who: ariadne, tag: REAL, fact: last-contact, text: "Attempts to restore contact continue for months. The mission formally ends in March 1998." }
+  last: { who: machine, tag: IMAGINED, text: "You can begin with a few tracks, and still change the view." }
+statusNow:
+  text: "Pathfinder and Sojourner rest in Ares Vallis. The last data arrived in September 1997; later efforts did not restore contact."
+  fact: last-contact
+# Poems (1890), Nature X; checked Nov 15, 2026:
+# https://www.gutenberg.org/files/12242/12242-h/12242-h.htm
+epigraph:
+  text: "A little road not made of man,\nEnabled of the eye,"
+  author: Emily Dickinson
+  work: Poems
+  year: 1890
+set:
+  scene: diorama
+  image: yogi
+  labels: [artistic-view]
+images:
+  yogi:
+    file: img_e06_yogi.webp
+    alt: "Pathfinder's photograph shows the small Sojourner rover beside the large rock Yogi, with one rear wheel raised against it."
+    credit: NASA/JPL
+    source: https://science.nasa.gov/resource/sojourner-does-a-wheelie-on-yogi/
 crossThreads: [e07-spirit, e08-opportunity]
