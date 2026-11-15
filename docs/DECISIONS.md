@@ -227,7 +227,40 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
 
 ## Lane b · machine B (decisions of this lane go here)
 
-- (none yet)
+- **b-D01 · The map compresses distance and says so.** Every body keeps its true direction; its distance from the Sun is
+  drawn as `ln(1 + au / 0.25)` (`compress` in `src/sim/planets.ts`), so a farther body is always drawn farther. Why: to
+  scale, with Voyager 1 at the edge of a screen, the Earth is two pixels from the Sun. The screen carries "Distances
+  compressed" and "Sizes not to scale" at all times (FR-61).
+- **b-D02 · Where each thing is, and how good that is.** Planets: JPL's approximate elements, table 1 (read on the page on
+  Nov. 15, 2026; the rows of the Earth and Mars are the same as in `src/sim/meridiani.ts`, and a test keeps the two
+  copies equal). Eros and Ceres: two-body motion from JPL's Small-Body Database, epoch June 2026. The Moon: its mean
+  longitude, drawn far from the Earth to be seen. **Kepler, Pioneer 10 and Voyager 1 are approximate and the screen says
+  so on each of them:** Voyager's distance is NASA's (`src/sim/dsn.ts`) and its direction is "35 degrees north, toward
+  Ophiuchus" (NASA's Voyager FAQ); Pioneer 10 is extrapolated from NASA's last contact in 2003 (12.2 billion km, toward
+  Aldebaran) at 2.54 au a year; Kepler is put behind the Earth by its period of 372.5 days (NSSDCA). The tests check the
+  planets against published events (Mars in 2003, the transit of Venus of 2012, the great conjunction of 2020).
+- **b-D03 · The worlds of the Orrery are painted in code**, from noise with a fixed seed. Why: lane b does not own
+  `public/assets/`, a file would need a manifest row of lane astra, and at 60 pixels a painted Jupiter reads as Jupiter.
+  Nothing on the map claims to be a photograph.
+- **b-D04 · `Pin`, not `Anchor`.** `Anchor` (`src/episode/Set3D.tsx`, lane a) keeps a large choice away from the edges
+  and never lets it pass `width - 300px`: right for three big targets, wrong for sixteen small markers, which would come
+  off their worlds. `Pin` (`src/screens/Cosmos.tsx`) uses the same public parts (`useStage`, `host.project`,
+  `set.hotspot`), so no frozen contract changed.
+- **b-D05 · Machines that share a world open in a fan with constant spacing on screen.** The set computes it every frame
+  (`fan` in `src/scenes/orrery/index.ts`): the fan turns to the side with most room, a world outside the picture keeps
+  its fan whole at the nearest edge (no machine is ever out of reach, no two markers on each other), and from far away
+  markers on worlds shrink to dots. Coming closer, the camera turns toward the middle of the Earth and Mars, where eleven
+  of the sixteen are.
+- **b-D06 · The golden thread joins the machines the player has restored, in launch order; the rest of the path is a
+  faint dashed line.** On the title the whole thread shines: it is the promise of the game.
+- **b-D07 · The list of cards is the same map as a list.** It is the first view in Accessible play, the view the map
+  falls back to without WebGL or after a lost context, and one key away otherwise. The choice is kept under its own
+  storage key (`ariadne-map-view`), because the game store belongs to lane a. Markers are 2 rem wide (32 px at 100 %):
+  under the 44 px of the list, above the 24 px that WCAG 2.2 AA asks for; the list keeps the large targets.
+- **b-D08 · `?date=YYYY-MM-DD` sets the day the title and the map show** (`mapDate` in `src/screens/Cosmos.tsx`), for the
+  team's video and for repeatable pictures. Lane a plans the same name for the finale.
+- **b-D09 · The station bar floats over the title and the map through `.app:has(.cosmos)`** in `src/screens/cosmos.css`,
+  the same rules `.app--cinema` has. Why: `src/App.tsx` decides `app--cinema` and belongs to lane a.
 
 ## Lane astra (decisions of this lane go here)
 

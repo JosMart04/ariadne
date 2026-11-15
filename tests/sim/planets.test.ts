@@ -3,6 +3,9 @@
  * Every expected value is a date or a distance that an observatory or NASA published; none comes from this code.
  */
 import { describe, expect, it } from 'vitest';
+import content from '../../src/generated/content.json';
+import sheet from '../../src/scenes/orrery/cues.json';
+import { PLACES, placeOf } from '../../src/scenes/orrery/places.ts';
 import { ONE_LIGHT_DAY_AT, ONE_LIGHT_DAY_KM } from '../../src/sim/dsn.ts';
 import { marsDistanceKm } from '../../src/sim/meridiani.ts';
 import {
@@ -156,5 +159,25 @@ describe('planets: the scale of the map', () => {
     const p = heliocentric('jupiter', TODAY);
     expect(angle(onMap(p), p)).toBeLessThan(1e-6);
     expect(length(onMap(p))).toBeCloseTo(compress(length(p)), 9);
+  });
+});
+
+describe('the map: where the sixteen machines rest', () => {
+  const ids = (content as { threadOrder: string[] }).threadOrder;
+
+  it('gives every machine a place, so none is missing from the map', () => {
+    expect(ids).toHaveLength(16);
+    for (const id of ids) expect(placeOf(id), id).toBeDefined();
+  });
+
+  it('puts four on the Moon, seven on Mars, and one at each of the other five places', () => {
+    const count = (place: string) => ids.filter((id) => placeOf(id) === place).length;
+    expect(count('moon')).toBe(4);
+    expect(count('mars')).toBe(7);
+    for (const place of PLACES) if (place !== 'moon' && place !== 'mars') expect(count(place), place).toBe(1);
+  });
+
+  it('declares every machine and every place as a hotspot of the Orrery', () => {
+    for (const name of [...ids, ...PLACES]) expect(sheet.hotspots, name).toContain(name);
   });
 });

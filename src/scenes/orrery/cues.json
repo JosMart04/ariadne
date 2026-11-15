@@ -1,0 +1,40 @@
+{
+  "cues": {
+    "title": "The solar system on {name}, seen from just above the plane of the planets: the Sun, eight worlds on their orbits, and a golden thread that joins sixteen silent machines.",
+    "map": "A map of the solar system on {name}, seen from above. {alt} Every machine NASA left behind is marked where it rests today: four on the Moon, seven on Mars, one on the asteroid Eros, one around Ceres, one behind the Earth, two far outside the planets. A golden thread joins them in the order they were launched. Sizes are not to scale and distances are compressed.",
+    "far": "The whole map from far away on {name}. The planets are a small disc around the Sun. Pioneer 10 and Voyager 1 are far outside it, and Voyager 1 has climbed high above the plane of the planets. Their positions are approximate."
+  },
+  "hotspots": [
+    "sun",
+    "mercury",
+    "venus",
+    "earth",
+    "mars",
+    "jupiter",
+    "saturn",
+    "uranus",
+    "neptune",
+    "moon",
+    "eros",
+    "ceres",
+    "kepler",
+    "pioneer",
+    "voyager",
+    "e01-surveyor",
+    "e02-apollo11",
+    "e03-alsep",
+    "e04-lrv",
+    "e05-viking",
+    "e06-sojourner",
+    "e07-spirit",
+    "e08-opportunity",
+    "e09-phoenix",
+    "e10-insight",
+    "e11-ingenuity",
+    "e12-pioneer",
+    "e13-near",
+    "e14-kepler",
+    "e15-dawn",
+    "e16-voyager1"
+  ]
+}

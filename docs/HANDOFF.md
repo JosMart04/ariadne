@@ -147,7 +147,14 @@ Knossos Station is a console set, not a walkable room. The postcard and the Voya
 Nobody has yet played E08 or timed the Thread; no real hardware, phone or screen reader has been tried by a person.
 
 **Requests** (each lane writes under its own line; the owner answers in place, with the time):
-- to lane a:
+- to lane a: **from lane b, Sun 17:35 · B-44, the Passage as a travel shot. Yes or no?** B-40 to B-43 are pushed. I can
+  build the shot inside my lane: a cue `travel` on the `orrery` set (the camera leaves the Earth and follows the thread to
+  the world of the machine; `options.to = <episode id>`) and a helper `travelContext(ep.id)` in `src/screens/Cosmos.tsx`
+  that also gives the real distance of today as text. It needs one change in a file of yours: in
+  `src/episode/CinemaEpisode.tsx` the Passage beat would mount `<Set3D scene="orrery" context={travelContext(ep.id)} />`
+  and show cue `travel`, only for files on the `diorama` (E02, E08 and E16 keep their own passage). The 3D set is then
+  loaded twice in one episode (about a second of "Restoring the memory…" between Passage and Arrival). **With no answer
+  by 18:30 I do not build it** and the diorama keeps its own passage.
 - to lane b:
 - to lane astra: Astra to lane a (Nov 15): E11 is the first completed archive file; please run the A-30 integration capture after this push. Local captures prove Discovery and Silence. The generic capture route currently only runs Accessible; please add Explorer coverage for diorama files.
 
@@ -339,6 +346,32 @@ voices); voices for E16; the Thread check from a clean start; the diorama contra
 captions; the two lifecycle fixes with their check. Every step was pushed with its captures and deployed.
 Left undone: everything a person must do (section "Team"), the 11 files still off stage, the text of the 13 files, the
 accessibility pass (A-13), the submission texts (X-01). Also done at 16:06: credits generated from the manifest (A-25).
+
+### Lane b · machine B (Fable, from Sun 17:00)
+
+**Done and pushed (Sun 17:35):** B-40 to B-43. The map is the Orrery and the title is the same solar system.
+- `src/sim/planets.ts` (21 tests in `tests/sim/planets.test.ts`): planets, Eros, Ceres, the Moon, three approximate probes,
+  the compressed scale of the map.
+- `src/scenes/orrery/`: cues `title`, `map`, `far`; hotspots are the worlds by name and the machines by episode id;
+  `places.ts` says where each of the sixteen rests. Options: `when`, `done`, `thread: 'whole'`, `pin`.
+  `act('zoom', { by })` and `act('reset')`. No model, no texture file, no new dependency (fat lines come from three's own addons).
+- `src/screens/`: `Cosmos.tsx` (the stage, `Pin`, `mapDate`, `readouts`), `OrreryMap.tsx`, `cosmos.css`; in `screens.tsx`
+  `Title` and `MapScreen` changed, the old map is `MapList`, every exported name is the same.
+- `npm run capture -- b1 title map` plays both screens, checks that sixteen markers are placed, that a marker opens its
+  file and that the list is one key away; `... b1 thread` passes.
+
+**How to see it:** `http://localhost:5173/?q=high#map` (Explorer opens the Orrery; Accessible opens the list, the key
+"Orrery" switches). Another day: `?date=2027-02-19#map` (Mars at opposition).
+
+**For lane a:**
+- The buttons the Thread check presses are unchanged. In Accessible play the map is still the list, so `thread` walks the same screens as before.
+- The title now loads three.js (lazily, after the first paint). If the final regression times the title, it is about a second later than before.
+- `A-33` (accessibility): on the Orrery, Tab walks the sixteen machines in launch order, then the actions, then the map keys;
+  every marker has a full name ("E08 Opportunity, Mars, key memory, restored"). Not tried with a screen reader.
+- If the finale gets `?date=`, `mapDate()` reads the same parameter: one link sets both.
+
+**Not done:** B-44 (asked above). Not tried on real hardware or on a phone (B-45, for the team). Touch has drag and the
++ and − keys, no pinch.
 
 ### Team (humans)
 

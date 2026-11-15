@@ -1,0 +1,528 @@
+/* ARIADNE — the solar system behind the title and the map. Owner: lane b.
+   The screenshot rule (AC-15): the picture is the solar system; words and controls sit over it, never in a page.
+   Same rules as app.css: rem units, AA contrast, state never by colour alone. */
+
+/* The station bar floats over the scene, as it does over an episode. */
+.app:has(.cosmos) .shell {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 30;
+  border-bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0));
+}
+.app:has(.cosmos) .chrome {
+  background: rgba(0, 0, 0, 0.45);
+}
+.app:has(.cosmos) main {
+  max-width: none;
+  padding: 0;
+  position: fixed;
+  inset: 0;
+}
+.app:has(.cosmos)::before {
+  opacity: 0.4;
+}
+.app:has(.cosmos) .scanbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 31;
+}
+
+.cosmos {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* What a device without 3D sees: the dark, and a far light. */
+  background: radial-gradient(60rem 40rem at 72% 38%, #2a1c0c 0%, #0a0806 38%, #02030a 70%);
+  --pad: clamp(1rem, 4vw, 3.5rem);
+}
+.cosmos .set3d {
+  z-index: 0;
+}
+.cosmos .set3d canvas {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.cosmos .set3d--ready canvas {
+  opacity: 1;
+}
+/* Shade under the words, so they pass AA over any part of the sky. */
+.cosmos::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(2, 3, 10, 0.86) 0%, rgba(2, 3, 10, 0.35) 22%, rgba(2, 3, 10, 0) 40%),
+    linear-gradient(to right, rgba(2, 3, 10, 0.6) 0%, rgba(2, 3, 10, 0) 36%);
+}
+.cosmos--title::after {
+  background:
+    linear-gradient(100deg, rgba(2, 3, 10, 0.9) 0%, rgba(2, 3, 10, 0.6) 32%, rgba(2, 3, 10, 0) 60%),
+    linear-gradient(to top, rgba(2, 3, 10, 0.75), rgba(2, 3, 10, 0) 42%);
+}
+:root[data-contrast='high'] .cosmos::after {
+  background: linear-gradient(to right, #000 0%, #000 30%, rgba(0, 0, 0, 0) 52%);
+}
+
+/* ---------- Things pinned to the scene ---------- */
+.pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.pin[data-on='false'] {
+  visibility: hidden;
+}
+.pin--machine:hover,
+.pin--machine:focus-within {
+  z-index: 6;
+}
+
+.world {
+  position: absolute;
+  transform: translate(-50%, 0.6rem);
+  font-family: var(--f-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #d6def0;
+  text-shadow:
+    0 0 0.4rem #000,
+    0 0 0.15rem #000,
+    0 0 0.15rem #000;
+}
+.world--jupiter,
+.world--saturn {
+  transform: translate(-50%, 1.35rem);
+}
+.world--uranus,
+.world--neptune {
+  transform: translate(-50%, 0.95rem);
+}
+.world--moon {
+  transform: translate(-50%, -1.5rem);
+  font-size: 0.6rem;
+}
+
+.machine {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  margin: -1rem 0 0 -1rem;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 0.09rem solid rgba(214, 222, 240, 0.85);
+  background: rgba(6, 8, 16, 0.82);
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: 0.74rem;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+.machine--key {
+  border-color: var(--gold);
+  box-shadow:
+    0 0 0 0.14rem rgba(6, 8, 16, 0.9),
+    0 0 0 0.23rem var(--gold);
+}
+.machine--done {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1a1206;
+  font-weight: 700;
+}
+.machine:hover,
+.machine:focus-visible,
+.machine--seen {
+  transform: scale(1.14);
+  background: #000;
+  color: var(--gold);
+}
+.machine--done:hover,
+.machine--done:focus-visible,
+.machine--done.machine--seen {
+  background: #ffe2a0;
+  color: #1a1206;
+}
+.machine:focus-visible {
+  outline: 0.16rem solid #fff;
+  outline-offset: 0.2rem;
+}
+.machine__mark {
+  position: absolute;
+  top: -0.45rem;
+  right: -0.5rem;
+  width: 1rem;
+  height: 1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 0.06rem solid var(--gold);
+  background: #0b0907;
+  color: var(--gold);
+  font-size: 0.6rem;
+  font-weight: 400;
+}
+.machine__name {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.4rem);
+  transform: translateX(-50%);
+  padding: 0.12rem 0.5rem;
+  border: 0.06rem solid var(--line);
+  border-radius: 0.2rem;
+  background: rgba(0, 0, 0, 0.86);
+  color: var(--ink);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+.machine:hover .machine__name,
+.machine:focus-visible .machine__name,
+.machine--seen .machine__name,
+.machine--next .machine__name,
+.machine--probe .machine__name {
+  opacity: 1;
+}
+.machine--probe .machine__name {
+  border-color: transparent;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--gold);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.machine--next::after {
+  content: '';
+  position: absolute;
+  inset: -0.5rem;
+  border-radius: 50%;
+  border: 0.1rem solid var(--gold);
+  animation: machine-call 2s ease-out infinite;
+}
+@keyframes machine-call {
+  from {
+    transform: scale(0.75);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+.pin[data-edge='true'] .machine {
+  border-style: dashed;
+}
+
+/* From far away the inner worlds are a few pixels apart: only the large names stay. */
+.cosmos--far .world--mercury,
+.cosmos--far .world--venus,
+.cosmos--far .world--moon,
+.cosmos--far .world--eros,
+.cosmos--far .world--ceres {
+  display: none;
+}
+
+/* From far away a machine on a world is a dot: its number and its name come back under the pointer or the focus. */
+.cosmos--far .machine:not(.machine--probe) {
+  width: 0.92rem;
+  height: 0.92rem;
+  margin: -0.46rem 0 0 -0.46rem;
+}
+.cosmos--far .machine:not(.machine--probe) .machine__num,
+.cosmos--far .machine:not(.machine--probe) .machine__mark {
+  display: none;
+}
+.cosmos--far .machine--key:not(.machine--probe) {
+  box-shadow: 0 0 0 0.1rem var(--gold);
+}
+
+/* ---------- The map: words and keys over the scene ---------- */
+.omap {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.omap__worlds,
+.omap__machines {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.omap__head {
+  position: absolute;
+  left: var(--pad);
+  top: 4.4rem;
+  max-width: 34rem;
+}
+.omap__head h1 {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 1rem #000;
+}
+.omap__head h1:focus {
+  outline: none;
+}
+.omap__thread,
+.omap__today,
+.omap__eyebrow,
+.omap__locked,
+.omap__look,
+.omap__labels {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  text-shadow: 0 0 0.4rem #000;
+}
+.omap__thread {
+  margin: 0.35rem 0 0;
+  color: var(--ink);
+}
+.omap__today {
+  position: absolute;
+  right: var(--pad);
+  top: 4.6rem;
+  margin: 0;
+  max-width: 24rem;
+  text-align: right;
+  line-height: 1.7;
+}
+.omap__date {
+  display: block;
+  color: var(--gold);
+}
+
+.omap__lower {
+  position: absolute;
+  left: var(--pad);
+  bottom: 2.4rem;
+  max-width: min(40rem, 64vw);
+  display: grid;
+  gap: 0.7rem;
+}
+.omap__lower .actions {
+  margin: 0;
+  pointer-events: auto;
+}
+.omap__card > * {
+  margin: 0;
+}
+.omap__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.omap__name {
+  font-family: var(--f-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.4rem);
+  line-height: 1.15;
+  color: var(--ink);
+  text-shadow: 0 0 1rem #000;
+}
+.omap__title {
+  font-size: 1.05rem;
+  color: var(--dim);
+}
+.omap__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  align-items: center;
+  padding-top: 0.3rem;
+  font-size: 0.85rem;
+}
+.omap__flag {
+  color: var(--gold);
+}
+.omap__intro {
+  margin: 0;
+  max-width: 30rem;
+  color: var(--dim);
+  text-shadow: 0 0 0.6rem #000;
+}
+.omap__locked {
+  margin: 0;
+}
+
+.omap__tools {
+  position: absolute;
+  right: var(--pad);
+  bottom: 2.4rem;
+  display: flex;
+  gap: 0.4rem;
+  pointer-events: auto;
+}
+.tool {
+  min-width: 2.75rem;
+  height: 2.75rem;
+  padding: 0 0.7rem;
+  border: 0.06rem solid var(--line);
+  border-radius: 0.25rem;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.tool--text {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tool:hover,
+.tool:focus-visible {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.tool[aria-pressed='true'] {
+  border-color: var(--gold);
+}
+
+.omap__labels {
+  position: absolute;
+  right: var(--pad);
+  top: 9.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: right;
+  line-height: 1.7;
+}
+.omap__labels li::before {
+  content: '◦ ';
+  color: var(--gold);
+}
+.omap__look {
+  position: absolute;
+  left: 50%;
+  bottom: 0.5rem;
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* The list view keeps its page; this is the way back to the map. */
+.map__views {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.5rem;
+}
+
+/* ---------- The title ---------- */
+.ctitle {
+  position: absolute;
+  z-index: 2;
+  left: var(--pad);
+  bottom: clamp(2rem, 9vh, 5.5rem);
+  max-width: min(38rem, 86vw);
+}
+.ctitle__name {
+  margin: 0.3rem 0 0;
+  font-family: var(--f-display);
+  font-size: clamp(3rem, 2rem + 6vw, 6.5rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-shadow: 0 0 2.5rem rgba(255, 190, 90, 0.35);
+}
+.ctitle__name:focus {
+  outline: none;
+}
+.ctitle__sub {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.ctitle__motto {
+  margin: 1.4rem 0 0;
+  font-family: var(--f-quote, var(--f-display));
+  font-style: italic;
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.55rem);
+  color: var(--ink);
+}
+.ctitle__logline {
+  margin: 0.6rem 0 1.4rem;
+  color: var(--dim);
+  max-width: 34rem;
+}
+.ctitle__credit {
+  position: absolute;
+  z-index: 2;
+  right: var(--pad);
+  bottom: 0.7rem;
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--dim);
+  text-shadow: 0 0 0.4rem #000;
+}
+.ctitle__today {
+  position: absolute;
+  z-index: 2;
+  right: var(--pad);
+  bottom: 2.4rem;
+  margin: 0;
+  max-width: 22rem;
+  text-align: right;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  color: var(--dim);
+  text-shadow: 0 0 0.4rem #000;
+}
+.ctitle__today b {
+  font-weight: 400;
+  color: var(--gold);
+}
+/* On the title the words carry the scene; the loading note and the no-3D note would only be noise. */
+.cosmos--title .set3d__note,
+.cosmos--title .set3d__fallback {
+  display: none;
+}
+
+@media (max-width: 46rem) {
+  .omap__labels,
+  .omap__look,
+  .omap__today,
+  .ctitle__today {
+    display: none;
+  }
+  .omap__lower {
+    max-width: none;
+    right: var(--pad);
+    bottom: 5.8rem;
+  }
+  .omap__tools {
+    left: var(--pad);
+    right: auto;
+  }
+}

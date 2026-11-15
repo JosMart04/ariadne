@@ -59,18 +59,20 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 - [x] (Sun 17:15: 18 tests against published events; Eros, Ceres, the Moon and three approximate probes too) B-40 `src/sim/planets.ts` + `tests/sim/planets.test.ts`: heliocentric positions of the eight planets for a date, from JPL's
   approximate elements. Copy the table and the solver from `src/sim/meridiani.ts` (do not edit it). Tests against published
   distances. No new dependency.
-- [~] (Fable-b, Sun 17:05) B-41 `src/scenes/orrery/` (`cues.json` + `index.ts`, shape of `src/scenes/diorama/`): the Sun, eight planets at today's real
+- [x] (Sun 17:35; 3 cues, 31 hotspots, textures made in code, `?date=`) B-41 `src/scenes/orrery/` (`cues.json` + `index.ts`, shape of `src/scenes/diorama/`): the Sun, eight planets at today's real
   positions, their orbits, the Moon by the Earth, and the 16 machines marked where they are (four on the Moon, seven on
   Mars, NEAR on Eros, Dawn at Ceres, Kepler behind the Earth, Pioneer and Voyager far out). Drag to turn, wheel or keys to
   zoom, reduced motion. Hotspots named by episode id. Labels: sizes are not to scale; a probe whose position is not
   computed says "approximate". (FR-70 to FR-73, AC-18)
-- [~] (Fable-b, Sun 17:05) B-42 **The map is the Orrery.** In `src/screens/`: every machine is a real `<button>` anchored to its hotspot that opens its
+- [x] (Sun 17:35; captures in `docs/captures/b1/`, the route checks 16 markers and that a marker opens its file) B-42 **The map is the Orrery.** In `src/screens/`: every machine is a real `<button>` anchored to its hotspot that opens its
   file; restored ones are marked; the golden thread joins them in launch order (`content.threadOrder`); "Follow the thread",
   the center and "Skip to the finale" keep their texts and behaviour. Today's card list stays as the list view: the default
   in Accessible play and without WebGL, one click away otherwise. (FR-01, FR-02)
-- [~] (Fable-b, Sun 17:05) B-43 **Title screen on the same set:** the first picture a judge sees is the solar system with the thread, not a page of text.
+- [x] (Sun 17:35) B-43 **Title screen on the same set:** the first picture a judge sees is the solar system with the thread, not a page of text.
 - [ ] B-44 Only when B-40 to B-43 are pushed: the Passage of an episode as a travel shot from the Earth to the machine, with
   the real distance of today. Ask lane a first: it touches `src/episode/`.
+- [ ] B-45 (team, 5 minutes) **Try the map on real hardware:** the public URL on a laptop with integrated graphics with
+  `?fps` (target: 30 or more), and on a phone (drag with one finger, the + and − keys, the List key). Claude cannot do this.
 - Rules of this lane: strings in `content/ui/shell.yaml`; styles in a `.css` beside the component; routes in
   `scripts/capture-shell.ts`; `npm run capture -- b<n> thread` green before every push.
 

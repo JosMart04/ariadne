@@ -1,4 +1,46 @@
 # Interface strings of the shell screens (title, map, Orrery). Owner: lane B.
 # Same format as content/ui.yaml. A key may be defined in only one ui file: the compiler rejects a second definition.
+map.view: Map view
 map.view.orrery: Orrery
 map.view.list: List
+map.view.stopped: The 3D map stopped. Here is the same map as a list.
+map.machines: The sixteen machines, in the order they were launched
+map.pin: "E{num} {name}, {place}"
+map.open: "Open {name}"
+map.approximate: approximate position
+map.zoom.in: Closer
+map.zoom.out: Farther
+map.zoom.whole: Whole system
+map.zoom.inner: Inner planets
+# {km} and {time} are computed for the date of the map from JPL's approximate planet elements (src/sim/planets.ts).
+map.mars: "Mars is {km} million km from the Earth today. Light takes {time}."
+# {au} and {hours} come from NASA's distance for Voyager 1 (src/sim/dsn.ts).
+map.voyager: "Voyager 1 is {au} times as far away as the Sun. Light takes {hours} hours."
+map.about: About this map
+map.scale.sizes: Sizes not to scale
+map.scale.distances: Distances compressed
+map.scale.probes: "Kepler, Pioneer 10, Voyager 1: approximate"
+map.source: "Planets: computed from JPL's approximate elements"
+map.look: "Drag to turn · wheel or + − to zoom · arrow keys"
+world.mercury: Mercury
+world.venus: Venus
+world.earth: Earth
+world.mars: Mars
+world.jupiter: Jupiter
+world.saturn: Saturn
+world.uranus: Uranus
+world.neptune: Neptune
+world.moon: Moon
+world.eros: Eros
+world.ceres: Ceres
+world.kepler: "Kepler · approx."
+world.pioneer: "Pioneer 10 · approx."
+world.voyager: "Voyager 1 · approx."
+place.moon: the Moon
+place.mars: Mars
+place.eros: the asteroid Eros
+place.ceres: in orbit around Ceres
+place.kepler: around the Sun, behind the Earth
+place.pioneer: beyond the planets
+place.voyager: interstellar space
+title.today: "The solar system on {date}"

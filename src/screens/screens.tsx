@@ -1,39 +1,54 @@
 /** Top-level screens: Title, Setup ("How do you want to play?"), Map, Prologue, Finale, Credits. */
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { content, episodes, keyEpisodes, t } from '../content';
 import type { Act, EpisodeC } from '../content/schema';
 import { ACTS } from '../content/schema';
 import { ScenePlayer } from '../episode/ScenePlayer';
+import { useStage } from '../episode/setStore';
 import { announce } from '../engine/announce';
 import { go } from '../engine/router';
 import { finaleOpen, nextKeyEpisode, useGame, type InputMode, type PlayMode } from '../engine/store';
 import { Badge, Btn, useFocusOn } from '../ui/parts';
+import { Cosmos, mapDate, readouts } from './Cosmos';
+import { OrreryMap } from './OrreryMap';
 
 // ---------------------------------------------------------------- Title
 
+/** The first picture: the solar system of today, with the thread that joins the sixteen machines (AC-15). */
 export function Title() {
   const { settings, progress } = useGame();
   const started = progress.prologueDone;
   const begin = () => go(!settings.setupDone ? 'setup' : started ? 'map' : 'prologue');
+  const when = useMemo(mapDate, []);
+  const r = useMemo(() => readouts(when), [when]);
   return (
-    <section className="title" aria-labelledby="title-name">
-      <p className="eyebrow">Knossos Station · Archive</p>
-      <h1 id="title-name" className="title__name">
-        {t('title.name')}
-        <span className="title__sub">{t('title.sub')}</span>
-      </h1>
-      <p className="title__motto">{t('title.motto')}</p>
-      <p className="title__logline">{t('title.logline')}</p>
-      <div className="actions actions--center">
-        <Btn onClick={begin} autoFocus>
-          {started ? t('title.resume') : t('title.begin')}
-        </Btn>
-        <Btn kind="ghost" onClick={() => go('map')}>
-          {t('title.labyrinth')}
-        </Btn>
-      </div>
-      <p className="title__credit">{t('title.credit')}</p>
-    </section>
+    <Cosmos cue="title" when={when} thread="whole">
+      <section className="ctitle" aria-labelledby="title-name">
+        <p className="eyebrow">Knossos Station · Archive</p>
+        <h1 id="title-name" className="ctitle__name">
+          {t('title.name')}
+          <span className="ctitle__sub">{t('title.sub')}</span>
+        </h1>
+        <p className="ctitle__motto">{t('title.motto')}</p>
+        <p className="ctitle__logline">{t('title.logline')}</p>
+        <div className="actions">
+          <Btn onClick={begin} autoFocus>
+            {started ? t('title.resume') : t('title.begin')}
+          </Btn>
+          <Btn kind="ghost" onClick={() => go('map')}>
+            {t('title.labyrinth')}
+          </Btn>
+        </div>
+      </section>
+      <p className="ctitle__today">
+        <b>{t('title.today', { date: r.date })}</b>
+        <br />
+        {t('map.mars', { km: r.marsKm, time: r.marsLight })}
+        <br />
+        {t('map.voyager', { au: r.voyagerAu, hours: r.voyagerHours })}
+      </p>
+      <p className="ctitle__credit">{t('title.credit')}</p>
+    </Cosmos>
   );
 }
 
@@ -209,7 +224,42 @@ function Node({ ep, done }: { ep: EpisodeC; done: boolean }) {
   );
 }
 
+const VIEW_KEY = 'ariadne-map-view';
+type MapView = 'orrery' | 'list';
+function savedView(): MapView | null {
+  try {
+    const v = localStorage.getItem(VIEW_KEY);
+    return v === 'orrery' || v === 'list' ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The map is the Orrery. The list of cards is the same map as a list: the first view in Accessible play, the view a
+ * device without 3D falls back to, and one click away for everybody else.
+ */
 export function MapScreen() {
+  const play = useGame((s) => s.settings.play);
+  const status = useStage((s) => s.status);
+  const [view, setView] = useState<MapView>(() => savedView() ?? (play === 'accessible' ? 'list' : 'orrery'));
+  const choose = (v: MapView) => {
+    setView(v);
+    try {
+      localStorage.setItem(VIEW_KEY, v);
+    } catch {
+      // A browser that refuses storage still gets the view for this visit.
+    }
+  };
+  useEffect(() => {
+    if (view !== 'orrery' || (status !== 'failed' && status !== 'lost')) return;
+    setView('list');
+    announce(t('map.view.stopped'));
+  }, [view, status]);
+  return view === 'orrery' ? <OrreryMap onList={() => choose('list')} /> : <MapList onOrrery={() => choose('orrery')} />;
+}
+
+function MapList({ onOrrery }: { onOrrery: () => void }) {
   const progress = useGame((s) => s.progress);
   const [confirmSkip, setConfirmSkip] = useState(false);
   const head = useFocusOn<HTMLHeadingElement>('map');
@@ -220,6 +270,11 @@ export function MapScreen() {
 
   return (
     <section className="map" aria-labelledby="map-title">
+      <div className="map__views" role="group" aria-label={t('map.view')}>
+        <Btn kind="ghost" onClick={onOrrery}>
+          {t('map.view.orrery')}
+        </Btn>
+      </div>
       <h1 id="map-title" ref={head} tabIndex={-1}>
         {t('map.title')}
       </h1>
