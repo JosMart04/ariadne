@@ -7,6 +7,7 @@
  *   npm run capture -- i1c finale          -> only the finale (also: prologue, e02, e08, e16)
  *   npm run capture -- i1c explorer        -> only the Explorer route (also: accessible)
  *   npm run capture -- i1c reduce          -> reduced motion, into docs/captures/i1c-reduce/
+ *   npm run capture -- i1c thread          -> the whole Thread from a clean start, as a new player meets it (see `thread`)
  *
  * Two routes per scene:
  *   accessible  every beat; decisions are made as targets inside the scene; wrong turns are taken on purpose
@@ -22,12 +23,13 @@ import puppeteer, { type Browser, type Page } from 'puppeteer-core';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
-const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale'].includes(a)) ?? 'latest';
+const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale', 'thread'].includes(a)) ?? 'latest';
 const reduce = args.includes('reduce');
 const route = ['explorer', 'accessible'].find((r) => args.includes(r));
-const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale'] as const;
+const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale', 'thread'] as const;
 const wanted = SCENES.filter((s) => args.includes(s));
-const scenes = wanted.length ? wanted : [...SCENES];
+// `thread` is the whole route from a clean start. It is long, so it only runs when it is asked for.
+const scenes = wanted.length ? wanted : SCENES.filter((s) => s !== 'thread');
 const BASE = process.env.CAPTURE_URL ?? 'http://localhost:5173/';
 const OUT = join(ROOT, 'docs', 'captures', reduce ? `${name}-reduce` : name);
 
@@ -42,11 +44,14 @@ const BROWSERS = [
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const errors: string[] = [];
 let count = 0;
+/** Inside the `thread` run the scenes are played, not photographed: waits are short and nothing is saved. */
+let quick = false;
 
 /** Saves `<scene>-<route>-<nn>-<label>.jpg`, so a partial run replaces only its own pictures. */
 function shooter(page: Page, prefix: string) {
   let n = 0;
   return async (label: string, settle = 1800) => {
+    if (quick) return void (await sleep(Math.min(settle, 350)));
     await sleep(settle);
     const file = join(OUT, `${prefix}-${String(++n).padStart(2, '0')}-${label}.jpg`);
     await page.screenshot({ path: file, type: 'jpeg', quality: 84 });
@@ -499,6 +504,78 @@ async function finaleExplorer(page: Page) {
   await shot('light-comes-home', 3200);
 }
 
+// ------------------------------------------------------------------ The Thread, from a clean start
+
+/**
+ * What no other route proves: the progression. Nothing is saved when it starts. It goes the way a new player goes:
+ * title, setup, prologue, then the map's own "Follow the thread" for each key memory, then the center, then the credits.
+ * Every clew is earned by playing. It fails if the map sends the player to the wrong place, if a memory or a clew is
+ * not saved, or if the page logs an error.
+ *
+ * Its duration is a technical minimum (a script does not read). The 12 minutes of AC-01 are timed with people (T-06).
+ */
+async function thread(page: Page) {
+  const shot = shooter(page, 'thread');
+  const started = Date.now();
+  const progress = () => page.evaluate(() => JSON.parse(localStorage.getItem('ariadne-v1') ?? '{}').state?.progress ?? {}) as Promise<{ prologueDone?: boolean; done?: Record<string, unknown>; clews?: string[]; finaleDone?: boolean }>;
+  const hash = () => page.evaluate(() => location.hash);
+  const expect = (ok: boolean, what: string) => {
+    if (!ok) throw new Error(`thread: expected that ${what}`);
+    console.log(`  ok  ${what}`);
+  };
+
+  await page.goto(`${BASE}?q=high&dev`, { waitUntil: 'networkidle2' });
+  const p0 = await progress();
+  expect(!p0.prologueDone && !Object.keys(p0.done ?? {}).length && !(p0.clews ?? []).length, 'nothing is saved at the start');
+  await shot('title', 1200);
+  await press(page, 'Begin');
+  await page.waitForSelector('input[name="play"][value="accessible"]');
+  await page.click('input[name="play"][value="accessible"]');
+  await shot('setup', 600);
+  await press(page, 'Start');
+  expect((await hash()) === '#prologue', 'setup leads to the prologue');
+
+  quick = true;
+  await prologue(page);
+  await press(page, 'Continue');
+  quick = false;
+  await page.waitForFunction(() => location.hash === '#map', { timeout: 20_000 });
+  let p = await progress();
+  expect(!!p.prologueDone && !!p.clews?.includes('clew-0'), 'the prologue is saved and clew 0 is earned');
+  await shot('map-after-prologue', 800);
+
+  const KEYS: [string, (page: Page) => Promise<void>, string][] = [
+    ['e02-apollo11', e02Accessible, 'clew-1'],
+    ['e08-opportunity', e08Accessible, 'clew-2'],
+    ['e16-voyager1', e16Accessible, 'clew-3'],
+  ];
+  for (const [id, play, clew] of KEYS) {
+    await press(page, 'Follow the thread');
+    expect((await hash()) === `#${id}`, `the map sends the player to ${id}`);
+    quick = true;
+    await play(page);
+    quick = false;
+    await press(page, 'Back to the labyrinth');
+    await page.waitForFunction(() => location.hash === '#map', { timeout: 20_000 });
+    p = await progress();
+    expect(!!p.done?.[id] && !!p.clews?.includes(clew), `${id} is restored and ${clew} is earned`);
+  }
+  await shot('map-center-open', 800);
+
+  await press(page, 'The Center of the Labyrinth');
+  expect((await hash()) === '#finale', 'with the three key memories the center opens');
+  quick = true;
+  await finaleAccessible(page);
+  for (let i = 0; i < 8 && (await hash()) !== '#credits'; i++) await press(page, 'Continue');
+  quick = false;
+  expect((await hash()) === '#credits', 'the finale ends in the credits');
+  p = await progress();
+  expect(!!p.finaleDone, 'the finale is saved');
+  await shot('credits', 1200);
+  const s = Math.round((Date.now() - started) / 1000);
+  console.log(`  the Thread, clean start to credits: ${Math.floor(s / 60)} min ${s % 60} s by script, with one wrong turn at every decision (a technical minimum, not AC-01)`);
+}
+
 // ------------------------------------------------------------------
 
 const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Page) => Promise<void>>>> = {
@@ -507,6 +584,7 @@ const ROUTES: Record<string, Partial<Record<'accessible' | 'explorer', (page: Pa
   e08: { accessible: e08Accessible, explorer: e08Explorer },
   e16: { accessible: e16Accessible, explorer: e16Explorer },
   finale: { accessible: finaleAccessible, explorer: finaleExplorer },
+  thread: { accessible: thread },
 };
 
 async function run(browser: Browser, play: 'accessible' | 'explorer', scene: string) {
@@ -518,8 +596,9 @@ async function run(browser: Browser, play: 'accessible' | 'explorer', scene: str
   });
   // Start past the setup screen, with every key memory restored, in the settings this run is about.
   await page.evaluateOnNewDocument(
-    (reduceMotion: boolean, mode: string) => {
-      if (sessionStorage.getItem('capture')) return;
+    (reduceMotion: boolean, mode: string, clean: boolean) => {
+      // The `thread` run starts like a new player: nothing saved, nothing chosen.
+      if (clean || sessionStorage.getItem('capture')) return;
       sessionStorage.setItem('capture', '1');
       const done = { 'e02-apollo11': { assisted: false }, 'e08-opportunity': { assisted: false }, 'e16-voyager1': { assisted: false } };
       const fresh = location.hash === '#prologue';
@@ -528,6 +607,7 @@ async function run(browser: Browser, play: 'accessible' | 'explorer', scene: str
     },
     reduce,
     play,
+    scene === 'thread',
   );
   for (const f of readdirSync(OUT)) if (f.startsWith(`${scene}-${play}-`)) rmSync(join(OUT, f));
   await ROUTES[scene][play]!(page);
