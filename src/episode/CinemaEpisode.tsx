@@ -22,6 +22,7 @@ import { PuzzleRunner } from './PuzzleRunner';
 import { RainOfLight } from './RainOfLight';
 import { Set3D, SetLabels } from './Set3D';
 import { showCue, useStage } from './setStore';
+import type { SetContext } from '../three/host';
 
 type BeatId = 'passage' | 'arrival' | 'operation' | 'discovery' | 'silence' | 'clew' | 'status' | 'file';
 
@@ -41,6 +42,13 @@ export function CinemaEpisode({ ep }: { ep: EpisodeC }) {
     if (ep.clew) b.push('clew');
     b.push('status', 'file');
     return b;
+  }, [ep]);
+
+  /** What this file hands to its set: its own model or image, so one set can serve many files (F-01). */
+  const context = useMemo<SetContext>(() => {
+    const set = ep.set!;
+    const image = set.image ? ep.images[set.image] : undefined;
+    return { id: ep.id, name: ep.name, alt: set.alt ?? image?.alt, model: set.model ? ep.models[set.model] : undefined, image, options: set.options };
   }, [ep]);
 
   const [i, setI] = useState(0);
@@ -69,7 +77,7 @@ export function CinemaEpisode({ ep }: { ep: EpisodeC }) {
 
   return (
     <article className={`cinema act--${ep.act} cinema--${beat}`} aria-labelledby="ep-title">
-      <Set3D scene={ep.set!.scene} />
+      <Set3D scene={ep.set!.scene} context={context} />
       <div className="cinema__shade" aria-hidden="true" />
 
       <header className="cinema__top">
@@ -387,6 +395,7 @@ function StatusNow({ ep, onEnter, onFile }: { ep: EpisodeC; onEnter: () => void;
           </figure>
         )}
         <div className="status__text">
+          {ep.draft && <p className="note">{t('ep.draft')}</p>}
           <p className="eyebrow">{t('ep.where')}</p>
           <p className="status__badge">
             <Badge id={ep.status.badge} help />
@@ -404,6 +413,7 @@ function StatusNow({ ep, onEnter, onFile }: { ep: EpisodeC; onEnter: () => void;
 function FieldFile({ ep }: { ep: EpisodeC }) {
   const region = useFocusOn<HTMLDivElement>(ep.id);
   const model = ep.set?.model ? ep.models[ep.set.model] : undefined;
+  const image = ep.set?.image ? ep.images[ep.set.image] : undefined;
   return (
     <Frame onNext={() => go('map')} nextLabel={t('ep.toMap')}>
       <div className="sheet" ref={region} tabIndex={-1}>
@@ -458,6 +468,14 @@ function FieldFile({ ep }: { ep: EpisodeC }) {
           <p className="sheet__credit">
             3D model: {model.credit}. {model.license}.{' '}
             <a className="source" href={model.source} target="_blank" rel="noopener noreferrer">
+              ↗ {t('source.button')}
+            </a>
+          </p>
+        )}
+        {image && (
+          <p className="sheet__credit">
+            {t('evidence.plate')}: {image.credit}.{' '}
+            <a className="source" href={image.source} target="_blank" rel="noopener noreferrer">
               ↗ {t('source.button')}
             </a>
           </p>

@@ -208,6 +208,7 @@ play.accessible: Accessible
 play.accessible.help: Point and choose, with a mouse, a keyboard or one button. Same scenes, same ending.
 play.soon: Coming soon.
 evidence.photo: Photographed from orbit
+evidence.plate: Photograph on the stand
 story.sources: Sources for this story
 story.part: "{n} of {total}"
 flight.take: Take control

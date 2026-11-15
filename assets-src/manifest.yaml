@@ -31,6 +31,13 @@ models:
     page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)
     url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B).glb
     raw: models/mer_b.glb
+  mdl_ingenuity.glb:
+    title: Ingenuity Mars Helicopter
+    credit: NASA
+    license: Public domain (NASA 3D Resources)
+    page: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ingenuity%20Mars%20Helicopter
+    url: https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ingenuity%20Mars%20Helicopter/Ingenuity%20Mars%20Helicopter.glb
+    raw: models/ingenuity.glb
 
 images:
   img_e02_site_noon.webp:
@@ -54,6 +61,14 @@ images:
     page: https://images.nasa.gov/details/PIA22549
     url: https://images-assets.nasa.gov/image/PIA22549/PIA22549~orig.jpg
     raw: img/PIA22549_orig.jpg
+    note: Untouched, resized to 1600 px wide.
+  img_e01_surveyor1_shadow.webp:
+    title: Surveyor 1 Shadow (PIA02976)
+    credit: NASA/JPL
+    license: Public domain
+    page: https://images.nasa.gov/details/PIA02976
+    url: https://images-assets.nasa.gov/image/PIA02976/PIA02976~orig.jpg
+    raw: img/PIA02976_orig.jpg
     note: Untouched, resized to 1600 px wide.
 
 textures:

@@ -23,13 +23,16 @@ import puppeteer, { type Browser, type Page } from 'puppeteer-core';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
-const name = args.find((a) => !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale', 'thread'].includes(a)) ?? 'latest';
+/** `e11`, `e01`...: any file that has no route of its own is walked by the generic route (see `file`). */
+const isFile = (a: string) => /^e\d\d$/.test(a);
+const name = args.find((a) => !isFile(a) && !['reduce', 'explorer', 'accessible', 'prologue', 'e02', 'e08', 'e16', 'finale', 'thread'].includes(a)) ?? 'latest';
 const reduce = args.includes('reduce');
 const route = ['explorer', 'accessible'].find((r) => args.includes(r));
 const SCENES = ['prologue', 'e02', 'e08', 'e16', 'finale', 'thread'] as const;
 const wanted = SCENES.filter((s) => args.includes(s));
 // `thread` is the whole route from a clean start. It is long, so it only runs when it is asked for.
-const scenes = wanted.length ? wanted : SCENES.filter((s) => s !== 'thread');
+const files = args.filter((a) => isFile(a) && !(SCENES as readonly string[]).includes(a));
+const scenes: string[] = wanted.length || files.length ? [...wanted, ...files] : SCENES.filter((s) => s !== 'thread');
 const BASE = process.env.CAPTURE_URL ?? 'http://localhost:5173/';
 const OUT = join(ROOT, 'docs', 'captures', reduce ? `${name}-reduce` : name);
 
@@ -504,6 +507,32 @@ async function finaleExplorer(page: Page) {
   await shot('light-comes-home', 3200);
 }
 
+// ------------------------------------------------------------------ Any other file
+
+/**
+ * A file without a route of its own (the diorama files): presses the main button of every beat and takes one picture
+ * per beat. A new file never needs an edit here: `npm run capture -- i5 e11`.
+ */
+async function file(page: Page, key: string) {
+  const id = readdirSync(join(ROOT, 'content', 'episodes')).find((f) => f.startsWith(`${key}-`))?.slice(0, -'.yaml'.length);
+  if (!id) throw new Error(`no file in content/episodes starts with ${key}-`);
+  const shot = shooter(page, `${key}-accessible`);
+  await open(page, id);
+  for (let n = 0; n < 40; n++) {
+    const beat = await page.evaluate(() => [...(document.querySelector('.cinema')?.classList ?? [])].find((c) => c.startsWith('cinema--'))?.slice(8) ?? 'beat');
+    await shot(beat, n ? 2600 : 3200);
+    let more = false;
+    for (const text of ['Catch it', 'Tell me more', 'Continue', 'Open the Field File']) {
+      if (!(await page.evaluate(hasButton, text))) continue;
+      await page.evaluate(clickButton, text);
+      more = true;
+      break;
+    }
+    if (!more) break;
+    await sleep(250);
+  }
+}
+
 // ------------------------------------------------------------------ The Thread, from a clean start
 
 /**
@@ -610,7 +639,7 @@ async function run(browser: Browser, play: 'accessible' | 'explorer', scene: str
     scene === 'thread',
   );
   for (const f of readdirSync(OUT)) if (f.startsWith(`${scene}-${play}-`)) rmSync(join(OUT, f));
-  await ROUTES[scene][play]!(page);
+  await (ROUTES[scene]?.[play] ?? ((p: Page) => file(p, scene)))(page);
   await page.close();
 }
 
@@ -624,10 +653,10 @@ async function main() {
   });
   console.log(`capturing ${scenes.join(', ')} into ${OUT.slice(ROOT.length + 1)} (${reduce ? 'reduced motion' : 'full motion'})`);
   for (const scene of scenes) {
-    if (route !== 'explorer' && ROUTES[scene].accessible) await run(browser, 'accessible', scene);
+    if (route !== 'explorer' && (ROUTES[scene]?.accessible || isFile(scene))) await run(browser, 'accessible', scene);
     // With reduced motion the scripted flights of E02, E16 and the finale are skipped, so their Explorer routes are only
     // captured in full motion. E08's planning station works the same in both, so it is captured in both.
-    if (route !== 'accessible' && (!reduce || scene === 'e08') && ROUTES[scene].explorer) await run(browser, 'explorer', scene);
+    if (route !== 'accessible' && (!reduce || scene === 'e08') && ROUTES[scene]?.explorer) await run(browser, 'explorer', scene);
   }
   await browser.close();
 

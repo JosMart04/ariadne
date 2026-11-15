@@ -48,7 +48,7 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
   the rover drives on its own, the telemetry travels back) with the estimated light time of today and a wait the player
   can skip; the storm seen from the mast; the real orbital photo in Status Now; reduced motion; 39 + 39 captures of both
   modes in `docs/captures/i3/` and `i3-reduce/`. Decisions F-D03 to F-D08. **Not yet played by a person (T-15).**
-- [~] (Fable) F-03 **The Thread from a clean start:** a `thread` route in `scripts/capture.ts` with empty storage: title → setup →
+- [x] F-03 (Sun 15:40: every assertion passed on the production build, 3 min 3 s by script; `npm run capture -- <name> thread`) **The Thread from a clean start:** a `thread` route in `scripts/capture.ts` with empty storage: title → setup →
   prologue → E02 → E08 → E16 → finale, clews earned by playing. Today `run()` preloads progress and clews, so no capture
   proves the progression. Its duration is a technical minimum, not AC-01: the 12 minutes are timed by people (T-06).
 - [ ] F-02 **Lifecycle, two confirmed defects.** (a) `PuzzleRunner` awaits `act('fly')`; if the WebGL context is lost during
@@ -63,7 +63,7 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
 
 ### Lane Fable · diorama (taken by the E08 session on Sun 15:36; no second Fable session is needed for it)
 
-- [~] (Fable) F-01 **The diorama contract: a new file is one YAML and one manifest row, with no engine change.**
+- [x] F-01 (Sun 15:55; point 4 moved to F-04; how to add a file is in `docs/HANDOFF.md`, section 0) **The diorama contract: a new file is one YAML and one manifest row, with no engine change.**
   1. `SetFactory` becomes `(host, context?)`. `SetContext = { id, model?, images, options }`: the episode id, the hero model
      declared in YAML (`set.model` → `models[...]`), its images, and free presentation options (`set.options`). `Set3D` takes
      a `context` prop from `CinemaEpisode` and `ScenePlayer`. The four existing sets ignore it.
@@ -80,6 +80,10 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
   7. Prove it on **two different files** before the rest: E11 Ingenuity (official model `Ingenuity Mars Helicopter`) and one
      file that only has an image. Then tell Astra, in "Requests" of `docs/HANDOFF.md`, that `set:` can be added.
 
+- [ ] F-04 An operation without a puzzle plays its explainer **as captions, one step at a time, with camera moves**, not as
+  a list (`Explainer` in `src/episode/CinemaEpisode.tsx`). Needed before a diorama file with `operation.explainer` leaves
+  draft: today that beat would look like a documentation page (AC-15). Until then such files stay `draft: true`.
+
 ### Lane Astra · content
 
 - [ ] X-01 `docs/submission/` (= B-07): `summary.md`, `description.md`, `ai-disclosure.md`, `nasa-data.md`, `references.md`,
@@ -92,8 +96,8 @@ A claim is released only by its owner, in writing. The older "Lane A" and "Lane 
   image with its credit line and page. Write the candidates as YAML comments at the top of the episode file. Add the
   manifest row and the file only when F-01 has landed.
 - [ ] X-04 `scripts/check-links.ts` (= B-08): report every source URL in `content/` that does not answer 200.
-- [ ] X-05 After F-01: add `set: { scene: diorama, ... }` to each file, remove `draft: true`, run the generic capture, look
-  at the pictures, commit them.
+- [ ] X-05 **Unblocked (F-01 landed).** Put each of the 11 remaining files on stage: recipe in `docs/HANDOFF.md`, section 0.
+  E11 and E01 are done as proving files. Keep `draft: true` until F-04 lands and the text is complete.
 
 ## Lane B · Machines, consoles, content, assets
 

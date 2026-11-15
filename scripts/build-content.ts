@@ -37,6 +37,7 @@ const CONTENT = join(ROOT, 'content');
 const OUT = join(ROOT, 'src', 'generated', 'content.json');
 const SCENES = join(ROOT, 'src', 'scenes');
 const VOICES = join(ROOT, 'public', 'assets', 'vo');
+const ASSETS = join(ROOT, 'public', 'assets');
 
 /** What a 3D set declares: its cues (with their text description, AX-32) and its hotspots. */
 type SetSheet = { cues: Record<string, string>; hotspots: string[] };
@@ -86,13 +87,24 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     file: string,
     facts: Record<string, unknown>,
     images: Record<string, unknown>,
-    set?: { scene: string; model?: string },
+    set?: { scene: string; model?: string; image?: string; alt?: string },
     models: Record<string, unknown> = {},
   ) => {
     const used = new Set<string>();
     const sheet = set ? sets[set.scene] : undefined;
     if (set && !sheet) problems.push(`${file}: set.scene "${set.scene}" has no src/scenes/${set.scene}/cues.json`);
     if (set?.model && !(set.model in models)) problems.push(`${file}: set.model "${set.model}" is not in models`);
+    if (set?.image && !(set.image in images)) problems.push(`${file}: set.image "${set.image}" is not in images`);
+    // The diorama shows what the file hands it: it needs a hero, and a hero needs a description (AX-32).
+    if (set?.scene === 'diorama') {
+      if (!set.model && !set.image) problems.push(`${file}: set.scene "diorama" needs set.model or set.image`);
+      if (set.model && !set.alt) problems.push(`${file}: set.model needs set.alt, one sentence that describes the model (AX-32)`);
+    }
+    // A model or image that content names must be on disk, or the game would ask for a file that does not exist.
+    for (const [key, m] of Object.entries(models as Record<string, { file: string }>))
+      if (!existsSync(join(ASSETS, 'models', m.file))) problems.push(`${file}: models.${key} names ${m.file}, which is not in public/assets/models/ (see assets-src/manifest.yaml)`);
+    for (const [key, i] of Object.entries(images as Record<string, { file: string }>))
+      if (!existsSync(join(ASSETS, 'img', i.file))) problems.push(`${file}: images.${key} names ${i.file}, which is not in public/assets/img/ (see assets-src/manifest.yaml)`);
     /** A cue must be declared by the set, so a typo can never leave the stage empty. */
     const cue = (name: string | undefined, where: string) => {
       if (!name) return;

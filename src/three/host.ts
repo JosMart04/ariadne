@@ -29,7 +29,26 @@ export interface SetController {
   dispose(): void;
 }
 
-export type SetFactory = (host: SceneHost) => Promise<SetController>;
+/**
+ * What an episode or a scene hands to its set: the content it declares. With it one set (the diorama) can serve many
+ * files, and a new file needs no engine change. Sets with a place of their own may ignore it.
+ */
+export type SetContext = {
+  /** Id of the episode or scene that mounts the set. */
+  id: string;
+  /** The machine's name, for the set's written descriptions. */
+  name?: string;
+  /** One sentence that describes the hero model or image: its text equivalent (AX-32). */
+  alt?: string;
+  /** The hero model declared in content (`set.model`), a file in public/assets/models/. */
+  model?: { file: string };
+  /** The hero image declared in content (`set.image`), a file in public/assets/img/. Used when there is no model. */
+  image?: { file: string };
+  /** Free presentation options declared in content (`set.options`). Each set documents the ones it reads. */
+  options: Record<string, unknown>;
+};
+
+export type SetFactory = (host: SceneHost, context: SetContext) => Promise<SetController>;
 
 export type HostOptions = {
   quality: Quality;

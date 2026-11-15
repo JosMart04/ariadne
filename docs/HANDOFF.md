@@ -50,6 +50,24 @@ Rules that keep parallel work safe:
 > `diorama` set, the explainer as captions, the asset gates, and two proving files (E11 with the official Ingenuity model,
 > one file with a real NASA image). Every beat must pass the screenshot rule; commit its captures. Report in Spanish.
 
+**Putting a file on stage (ready since Sun 15:55; this is task X-05 and needs no engine change):**
+
+The set `diorama` (`src/scenes/diorama/`) shows whatever the file hands it: an official NASA model on a stand, or a real
+NASA photograph as an archive plate. Two files prove it: `e11-ingenuity.yaml` (model) and `e01-surveyor.yaml` (image).
+1. Add a row to `assets-src/manifest.yaml`, under `models:` (`mdl_<name>.glb`) or `images:` (`img_<episode>_<slot>.webp`),
+   with `title`, `credit`, `license`, `page`, `url` and `raw`. Copy the rows of `mdl_ingenuity.glb` or `img_e01_surveyor1_shadow.webp`.
+2. `npx tsx scripts/prep-assets.ts --fetch` downloads it (NASA hosts only) and writes the file the game serves in `public/assets/`.
+3. In the episode file add `models:` or `images:` and
+   `set: { scene: diorama, model: <key>, alt: "<one sentence that describes it>", labels: [artistic-view] }`
+   (for a photograph: `image: <key>`; its own `alt` is used). Options: `size` 0.5 to 1.4, `yaw` in degrees, `float: true` for a spacecraft.
+4. `npm run check` (the compiler fails if the file is not on disk or the description is missing), then
+   `npm run capture -- <name> e11` plays the file and saves one picture per beat. Look at them. Commit YAML, manifest row, asset and captures.
+
+Official models in https://github.com/nasa/NASA-3D-Resources (folder `3D Models`): `Viking Lander`, `Pioneer 10`,
+`NEAR Shoemaker`, `Kepler (A)`, `Dawn`, `InSight Cruise Lander`. Spirit is the twin of Opportunity: `mdl_mer_b.glb` is already
+served; say "twin" in its `alt`. The others (ALSEP, the lunar rovers, Sojourner, Phoenix) need a NASA photograph.
+A draft file with a set already plays as passage, arrival, status and Field File, with its facts and sources.
+
 **Requests** (write here; the owner answers in place):
 - (none yet)
 

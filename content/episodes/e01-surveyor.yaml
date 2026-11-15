@@ -28,3 +28,16 @@ arrival:
     text: "Before anyone walked here, someone had to ask: will the ground hold? I was the question. I landed. It held."
 
 crossThreads: [e03-alsep]
+
+# On stage: a real photograph, untouched, as an archive plate of the diorama set. Proving file of F-01 (image).
+set:
+  scene: diorama
+  image: shadow
+  labels: [artistic-view]
+
+images:
+  shadow:
+    file: img_e01_surveyor1_shadow.webp
+    alt: A black-and-white photograph taken by Surveyor 1 on the Moon. The dark shadow of the spacecraft, with one of its foot pads, lies across gray, pitted ground.
+    credit: NASA/JPL
+    source: https://images.nasa.gov/details/PIA02976

@@ -121,10 +121,17 @@ export const Model = z.strictObject({
   reconstruction: z.boolean().optional(),
 });
 
-/** The 3D set an episode or scene plays in: a folder of src/scenes/, an optional hero model, and its on-screen labels. */
+/**
+ * The 3D set an episode or scene plays in: a folder of src/scenes/, and what the set is handed (`SetContext`).
+ * `model` and `image` are keys of `models` and `images`. `alt` is one sentence that describes the hero: the text
+ * equivalent of what the set shows (AX-32). `options` are free presentation settings that each set documents.
+ */
 export const SetRef = z.strictObject({
   scene: z.string().regex(/^[a-z][a-z0-9-]*$/),
   model: z.string().optional(),
+  image: z.string().optional(),
+  alt: z.string().min(10).optional(),
+  options: z.record(z.string(), z.unknown()).default({}),
   labels: z.array(z.enum(LABELS)).default([]),
 });
 

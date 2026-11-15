@@ -9,15 +9,18 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { t } from '../content';
 import type { LabelId } from '../content/schema';
 import { useGame } from '../engine/store';
-import type { SetFactory } from '../three/host';
+import type { SetContext, SetFactory } from '../three/host';
 import { useStage } from './setStore';
 
 const SETS = import.meta.glob<{ create: SetFactory }>('../scenes/*/index.ts');
 const SHEETS = import.meta.glob<{ cues: Record<string, string> }>('../scenes/*/cues.json', { eager: true, import: 'default' });
 
-export const describeCue = (scene: string, cue: string | null) => (cue ? (SHEETS[`../scenes/${scene}/cues.json`]?.cues[cue] ?? '') : '');
+/** A set that serves many files writes `{name}` and `{alt}` in its descriptions; the episode fills them in. */
+const fill = (text: string, ctx?: SetContext) => text.replace(/{(name|alt)}/g, (_, k: 'name' | 'alt') => ctx?.[k] ?? '');
 
-export function Set3D({ scene }: { scene: string }) {
+export const describeCue = (scene: string, cue: string | null, ctx?: SetContext) => (cue ? fill(SHEETS[`../scenes/${scene}/cues.json`]?.cues[cue] ?? '', ctx) : '');
+
+export function Set3D({ scene, context }: { scene: string; context?: SetContext }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const saved = useGame((s) => s.settings.quality);
   // `?q=high` forces a quality tier: used for captures and by judges on a strong machine.
@@ -50,7 +53,7 @@ export function Set3D({ scene }: { scene: string }) {
           onFps: (v) => showFps && useStage.setState({ fps: Math.round(v) }),
         });
         dispose = () => host.dispose();
-        const set = await mod.create(host);
+        const set = await mod.create(host, context ?? { id: scene, options: {} });
         if (dead) return host.dispose();
         host.use(set);
         const now = useStage.getState().cue;
@@ -68,7 +71,7 @@ export function Set3D({ scene }: { scene: string }) {
       useStage.setState({ status: 'idle', host: null, set: null });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scene, quality, attempt, textOnly]);
+  }, [scene, quality, attempt, textOnly, context?.id]);
 
   // Reduced motion can change while the set is on screen.
   useEffect(() => {
@@ -80,7 +83,7 @@ export function Set3D({ scene }: { scene: string }) {
   return (
     <div className={`set3d set3d--${off ? 'off' : status}`}>
       {!textOnly && <canvas ref={canvas} aria-hidden="true" />}
-      <p className="sr-only" role="img" aria-label={`${t('set.scene')}: ${describeCue(scene, cue)}`} />
+      <p className="sr-only" role="img" aria-label={`${t('set.scene')}: ${describeCue(scene, cue, context)}`} />
       {status === 'loading' && !textOnly && (
         <p className="set3d__note" role="status">
           {t('set.loading')}
@@ -88,7 +91,7 @@ export function Set3D({ scene }: { scene: string }) {
       )}
       {off && (
         <div className="set3d__fallback" role="status">
-          <p className="set3d__desc">{describeCue(scene, cue)}</p>
+          <p className="set3d__desc">{describeCue(scene, cue, context)}</p>
           <p className="note">{status === 'lost' ? t('set.lost') : textOnly ? '' : t('set.none')}</p>
           {(status === 'lost' || textOnly) && (
             <button

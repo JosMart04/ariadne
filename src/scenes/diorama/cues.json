@@ -1,0 +1,13 @@
+{
+  "cues": {
+    "passage": "A dark archive hall. Far away, under one lamp, a round stand holds {name}.",
+    "arrival": "{name} on its stand, close. {alt}",
+    "operation": "{name}, seen from the side. {alt}",
+    "discovery": "{name}, seen from above.",
+    "silence": "The lamp dims. {name} is a dark shape on its stand.",
+    "clew": "{name}, small and far away, under one lamp in the dark hall.",
+    "status": "{name}, seen from the front. {alt}",
+    "file": "{name} turns slowly on its stand so you can see every side."
+  },
+  "hotspots": []
+}

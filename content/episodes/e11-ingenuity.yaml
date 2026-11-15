@@ -37,3 +37,18 @@ arrival:
   - who: machine
     tag: IMAGINED
     text: "They said five flights. Just five. I flew seventy-two."
+
+# On stage: NASA's official model, on the stand of the diorama set (src/scenes/diorama). Proving file of F-01 (model).
+set:
+  scene: diorama
+  model: helicopter
+  alt: "A small helicopter on four thin legs: a box-shaped body, two long rotors one above the other, and a small solar panel on top."
+  labels: [artistic-view]
+  options: { size: 0.95, yaw: 25 }
+
+models:
+  helicopter:
+    file: mdl_ingenuity.glb
+    credit: NASA
+    source: https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ingenuity%20Mars%20Helicopter
+    license: Public domain (NASA 3D Resources)

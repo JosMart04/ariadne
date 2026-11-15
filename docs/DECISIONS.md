@@ -189,6 +189,20 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   reduced motion (the drive is not animated; the three phases still appear). The other Explorer routes are still
   captured only in full motion.
 
+- **F-D11 · A set is handed the content of its file (`SetContext`), so one set serves many files.** `SetFactory` is now
+  `(host, context)`; the context carries the file's id and name, its hero model or image, a written description (`alt`)
+  and free `options`. Contract change in `src/content/schema.ts`: `set` gains `image`, `alt` and `options`. The four
+  sets with a place of their own ignore the context. Why: with the old contract every set loaded its model by a name
+  written in code, so each of the 13 remaining files would have needed engine work. Now a file is one YAML and one
+  manifest row. Proven on two files, one with a model (E11) and one with a photograph (E01).
+- **F-D12 · The compiler fails when a model or image named in content is not on disk,** and when a diorama file has no
+  hero or no description. `scripts/prep-assets.ts` is driven by the manifest and can download from NASA hosts only
+  (`--fetch`). Why: a second agent adding files must not be able to ship a build that asks for a missing file.
+- **F-D13 · The Thread is checked from a clean start by `npm run capture -- <name> thread`.** It plays title, setup,
+  prologue, the map's own "Follow the thread" three times, the center and the credits, and asserts what is saved after
+  each step. Run on the production build on Sun 15:40: every assertion passed, 3 min 3 s by script. That time is a
+  technical minimum; the 12 minutes of AC-01 are still to be timed with people.
+
 ## Pending team confirmation (defaults in use)
 
 - ARIADNE acronym: "Archive for Robotic Instruments And Dormant Network Explorers" (not shown in the game yet).
