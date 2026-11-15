@@ -36,18 +36,18 @@ Each iteration ends deployed, with the gate green, captures committed and `docs/
 - [x] B-01 Machine setup: pull, `npm ci`, `.env`, `npm run check` green (Sun 00:13).
 
 **I1a**
-- [~] (B, written, not yet seen in a browser) B-11 Contract v1.1 in `src/content/schema.ts` + compiler gates: `set`, `models`, `stage.kind: scene`, `cue`, `sim`, `when`, `target`, `console.controls`. Store: `play`, `quality`. (FR-29, AC-17, CR-13)
-- [~] (B, written, not yet seen in a browser) B-12 `src/three/` SceneHost: fixed steps, pause when hidden, Auto quality, context loss → "Restart 3D" or text view, reduced motion, seeded RNG, GLB loader, particles. (NFR-13, 10.6.6)
-- [~] (B, written, not yet seen in a browser) B-13 `src/scenes/tranquility/`: official lunar module model, deterministic terrain with craters and boulders, low Sun, black sky, Earth. Cues for every E02 beat. (10.6.1)
-- [~] (B, written, not yet seen in a browser) B-14 Cinema layout in `src/episode/`: full-bleed set, captions with speaker and REAL/IMAGINED tag, slate, HUD, on-screen labels; Accessible targets anchored to scene hotspots; text view as fallback. (AC-15, AX-10, AX-31)
-- [~] (B, written, not yet seen in a browser) B-15 E02 content complete, non-draft: "The Boulder Field" state machine (1202 alarm, landing zone), all seven beats, `clew-1`. Each new fact with a NASA/ALSJ source and a `note:` of what was checked. (5.1, section 7)
-- [ ] B-16 `scripts/capture.ts` + `npm run capture` + `#shot/<scene>/<cue>`. First captures in `docs/captures/i1a/`. (AC-15, C-D12)
+- [x] B-11 Contract v1.1 in `src/content/schema.ts` + compiler gates: `set`, `models`, `stage.kind: scene`, `cue`, `sim`, `when`, `target`, `console.controls`. Store: `play`, `quality`. (FR-29, AC-17, CR-13)
+- [x] B-12 `src/three/` SceneHost: fixed steps, pause when hidden, Auto quality, context loss → "Restart 3D" or text view, reduced motion, seeded RNG, GLB loader, particles. (NFR-13, 10.6.6)
+- [x] B-13 `src/scenes/tranquility/`: official lunar module model, deterministic terrain with craters and boulders, low Sun, black sky, Earth. Cues for every E02 beat. (10.6.1)
+- [x] B-14 Cinema layout in `src/episode/`: full-bleed set, captions with speaker and REAL/IMAGINED tag, slate, HUD, on-screen labels; Accessible targets anchored to scene hotspots; text view as fallback. (AC-15, AX-10, AX-31)
+- [x] B-15 E02 content complete, non-draft: "The Boulder Field" state machine (1202 alarm, landing zone), all seven beats, `clew-1`. Each new fact with a NASA/ALSJ source and a `note:` of what was checked. (5.1, section 7)
+- [x] B-16 `scripts/capture.ts` + `npm run capture` + `#shot/<scene>/<cue>`. First captures in `docs/captures/i1a/`. (AC-15, C-D12)
 
 **I1b**
 - [x] B-17 `src/sim/descent.ts` + `outcomes.ts` + `tests/sim/`: deterministic, every outcome reachable by a scripted pilot, autopilot lands safe. (FR-21, FR-29)
-- [ ] B-18 `src/input/` Controls: keyboard, pointer/touch stick, gamepad. (8.0)
-- [ ] B-19 `src/consoles/`: DSKY (VERB/NOUN, PROG light, 1202), LM panel (rate of descent, attitude, guarded ABORT / ABORT STAGE, landing point reticle). Every control `REAL` with a fact. (10.6.2, AC-17)
-- [ ] B-20 Explorer descent wired to the state machine; teach-and-retry; "Let the machine show you"; "Switch to guided choices". (FR-29a, FR-24)
+- [x] B-18 `src/input/` Controls: keyboard, pointer/touch stick, gamepad. (8.0)
+- [~] (B) B-19 `src/consoles/`: LM panel done (program 66, hand controller, descent rate, readouts, fuel calls, contact light). Still open: the DSKY graphic for the 1202 alarm decision, with the guarded ABORT. Every control `REAL` with a fact or labelled `IMAGINED`. (10.6.2, AC-17)
+- [x] B-20 Explorer descent wired to the state machine; teach-and-retry; "Let the machine show you"; "Switch to guided choices". (FR-29a, FR-24)
 - [ ] B-21 Particles: lunar dust in clean arcs; The Silence rain of light gathered into the thread. Reduced-motion versions. (10.3, FR-04, AX-30)
 - [ ] B-22 `src/audio/` AudioBus + procedural sfx (keys, engine, alarm tone); silence on the lunar surface; captions always. (FR-33, FR-34, AX-32)
 

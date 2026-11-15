@@ -9,6 +9,7 @@ import '@fontsource/cinzel/latin-600.css';
 import './styles/app.css';
 import './styles/cinema.css';
 import { App } from './App';
+import './dev';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

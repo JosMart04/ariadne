@@ -93,7 +93,7 @@ export class SceneHost {
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1;
     this.renderer.shadowMap.enabled = this.tier !== 'low';
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.scene.background = new THREE.Color(0x000000);
 
     canvas.addEventListener('webglcontextlost', this.onLost);

@@ -383,9 +383,29 @@
   min-width: 4rem;
   text-align: center;
 }
+/* In the scene: the ring sits on the place, the label to its right. */
 .anchor[data-anchored] .target {
-  width: 13rem;
-  transform: translate(-50%, -2rem);
+  width: max-content;
+  max-width: 17rem;
+  grid-template-columns: 4rem auto;
+  justify-items: start;
+  text-align: left;
+  column-gap: 0.5rem;
+  row-gap: 0.1rem;
+  align-content: center;
+  transform: translate(-2rem, -2rem);
+}
+.anchor[data-anchored] .target__ring {
+  grid-row: 1 / span 3;
+}
+.anchor[data-anchored] .target .choice__label {
+  border-top: 0;
+  border-left: 0.15rem solid var(--amber);
+  align-self: end;
+}
+/* Keep the words of a decision on the left, clear of the places to choose on the right. */
+.puzzle--scene:has(.targets) .puzzle__view {
+  max-width: min(34rem, 46vw);
 }
 .target__ring {
   width: 4rem;
@@ -515,20 +535,30 @@
 .cinema .headline .line__text {
   font-size: clamp(1.3rem, 1rem + 1.4vw, 2rem);
 }
-.sidebar {
-  margin-top: 0.8rem;
-  max-height: 38vh;
-  overflow-y: auto;
-  padding: 0.9rem 1.1rem;
-  background: rgba(10, 8, 6, 0.86);
-  border-left: 0.15rem solid var(--amber);
+.line__count {
+  color: var(--dim);
+  letter-spacing: 0.1em;
 }
-.sidebar .line__text {
-  font-size: 1rem;
-  text-shadow: none;
+.sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.2rem;
 }
-.sidebar > p {
-  font-size: 1.08rem;
+.cinema .myth {
+  margin: 0;
+  max-width: 44rem;
+  background: rgba(10, 8, 6, 0.82);
+}
+.cinema .myth__claim {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: #e9dfcb;
+}
+.cinema .myth .line__text {
+  font-size: 1.2rem;
 }
 
 /* Beat 5: the silence */
@@ -582,9 +612,21 @@
 .sheet:focus {
   outline: none;
 }
+.cinema__lower--status {
+  grid-template-columns: 1fr;
+}
+.cinema__lower--status > .actions {
+  grid-column: 1;
+  grid-row: auto;
+  justify-content: flex-start;
+}
+.cinema .status {
+  flex-wrap: nowrap;
+}
 .plate {
   margin: 0;
-  width: min(21rem, 42vw);
+  flex: 0 0 auto;
+  width: min(15rem, 34vw);
   background: #0c0c0c;
   border: 1px solid #6f6a60;
   padding: 0.35rem 0.35rem 0;
@@ -620,7 +662,7 @@
 
 /* Beat 7: the archive sheet, beside the model on its stand. */
 .cinema__lower--file {
-  inset: 3.8rem 0 0 auto;
+  inset: 8.6rem 0 0 auto;
   width: min(36rem, 100%);
   max-height: none;
   grid-template-columns: 1fr;
@@ -683,5 +725,198 @@
   }
   .anchor[data-anchored] .target {
     width: 9.5rem;
+  }
+}
+
+/* ---------- Lunar module panel (Explorer and Hands) ---------- */
+.puzzle--flying .puzzle__view {
+  max-width: none !important;
+  grid-column: 1 / -1;
+}
+.lmpanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem 2.5rem;
+  align-items: end;
+}
+.lmpanel__left {
+  display: grid;
+  gap: 0.5rem;
+}
+.lmpanel__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+}
+/* The computer's display: green digits on black, as on the real display and keypad. */
+.dsky {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  background: #050805;
+  border: 0.125rem solid #5d6a5d;
+  border-radius: 0.2rem;
+  padding: 0.15rem 0.6rem;
+}
+.dsky__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b9c7b9;
+}
+.dsky__digits {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: #7dff8a;
+  text-shadow: 0 0 0.5rem rgba(125, 255, 138, 0.7);
+  font-variant-numeric: tabular-nums;
+}
+.lamp {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border: 0.125rem solid #575757;
+  color: #8d8d8d;
+  background: #151515;
+}
+.lamp::before {
+  content: '○ ';
+}
+.lamp--on {
+  color: #06121f;
+  background: #9fd0ff;
+  border-color: #dff0ff;
+  box-shadow: 0 0 1.2rem rgba(159, 208, 255, 0.9);
+}
+.lamp--on::before {
+  content: '● ';
+}
+.tape__note {
+  font-size: 0.72rem !important;
+  color: var(--dim) !important;
+  min-width: 0 !important;
+}
+.lmpanel__call {
+  min-height: 2.4rem;
+}
+.call {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+}
+.call strong {
+  font-family: var(--f-body);
+  font-size: 1.4rem;
+  color: #fff;
+}
+.lmpanel__right {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+}
+.control {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+}
+.control__label {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e6dcc8;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.stick {
+  position: relative;
+  width: 5rem;
+  height: 10.5rem;
+  border-radius: 2.5rem;
+  background: linear-gradient(#2c2a27, #151412);
+  border: 0.125rem solid #8d877c;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  touch-action: none;
+  cursor: ns-resize;
+  user-select: none;
+}
+.stick__end {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c9bfab;
+  pointer-events: none;
+}
+.stick__knob {
+  position: absolute;
+  left: 50%;
+  width: 3.4rem;
+  height: 3.4rem;
+  margin: -1.7rem 0 0 -1.7rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f1f1ee, #8f8c85 60%, #4b4944);
+  border: 0.125rem solid #1b1b1b;
+  box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+.rod {
+  display: grid;
+  gap: 0.5rem;
+}
+.rod__btn {
+  font: inherit;
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(#34312c, #1d1b18);
+  border: 0.125rem solid #8d877c;
+  border-bottom-width: 0.4rem;
+  border-radius: 0.4rem;
+  min-height: 4rem;
+  min-width: 8.5rem;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+.rod__btn:active {
+  border-bottom-width: 0.15rem;
+  transform: translateY(0.25rem);
+}
+.rod__btn:hover {
+  border-color: var(--amber);
+}
+.lmpanel__keys {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+}
+:root[data-play='hands'] .lmpanel__keys,
+.app:has(.scanbar) .lmpanel__keys {
+  display: none;
+}
+@media (max-width: 40rem) {
+  .lmpanel {
+    grid-template-columns: 1fr;
+  }
+  .stick {
+    height: 8rem;
   }
 }

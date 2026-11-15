@@ -167,6 +167,7 @@ export function buildContent(opts: { quiet?: boolean } = {}): Content {
     if (ep.discovery) {
       c.cite(ep.discovery.headline.fact, 'discovery.headline');
       ep.discovery.story?.facts.forEach((k) => c.cite(k, 'discovery.story'));
+      ep.discovery.story?.cues?.forEach((k, i) => c.cue(k, `discovery.story.cues[${i}]`));
       c.cite(ep.discovery.myth?.fact, 'discovery.myth');
     }
     if (ep.silence) {

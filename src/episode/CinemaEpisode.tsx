@@ -99,6 +99,7 @@ export function CinemaEpisode({ ep }: { ep: EpisodeC }) {
               <PuzzleRunner
                 scene
                 cue={cueOf('operation')}
+                consoleDef={ep.console}
                 puzzle={ep.operation!.puzzle}
                 facts={ep.facts}
                 onSolved={(a) => {
@@ -197,48 +198,95 @@ function Explainer({ ep, onNext }: { ep: EpisodeC; onNext: () => void }) {
   );
 }
 
-/** Beat 4. Headline first; the story and the myth check open beside the scene. */
+/** Groups the sentences of a story into captions short enough to read in one look. */
+function captions(text: string, max = 150): string[] {
+  const sentences = text.match(/[^.!?]+[.!?]+["”]?s*/g) ?? [text];
+  const out: string[] = [];
+  for (const raw of sentences) {
+    const one = raw.trim();
+    const last = out[out.length - 1];
+    if (last && last.length + one.length + 1 <= max) out[out.length - 1] = `${last} ${one}`;
+    else out.push(one);
+  }
+  return out;
+}
+
+/**
+ * Beat 4. The headline first. "Tell me more" plays the story as captions, one at a time, while the camera
+ * visits what each one talks about; then the sources, then the myth check. Nothing here is a wall of text.
+ */
 function Discovery({ ep, onNext }: { ep: EpisodeC; onNext: () => void }) {
   const d = ep.discovery!;
-  const [more, setMore] = useState(false);
-  const region = useFocusOn<HTMLDivElement>(ep.id);
-  return (
-    <Frame
-      onNext={onNext}
-      extra={
-        d.story && !more ? (
-          <Btn kind="ghost" onClick={() => setMore(true)}>
-            {t('ep.tellMore')}
-          </Btn>
-        ) : undefined
-      }
-    >
-      <div ref={region} tabIndex={-1}>
-        <div className="headline">
+  const parts = useMemo(() => (d.story ? captions(d.story.text) : []), [d.story]);
+  /** -1 headline · 0..n-1 story captions · n myth check */
+  const [k, setK] = useState(-1);
+  const region = useFocusOn<HTMLDivElement>(k);
+  const atMyth = k === parts.length;
+  const lastStep = d.myth ? parts.length : parts.length - 1;
+
+  useEffect(() => {
+    if (k >= 0 && k < parts.length) showCue(d.story?.cues?.[Math.min(k, (d.story.cues?.length ?? 1) - 1)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [k]);
+
+  if (k === -1)
+    return (
+      <Frame
+        onNext={onNext}
+        extra={
+          parts.length ? (
+            <Btn kind="ghost" onClick={() => setK(0)}>
+              {t('ep.tellMore')}
+            </Btn>
+          ) : undefined
+        }
+      >
+        <div className="headline" ref={region} tabIndex={-1}>
           <FactView text={d.headline.text} fact={ep.facts[d.headline.fact]} />
         </div>
-        {more && d.story && (
-          <aside className="sidebar" aria-live="polite">
-            <p>
-              <Rich text={d.story.text} />
+      </Frame>
+    );
+
+  return (
+    <Frame onNext={() => (k >= lastStep ? onNext() : setK(k + 1))}>
+      <div className="lines" aria-live="polite" ref={region} tabIndex={-1}>
+        {atMyth && d.myth ? (
+          <div className="myth">
+            <h3>{t('ep.myth')}</h3>
+            <p className="myth__claim">
+              <strong>{t('ep.myth.claim')}:</strong> {d.myth.claim}
             </p>
-            <ul className="story__sources">
-              {d.story.facts.map((k) => (
-                <li key={k}>
-                  <FactView fact={ep.facts[k]} />
-                </li>
-              ))}
-            </ul>
-            {d.myth && (
-              <div className="myth">
-                <h3>{t('ep.myth')}</h3>
-                <p>
-                  <strong>{t('ep.myth.claim')}:</strong> {d.myth.claim}
-                </p>
-                <FactView text={`${t('ep.myth.truth')}: ${d.myth.truth}`} fact={ep.facts[d.myth.fact]} />
-              </div>
+            <FactView text={`${t('ep.myth.truth')}: ${d.myth.truth}`} fact={ep.facts[d.myth.fact]} />
+          </div>
+        ) : (
+          <div className="line line--real">
+            <div className="line__head">
+              <span className="line__who">{t('speaker.ariadne')}</span>
+              <span className="chip chip--real" title={t('tag.REAL.help')}>
+                <span aria-hidden="true">◆</span> {t('tag.REAL')}
+              </span>
+              <span className="line__count">{t('story.part', { n: k + 1, total: parts.length })}</span>
+            </div>
+            <p className="line__text">
+              <Rich text={parts[k]} />
+            </p>
+            {k === parts.length - 1 && (
+              <ul className="sources" aria-label={t('story.sources')}>
+                {d.story!.facts.map((key) => {
+                  const f = ep.facts[key];
+                  return (
+                    <li key={key}>
+                      <a className="source" href={f.source} target="_blank" rel="noopener noreferrer" title={f.text}>
+                        <span aria-hidden="true">↗ </span>
+                        {f.host}
+                        <span className="sr-only">: {f.text}</span>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
             )}
-          </aside>
+          </div>
         )}
       </div>
     </Frame>

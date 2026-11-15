@@ -17,28 +17,30 @@ Full table and cut ladder: `docs/TASKS.md`.
 - I0 (Sun 00:20): course correction recorded in `docs/DECISIONS.md` (C-D01 to C-D17), `CLAUDE.md` (pillars, screenshot rule,
   operational fidelity, new architecture and ownership) and `docs/TASKS.md` (iteration plan).
 
-**STOPPED Sun 00:46 by the usage limit of account B, in the middle of I1a. Whoever comes next (A or B) continues here.**
+**I1a closed Sun 02:55. I1b in progress (account B).**
 
-**Written and pushed, gate green (153 tests), but NEVER YET SEEN IN A BROWSER:**
-- B-11 contract v1.1 (`set`, `models`, `cues`, `console`, `stage.kind: scene`, `sim`/`when`/`target`, `silence.before`)
-  and its compiler gates; store `play` and `quality`.
-- B-17 `src/sim/descent.ts` + `tranquility.ts` + `outcomes.ts`, tested: three scripted pilots, one per outcome.
-  The correct flight takes 84 s and lands with 25 s of fuel. `npx tsx scripts/dev/pilots.ts` prints them.
-- B-12 `src/three/` (SceneHost, assets, util). B-13 `src/scenes/tranquility/` (terrain draped with the real LROC image
-  PIA12925 at true scale, official lunar module GLB, flag/LRRR/PSEP reconstructions, 16 cues, scripted flight).
-- B-14 cinema layout: `src/episode/CinemaEpisode.tsx`, `Set3D.tsx`, `setStore.ts`, `PuzzleRunner` scene view,
-  `src/styles/cinema.css`. Episodes without `set` keep the text layout.
-- B-15 `content/episodes/e02-apollo11.yaml` complete, non-draft, every fact read against its source.
-- B-06 started: `assets-src/manifest.yaml`, `scripts/prep-assets.ts`, files in `public/assets/` and `public/draco/`.
+**Done and seen in a real browser (captures in `docs/captures/i1b/`, 36 pictures, no console errors):**
+- E02 Apollo 11 plays in 3D from title card to Field File, in the cinema layout. Every beat reviewed against the screenshot rule.
+- Accessible: the landing decision is three targets inside the scene; a scripted pilot flies the choice.
+- Explorer: "Take control" opens the lunar module panel (program 66, hand controller, descent rate, readouts, Mission
+  Control's fuel calls, contact light). The player's flight outcome picks the transition. A touchdown that is too hard
+  teaches and retries from about ten seconds earlier. After two failures: "Let the machine show you" and "Switch to guided choices".
+- `npm run capture -- <name> [reduce] [explorer|accessible]` plays the routes in the installed Chrome and saves the pictures.
+  It needs a server: `npm run dev`, or `npm run preview` with `CAPTURE_URL=http://localhost:4173/`.
+- `?q=high` forces 3D quality, `?fps` shows the frame rate, `?dev` exposes `__stage` and `__controls` for tests.
 
 **Next 3 steps:**
-1. **Look at it.** `npm run dev`, open `#e02-apollo11`, play every beat. Expect to fix: the split of the lunar module
-   into ascent and descent stages (`splitY` in `props.ts` is a guess), the model's yaw, light intensity and exposure,
-   camera shots in `SHOTS` (`index.ts`), target positions, lower-third layout. Check the console for errors.
-2. B-16 `scripts/capture.ts` (puppeteer-core is installed; Chrome and Edge exist on machine B) + `#shot/<scene>/<cue>`;
-   commit captures in `docs/captures/i1a/`; review against the screenshot rule. Then I1a is done.
-3. I1b: player-flown descent (`act('fly', { pilot })` already accepts any pilot), `src/input/`, `src/consoles/`
-   (DSKY, LM panel), dust in flat sheets (the journal: "a transparent sheet of moving dust"), `src/audio/`.
+1. Rest of I1b: lunar dust in flat sheets on the last metres, the rain of light in The Silence, `src/audio/` (AudioBus,
+   procedural sfx), the DSKY graphic for the alarm decision, Explorer / Hands / Accessible on the Setup screen.
+2. I1c: finale telescope (`src/scenes/telescope/`, `src/sim/ranging.ts` outcomes are already declared), photons, voices.
+3. I1d: Hands (`src/hands/`): it only has to write `controls.setPitch('hands', v)`, `controls.click()` and click DOM buttons.
+
+**Traps found today:**
+- In a hidden or background tab the browser slows the animation loop, and the simulation with it. Test flights with the tab in front.
+- The first load of a texture is cached hard by the browser: after `npx tsx scripts/prep-assets.ts`, reload with the cache disabled.
+- Never name two files in one folder with names that differ only in case (`Stage.tsx` / `stage.ts`): Windows and TypeScript disagree.
+- The orbital photo contains the real hardware as bright dots; `prep-assets.ts` paints them out of the terrain texture only.
+- The far plain has a hole under the photographed square, or it hides the inside of the craters.
 
 **Fact-check findings (B-02):**
 - The Apollo Lunar Surface Journal moved: every `https://www.nasa.gov/history/alsj/...` URL now redirects to a generic

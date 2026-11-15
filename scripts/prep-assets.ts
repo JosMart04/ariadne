@@ -16,9 +16,8 @@ mkdirSync(join(ROOT, 'public', 'draco'), { recursive: true });
 const raw = (p: string) => join(RAW, p);
 
 /** Covers `rect` with the pixels found `dy` rows away, feathered at the edges. */
-async function patch(base: Buffer, rect: { x: number; y: number; w: number; h: number }, dy: number): Promise<Buffer> {
-  const feather = 6;
-  const src = await sharp(base).extract({ left: rect.x, top: rect.y + dy, width: rect.w, height: rect.h }).ensureAlpha().toBuffer();
+async function patch(base: Buffer, rect: { x: number; y: number; w: number; h: number }, dy: number, dx = 0, feather = 6): Promise<Buffer> {
+  const src = await sharp(base).extract({ left: rect.x + dx, top: rect.y + dy, width: rect.w, height: rect.h }).ensureAlpha().toBuffer();
   const mask = Buffer.from(
     `<svg width="${rect.w}" height="${rect.h}"><rect x="${feather}" y="${feather}" width="${rect.w - 2 * feather}" height="${rect.h - 2 * feather}" rx="${feather}" fill="#fff"/></svg>`,
   );
@@ -37,6 +36,9 @@ async function main() {
   ground = await patch(ground, { x: 28, y: 432, w: 246, h: 52 }, -58);
   ground = await patch(ground, { x: 1126, y: 924, w: 216, h: 52 }, 58);
   ground = await patch(ground, { x: 62, y: 1278, w: 396, h: 52 }, -60);
+  // The real hardware shows in the image as bright dots. The 3D models stand there instead, so the dots are painted out.
+  ground = await patch(ground, { x: 128, y: 548, w: 44, h: 44 }, 0, 52, 5);
+  ground = await patch(ground, { x: 136, y: 594, w: 34, h: 40 }, 0, 44, 5);
   await sharp(ground).webp({ quality: 88 }).toFile(join(OUT, 'tex', 'tex_tranquility_ground.webp'));
 
   if (existsSync(raw('img/moon_color_1k.jpg')))

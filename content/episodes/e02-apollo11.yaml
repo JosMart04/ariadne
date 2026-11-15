@@ -258,6 +258,7 @@ discovery:
       and took the crew back to orbit. The bottom half had done its job. It was the launch platform.
       It is still standing where they left it.
     facts: [samples, left-behind, retroreflector, descent-stage]
+    cues: [discovery, stage, psep, lrrr, liftoff, desolation]
   myth:
     claim: "The Apollo 11 flag is still standing on the Moon."
     truth: "Aldrin saw it fall. The blast of Eagle's top half knocked it over at liftoff."

@@ -204,3 +204,21 @@ play.hands.help: Use your hands in front of the camera. Pinch to press. Make a f
 play.accessible: Accessible
 play.accessible.help: Point and choose, with a mouse, a keyboard or one button. Same scenes, same ending.
 evidence.photo: Photographed from orbit
+story.sources: Sources for this story
+story.part: "{n} of {total}"
+flight.take: Take control
+flight.retry: Try again from higher up
+flight.guided: Switch to guided choices
+flight.hard: Too hard for the landing legs. Come down more slowly, then try again.
+flight.keys: "W / S tilt · R / F descent rate"
+flight.stick: Hand controller
+flight.stick.fwd: Forward
+flight.stick.back: Brake
+flight.rod: Descent rate
+flight.rod.slower: Slower
+flight.rod.faster: Faster
+flight.contact: Contact light
+flight.call60: "60 seconds."
+flight.call30: "30 seconds."
+flight.prog: Program
+flight.commanded: asked

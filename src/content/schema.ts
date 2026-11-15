@@ -230,7 +230,8 @@ export const Episode = z.strictObject({
   discovery: z
     .strictObject({
       headline: z.strictObject({ text: z.string(), fact: z.string() }),
-      story: z.strictObject({ text: z.string(), facts: z.array(z.string()).min(1) }).optional(),
+      /** `cues`: what the 3D set shows for each caption of the story, in order. */
+      story: z.strictObject({ text: z.string(), facts: z.array(z.string()).min(1), cues: z.array(z.string()).optional() }).optional(),
       myth: z.strictObject({ claim: z.string(), truth: z.string(), fact: z.string() }).optional(),
     })
     .optional(),

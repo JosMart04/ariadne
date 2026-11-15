@@ -19,7 +19,10 @@ export const describeCue = (scene: string, cue: string | null) => (cue ? (SHEETS
 
 export function Set3D({ scene }: { scene: string }) {
   const canvas = useRef<HTMLCanvasElement>(null);
-  const quality = useGame((s) => s.settings.quality);
+  const saved = useGame((s) => s.settings.quality);
+  // `?q=high` forces a quality tier: used for captures and by judges on a strong machine.
+  const forced = typeof location !== 'undefined' ? /[?&]q=(low|medium|high)/.exec(location.search + location.hash)?.[1] : undefined;
+  const quality = (forced as typeof saved | undefined) ?? saved;
   const reduceMotion = useGame((s) => s.settings.reduceMotion);
   const status = useStage((s) => s.status);
   const cue = useStage((s) => s.cue);
@@ -142,8 +145,8 @@ export function Anchor({ name, children, className = '' }: { name?: string; chil
       const s = p && host ? host.project(p) : null;
       if (s && s.visible) {
         // Keep the whole target on screen.
-        const x = Math.min(Math.max(s.x, 90), host!.width - 90);
-        const y = Math.min(Math.max(s.y, 150), host!.height - 230);
+        const x = Math.min(Math.max(s.x, 48), host!.width - 300);
+        const y = Math.min(Math.max(s.y, 130), host!.height - 150);
         el.dataset.anchored = 'true';
         el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
       } else if (el.dataset.anchored) {

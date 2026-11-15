@@ -10,6 +10,9 @@ import { loadTexture } from '../../three/assets';
 import { fbm, rng } from '../../three/util';
 import { CRATERS, ORTHO_BOUNDS, groundAt, trackZ } from '../../sim/tranquility';
 
+/** Width of the soft border of the photograph, as a fraction of its side. */
+const FEATHER = 0.06;
+
 /** Ground height including the fine relief the simulation ignores (centimetres, never more than 0.3 m). */
 export function height(x: number, z: number): number {
   return groundAt(x, z) + (fbm(x * 0.05, z * 0.05, 3, 7) - 0.5) * 0.6;
@@ -33,8 +36,33 @@ function grainTexture(size = 256): THREE.DataTexture {
   return t;
 }
 
+/** Large soft patches of slightly lighter and darker ground, around the photograph's average grey. */
+function mottleTexture(size = 256): THREE.DataTexture {
+  const data = new Uint8Array(size * size * 4);
+  for (let y = 0; y < size; y++)
+    for (let x = 0; x < size; x++) {
+      // Tileable: sample the noise on a torus.
+      const u = (x / size) * Math.PI * 2;
+      const v = (y / size) * Math.PI * 2;
+      const n = fbm(Math.cos(u) * 1.6 + 5, Math.sin(u) * 1.6 + Math.cos(v) * 1.6, 4, 23) * 0.6 + fbm(Math.sin(v) * 3.1, Math.cos(u) * 3.1 + 9, 3, 41) * 0.4;
+      const g = Math.round(78 + (n - 0.5) * 34);
+      const i = (y * size + x) * 4;
+      data[i] = data[i + 1] = data[i + 2] = g;
+      data[i + 3] = 255;
+    }
+  const t = new THREE.DataTexture(data, size, size);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(1 / 760, 1 / 760);
+  t.magFilter = THREE.LinearFilter;
+  t.minFilter = THREE.LinearMipmapLinearFilter;
+  t.generateMipmaps = true;
+  t.needsUpdate = true;
+  return t;
+}
+
 /** White in the middle, fading to black at the edges: hides the border of the orbital image. */
-function featherTexture(size = 256, edge = 0.1): THREE.DataTexture {
+function featherTexture(size = 256, edge = FEATHER): THREE.DataTexture {
   const data = new Uint8Array(size * size * 4);
   for (let y = 0; y < size; y++)
     for (let x = 0; x < size; x++) {
@@ -87,12 +115,12 @@ export async function buildTerrain(): Promise<THREE.Group> {
   geo.computeVertexNormals();
 
   const bump = grain.clone();
-  bump.repeat.set(140, 140);
+  bump.repeat.set(420, 420);
   bump.needsUpdate = true;
   const mat = new THREE.MeshStandardMaterial({
     map: photo,
     bumpMap: bump,
-    bumpScale: 2.2,
+    bumpScale: 0.3,
     roughness: 1,
     metalness: 0,
     alphaMap: featherTexture(),
@@ -104,12 +132,25 @@ export async function buildTerrain(): Promise<THREE.Group> {
   group.add(ground);
 
   // --- The plain beyond the photograph, out to the horizon ---
-  const far = new THREE.CircleGeometry(26000, 96);
+  // It has a hole under the photograph, or it would cover the inside of every crater deeper than itself.
+  const shape = new THREE.Shape();
+  shape.absarc((minX + maxX) / 2, -(minZ + maxZ) / 2, 26000, 0, Math.PI * 2, false);
+  const inset = (maxX - minX) * FEATHER * 1.05;
+  const hole = new THREE.Path();
+  hole.moveTo(minX + inset, -(minZ + inset));
+  hole.lineTo(minX + inset, -(maxZ - inset));
+  hole.lineTo(maxX - inset, -(maxZ - inset));
+  hole.lineTo(maxX - inset, -(minZ + inset));
+  hole.closePath();
+  shape.holes.push(hole);
+  const far = new THREE.ShapeGeometry(shape, 96);
   far.rotateX(-Math.PI / 2);
+  // ShapeGeometry writes metres into the UVs: the textures repeat per metre.
   const farBump = grain.clone();
-  farBump.repeat.set(9000, 9000);
+  farBump.repeat.set(1 / 3, 1 / 3);
   farBump.needsUpdate = true;
-  const farMat = new THREE.MeshStandardMaterial({ color: 0x8b8b8b, roughness: 1, metalness: 0, bumpMap: farBump, bumpScale: 2 });
+  // Same average tone as the photograph (78 of 255), so the join does not show; mottled so it is not flat.
+  const farMat = new THREE.MeshStandardMaterial({ color: 0xffffff, map: mottleTexture(), roughness: 1, metalness: 0, bumpMap: farBump, bumpScale: 2 });
   const plain = new THREE.Mesh(far, farMat);
   plain.position.y = -0.35;
   plain.receiveShadow = true;
@@ -120,7 +161,7 @@ export async function buildTerrain(): Promise<THREE.Group> {
 }
 
 /**
- * Boulders. The image shows blocks "as big as cars" around West Crater, thrown out by the impact;
+ * Boulders. The journal gives rocks "up to 2 to 3 meters in size" around West Crater, thrown out by the impact;
  * the rest of the plain has only small rocks. Positions are seeded, so every player sees the same field.
  */
 function buildBoulders(): THREE.InstancedMesh {
@@ -139,12 +180,12 @@ function buildBoulders(): THREE.InstancedMesh {
   for (let i = 0; i < 620; i++) {
     const a = r() * Math.PI * 2;
     const d = west.r * (0.55 + Math.pow(r(), 1.6) * 1.9);
-    spots.push({ x: west.x + Math.cos(a) * d, z: west.z + Math.sin(a) * d, s: 0.4 + Math.pow(r(), 2.2) * 2.6 });
+    spots.push({ x: west.x + Math.cos(a) * d, z: west.z + Math.sin(a) * d, s: 0.25 + Math.pow(r(), 2.2) * 1.3 });
   }
   // A denser strip under the approach path, so the danger reads from the pilot's seat.
   for (let i = 0; i < 160; i++) {
     const x = 330 + r() * 470;
-    spots.push({ x, z: trackZ(x) + (r() - 0.5) * 90, s: 0.5 + Math.pow(r(), 1.8) * 2.5 });
+    spots.push({ x, z: trackZ(x) + (r() - 0.5) * 90, s: 0.3 + Math.pow(r(), 1.8) * 1.2 });
   }
   // Small rocks around the landing point.
   for (let i = 0; i < 260; i++) {

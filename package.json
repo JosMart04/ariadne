@@ -12,6 +12,7 @@
     "test": "vitest run",
     "build": "npm run content && vite build",
     "preview": "vite preview",
+    "capture": "tsx scripts/capture.ts",
     "check": "npm run content && tsc --noEmit && vitest run && vite build && tsx scripts/check-dist.ts"
   },
   "dependencies": {

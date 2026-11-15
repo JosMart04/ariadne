@@ -80,20 +80,20 @@ function shadowed<T extends THREE.Object3D>(o: T): T {
  * Laser Ranging Retroreflector: a square tray of 100 corner-cube mirrors, 46 cm across,
  * tilted toward the Earth on a simple pallet. No power, no cable.
  */
-export function buildLrrr(): THREE.Group {
+export function buildLrrr(toEarth: THREE.Vector3): THREE.Group {
   const g = new THREE.Group();
   const pallet = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.05, 0.62), metal(0x9a9a98, 0.7, 0.3));
   pallet.position.y = 0.06;
   g.add(pallet);
-  const leg = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.3, 0.04), metal(0xb9b9b6));
-  leg.position.set(0, 0.2, -0.24);
+  const leg = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.34, 0.04), metal(0xb9b9b6));
+  leg.position.set(0.2, 0.22, 0);
   g.add(leg);
 
   const tray = new THREE.Group();
   tray.add(new THREE.Mesh(new THREE.BoxGeometry(0.46, 0.05, 0.46), metal(0xd9d9d4, 0.35, 0.8)));
   // 10 x 10 mirrors, drawn as one instanced set of small dark glass discs.
   const mirror = new THREE.CylinderGeometry(0.017, 0.017, 0.012, 12);
-  const glass = new THREE.MeshStandardMaterial({ color: 0x1a2430, roughness: 0.05, metalness: 1 });
+  const glass = new THREE.MeshStandardMaterial({ color: 0x9fb6c9, roughness: 0.18, metalness: 0.35, emissive: 0x0b1420 });
   const mirrors = new THREE.InstancedMesh(mirror, glass, 100);
   const m = new THREE.Matrix4();
   for (let i = 0; i < 100; i++) {
@@ -101,8 +101,9 @@ export function buildLrrr(): THREE.Group {
     mirrors.setMatrixAt(i, m);
   }
   tray.add(mirrors);
-  tray.position.y = 0.3;
-  tray.rotation.x = -0.42;
+  tray.position.y = 0.32;
+  // The mirrors face the Earth, which never moves in the lunar sky.
+  tray.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), toEarth);
   g.add(tray);
   return shadowed(g);
 }
