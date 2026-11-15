@@ -56,7 +56,7 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 
 ### Lane b · machine B (Fable): cosmos and shell
 
-- [~] (Fable-b, Sun 17:05) B-40 `src/sim/planets.ts` + `tests/sim/planets.test.ts`: heliocentric positions of the eight planets for a date, from JPL's
+- [x] (Sun 17:15: 18 tests against published events; Eros, Ceres, the Moon and three approximate probes too) B-40 `src/sim/planets.ts` + `tests/sim/planets.test.ts`: heliocentric positions of the eight planets for a date, from JPL's
   approximate elements. Copy the table and the solver from `src/sim/meridiani.ts` (do not edit it). Tests against published
   distances. No new dependency.
 - [~] (Fable-b, Sun 17:05) B-41 `src/scenes/orrery/` (`cues.json` + `index.ts`, shape of `src/scenes/diorama/`): the Sun, eight planets at today's real
