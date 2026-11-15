@@ -1,0 +1,34 @@
+id: e12-pioneer
+num: 12
+act: beyond
+name: Pioneer 10 & 11
+title: Toward the Bull
+slate: { place: Leaving the solar system, year: 1972 }
+launched: "1972-03-02"
+draft: true
+status: { badge: drifting, where: "Beyond the planets, heading out of the solar system" }
+nssdca: [1972-012A, 1973-019A]
+resource: pioneer
+
+facts:
+  last-signal:
+    text: Pioneer 10's last, very weak signal was received on Jan. 23, 2003, after more than 30 years.
+    source: https://science.nasa.gov/missions/pioneer/pioneer-10-sends-last-signal/
+  aldebaran:
+    text: Pioneer 10 is heading in the general direction of the star Aldebaran in Taurus, a journey of more than 2 million years.
+    source: https://nssdc.gsfc.nasa.gov/planetary/text/pion10_pr_20030225.txt
+    note: VERIFY wording against the 2003 release.
+  plaque:
+    text: Both Pioneers carry a plaque showing where and when they came from.
+    source: https://science.nasa.gov/mission/pioneer-10/
+
+epigraph:
+  text: "Alone, alone, all, all alone,\nAlone on a wide wide sea!"
+  author: Samuel Taylor Coleridge
+  work: The Rime of the Ancient Mariner
+  year: 1798
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "I was the first to cross the asteroid belt and the first to visit Jupiter. Now I'm sailing toward the eye of the Bull. I carry a picture of you."

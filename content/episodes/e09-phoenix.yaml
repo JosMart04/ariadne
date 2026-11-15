@@ -1,0 +1,29 @@
+id: e09-phoenix
+num: 9
+act: mars
+name: Phoenix
+title: The Ice That Vanished
+slate: { place: Vastitas Borealis, year: 2008 }
+launched: "2007-08-04"
+draft: true
+status: { badge: silent-damaged, where: "Arctic plains of Mars" }
+nssdca: [2007-034A]
+resource: phoenix-insight
+
+facts:
+  ice:
+    text: Bright chunks in Phoenix's trench vanished within four days, so they had to be water ice, not salt.
+    source: https://www.jpl.nasa.gov/news/bright-chunks-at-phoenix-landers-mars-site-must-have-been-ice
+  last-contact:
+    text: Phoenix last communicated on Nov. 2, 2008. Orbital images later showed ice damage to a solar panel.
+    source: https://space.com/8477-nasa-declares-mars-lander-broken-dead.html
+    note: Secondary source. Look for the NASA/JPL release.
+  snow:
+    text: Phoenix observed snow falling from Martian clouds.
+    source: https://science.nasa.gov/mission/phoenix/
+    note: VERIFY (LIDAR observation, 2008 release).
+
+arrival:
+  - { who: machine, tag: IMAGINED, text: "I came to the top of the world to dig." }
+
+crossThreads: [e05-viking]

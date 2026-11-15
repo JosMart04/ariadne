@@ -1,0 +1,39 @@
+id: e11-ingenuity
+num: 11
+act: mars
+name: Ingenuity
+title: Thin Air
+slate: { place: Jezero Crater, year: 2021 }
+launched: "2020-07-30"
+draft: true
+status: { badge: grounded, where: "Valinor Hills, Jezero Crater, Mars" }
+nssdca: [2020-052A]
+resource: ingenuity
+
+facts:
+  flights:
+    text: Ingenuity was planned for up to five flights and flew 72 times, for about 129 minutes, covering about 17 km.
+    source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
+  flight72:
+    text: Flight 72 on Jan. 18, 2024 damaged its rotor blades. The mission ended a week later.
+    source: https://nasaspaceflight.com/2024/01/ingenuity-final-flight
+    note: Secondary source. Look for the NASA/JPL release.
+  wright:
+    text: Ingenuity carries a swatch of fabric from the Wright brothers' 1903 Flyer.
+    source: https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/
+    note: VERIFY.
+  storing-data:
+    text: The helicopter can keep storing data on board for a future visitor.
+    source: https://www.livescience.com/space/space-exploration/nasas-downed-ingenuity-helicopter-has-a-last-gift-for-humanity-but-well-have-to-go-to-mars-to-get-it
+    note: Secondary source. Never claim it still transmits weekly (disputed).
+
+epigraph:
+  text: "\"Hope\" is the thing with feathers."
+  author: Emily Dickinson
+  work: Poems, Second Series
+  year: 1891
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "They said five flights. Just five. I flew seventy-two."

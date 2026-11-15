@@ -1,0 +1,8 @@
+# Inline glossary (CR-08). Use [[term]] in any text to link a definition.
+sol: { def: "One day on Mars. It lasts about 24 hours and 40 minutes." }
+tau: { def: "A number that measures how much dust is in the sky of Mars. Higher tau means less sunlight reaches the ground." }
+retroreflector: { def: "A special mirror that sends light straight back to where it came from, whatever the angle." }
+sublimation: { def: "When ice turns directly into gas without melting first." }
+lander: { def: "A spacecraft that touches down on a world and stays in one place." }
+rover: { def: "A robot with wheels that drives across the surface of another world." }
+light-day: { def: "The distance light travels in one day: about 25.9 billion kilometers." }

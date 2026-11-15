@@ -1,0 +1,27 @@
+id: e03-alsep
+num: 3
+act: moon
+name: Apollo 12 ALSEP
+title: The Moon Rang Like a Bell
+slate: { place: Oceanus Procellarum, year: 1969 }
+launched: "1969-11-14"
+draft: true
+status: { badge: silent-intact, where: "Ocean of Storms, the Moon" }
+nssdca: [1969-099C]
+resource: alsep
+
+facts:
+  impact:
+    text: On Nov. 20, 1969, Apollo 12's empty ascent stage was deliberately crashed into the Moon. The seismometer recorded vibrations for nearly an hour.
+    source: https://www.popsci.com/does-moon-sound-like-bell/
+    note: VERIFY. Secondary source; prefer the Apollo 12 Preliminary Science Report or a NASA page.
+  switched-off:
+    text: The ALSEP stations were switched off on Sept. 30, 1977.
+    source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "They left me behind to listen. Then they dropped their empty ship on purpose, just to see what I would hear."
+
+crossThreads: [e01-surveyor]

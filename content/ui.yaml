@@ -1,0 +1,166 @@
+# Interface strings. {name} marks a placeholder filled by the engine.
+# Front B may reword values. Keys are owned by Front A: do not rename them.
+
+# Shell
+shell.skip: Skip to content
+shell.dawn: "Dawn in {time}"
+shell.dawn.help: The station clock moves only when you restore a memory. It never rushes you.
+shell.logbook: Logbook
+shell.settings: Settings
+shell.map: Labyrinth
+common.continue: Continue
+common.back: Back
+common.close: Close
+common.skip: Skip
+common.on: "On"
+common.off: "Off"
+common.yes: "Yes"
+common.no: "No"
+
+# REAL / IMAGINED
+tag.REAL: REAL
+tag.IMAGINED: IMAGINED
+tag.REAL.help: A real fact, with its source.
+tag.IMAGINED.help: An imagined voice. Not a real quote.
+source.button: Source
+source.opens: "Opens {host} in a new tab"
+source.secondary: secondary source
+
+# Speakers
+speaker.ariadne: ARIADNE
+speaker.note: Note from the last operator
+speaker.record: Mission record
+speaker.narrator: Knossos Station
+speaker.armstrong: Neil Armstrong, Apollo 11
+
+# Title
+title.name: ARIADNE
+title.sub: Tears in the Rain
+title.motto: The voices are imagined. Every fact is real.
+title.logline: Tonight is the last night of an old listening station. Its archive mind, ARIADNE, has until dawn to weave the last memories of every machine we left on the Moon, on Mars and beyond into a single thread.
+title.begin: Begin
+title.resume: Continue the thread
+title.labyrinth: Open the labyrinth
+title.credit: "Data & imagery: NASA. This project is not affiliated with or endorsed by NASA."
+
+# Setup
+setup.title: How do you want to play?
+setup.intro: Everything here can be changed later in Settings.
+setup.input: How will you choose?
+input.pointer: Mouse or touch
+input.keyboard: Keyboard
+input.switch: One button
+input.head: Head movement (camera)
+input.pointer.help: Point and click, or tap.
+input.keyboard.help: Tab to move, Enter or Space to choose.
+input.switch.help: Options light up one by one. Press Space, or click anywhere, to choose.
+input.head.help: Coming soon.
+setup.scanSpeed: Scanning speed
+setup.captions: Captions
+setup.narration: Voice narration
+setup.textSize: Text size
+setup.motion: Reduce motion
+setup.story: Story mode
+setup.story.help: Hints from the start, and a "Show me" button on every operation.
+setup.contrast: High contrast
+setup.start: Start
+setup.reset: Reset progress
+setup.reset.confirm: Erase all restored memories on this device?
+setup.reset.done: Progress erased.
+
+# Map
+map.title: The Labyrinth
+map.intro: Every room holds a machine that went silent. Restore its memory and the thread grows.
+act.moon: Act I · The Shore
+act.moon.place: The Moon, 1966–1972
+act.mars: Act II · The Red Desert
+act.mars.place: Mars, 1976–2024
+act.beyond: Act III · The Open Sea
+act.beyond.place: Beyond, 1972–today
+map.center: The Center of the Labyrinth
+map.center.locked: Restore the three key memories to open the center.
+map.center.open: The center is open.
+map.follow: "Follow the thread: {name}"
+map.restored: restored
+map.key: key memory
+map.thread: "Thread: {done} of {total} memories restored"
+map.more: "The labyrinth has {n} more rooms."
+map.skipFinale: Skip to the finale
+map.skipFinale.confirm: Go straight to the center of the labyrinth? You can come back for the other rooms at any time.
+
+# Episode
+beat.passage: Passage
+beat.arrival: Arrival
+beat.operation: The Operation
+beat.discovery: The Discovery
+beat.silence: The Silence
+beat.status: Status Now
+beat.file: Field File
+ep.beat: "Part {n} of {total}: {name}"
+ep.howItWorked: How it worked
+ep.draft: This memory is still being restored. Here is what the archive holds so far.
+ep.tellMore: Tell me more
+ep.myth: Myth check
+ep.myth.claim: People say
+ep.myth.truth: What really happened
+ep.lastMessage: The last message
+ep.catch: Catch it
+ep.caught: Caught. The thread holds it now.
+ep.where: Where it is now
+ep.objectives: What you will learn
+ep.serial: NSSDCA ID (its serial number in NASA's archive)
+ep.facts: Every fact, with its source
+ep.toMap: Back to the labyrinth
+ep.openFile: Open the Field File
+ep.restored: Memory restored
+
+# Puzzle
+puzzle.forced: This is what really happened.
+puzzle.hint: Hint
+puzzle.showMe: Let the machine show you
+puzzle.assisted: The machine showed you the way.
+puzzle.solved: Operation complete.
+puzzle.options: Your options
+
+# Clews and logbook
+clew.new: New clew
+clew.teaches: What it tells us
+clew.rulesOut: What it rules out
+logbook.title: Logbook
+logbook.empty: No clews yet. The old machines remember.
+logbook.mystery: Every night at midnight, something answers. Who?
+
+# Finale and credits
+finale.locked: The center of the labyrinth is still closed.
+special.pulse: Pulse
+special.pending: This scene is still being built.
+credits.title: Credits
+credits.counter: "Every fact is real: {facts} facts, {sources} sources."
+credits.honor: In honor of the teams who built, flew and said goodnight to these machines.
+credits.nasa: "Data & imagery: NASA. NASA does not endorse this project."
+credits.ai: "AI disclosure: code, research and first drafts of text were produced with AI assistance and reviewed by the team. Machine voices are imagined. Any generated voice is labelled as AI-generated."
+credits.title.allusion: The title alludes to a famous line of cinema. No material from that work is used.
+
+# Status badges (CR-01)
+badge.active: ACTIVE
+badge.active.help: Still operating and sending data.
+badge.active-passive: ACTIVE · PASSIVE
+badge.active-passive.help: No power, but still in use.
+badge.silent-intact: SILENT · INTACT
+badge.silent-intact.help: Silent, and still where it landed.
+badge.silent-stuck: SILENT · STUCK
+badge.silent-stuck.help: Trapped where it stopped.
+badge.silent-damaged: SILENT · DAMAGED
+badge.silent-damaged.help: Damage is visible from orbit.
+badge.silent-buried: SILENT · BURIED IN DUST
+badge.silent-buried.help: Covered by dust.
+badge.grounded: GROUNDED
+badge.grounded.help: It can no longer fly.
+badge.parked: PARKED
+badge.parked.help: Parked for good.
+badge.orbiting: ORBITING
+badge.orbiting.help: In orbit, with no control.
+badge.resting: RESTING
+badge.resting.help: Resting on a small world.
+badge.drifting: DRIFTING
+badge.drifting.help: Drifting through space.

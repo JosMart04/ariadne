@@ -1,0 +1,27 @@
+id: e13-near
+num: 13
+act: beyond
+name: NEAR Shoemaker
+title: A Gentle Touch on Eros
+slate: { place: Asteroid 433 Eros, year: 2001 }
+launched: "1996-02-17"
+draft: true
+status: { badge: resting, where: "On the surface of asteroid 433 Eros" }
+nssdca: [1996-008A]
+resource: near
+
+facts:
+  orbit-landing:
+    text: NEAR entered orbit around asteroid Eros on Feb. 14, 2000, and touched down on Feb. 12, 2001.
+    source: https://science.nasa.gov/mission/near-shoemaker/
+  descent-images:
+    text: It took 69 images during its final descent and kept sending data from the surface.
+    source: https://pubs.usgs.gov/publication/70023090
+  last-contact:
+    text: Last contact was on Feb. 28, 2001.
+    source: https://science.nasa.gov/mission/near-shoemaker/
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "I reached an asteroid named for the god of love on Valentine's Day, 2000. A year later, they asked me to land on it. I had no legs."

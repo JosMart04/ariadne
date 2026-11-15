@@ -1,0 +1,24 @@
+id: e15-dawn
+num: 15
+act: beyond
+name: Dawn
+title: Two Worlds
+slate: { place: Dwarf planet Ceres, year: 2015 }
+launched: "2007-09-27"
+draft: true
+status: { badge: orbiting, where: "In orbit around the dwarf planet Ceres" }
+nssdca: [2007-043A]
+resource: dawn
+
+facts:
+  two-worlds:
+    text: Dawn orbited Vesta and then Ceres. It was the first spacecraft to orbit two destinations beyond Earth and the first to orbit a dwarf planet.
+    source: https://science.nasa.gov/mission/dawn/
+  out-of-fuel:
+    text: Dawn ran out of hydrazine in late October 2018. It will remain in orbit around Ceres for decades.
+    source: https://www.jpl.nasa.gov/news/nasas-dawn-mission-to-asteroid-belt-comes-to-end
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "My engine pushes very gently. But I never stopped pushing."

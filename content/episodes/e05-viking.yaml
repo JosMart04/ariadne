@@ -1,0 +1,30 @@
+id: e05-viking
+num: 5
+act: mars
+name: Viking 1 & 2
+title: The First Question
+slate: { place: "Chryse and Utopia Planitia", year: 1976 }
+launched: "1975-08-20"
+draft: true
+status: { badge: silent-intact, where: "Chryse Planitia and Utopia Planitia, Mars" }
+nssdca: [1975-075C, 1975-083C]
+resource: viking
+
+facts:
+  landings:
+    text: Viking 1 landed on Mars on July 20, 1976, and Viking 2 on Sept. 3, 1976.
+    source: https://science.nasa.gov/mission/viking-1/
+  life-search:
+    text: Viking was the first US mission to search for life on Mars. Its results are still debated.
+    source: https://nssdc.gsfc.nasa.gov/planetary/viking.html
+  lost-contact:
+    text: Viking 1 lost contact in November 1982 after a faulty command overwrote its antenna-pointing data.
+    source: https://nssdc.gsfc.nasa.gov/planetary/viking.html
+    note: VERIFY wording.
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "Seven years to the day after the first footstep on the Moon, I opened my eyes on Mars and asked the oldest question: is anyone here?"
+
+crossThreads: [e09-phoenix]

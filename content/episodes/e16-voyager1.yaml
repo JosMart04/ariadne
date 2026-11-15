@@ -1,0 +1,30 @@
+id: e16-voyager1
+num: 16
+act: beyond
+name: Voyager 1
+title: One Light-Day
+slate: { place: Interstellar space, year: 1977 }
+launched: "1977-09-05"
+key: true
+draft: true
+status: { badge: active, where: "Interstellar space, about one light-day from Earth" }
+nssdca: [1977-084A]
+resource: voyager
+
+facts:
+  light-day:
+    text: Voyager 1 reaches one light-day from Earth in November 2026, about 25.9 billion km away. A command then takes a full day to arrive.
+    source: https://earthsky.org/space/voyager-1-1-light-day-from-earth-november-17-18-2026/
+    note: Secondary source. Prefer a NASA/JPL release. The game computes the live distance itself.
+  lecp-off:
+    text: In April 2026 NASA switched off the LECP instrument to save power. Two science instruments remain on.
+    source: https://www.skyatnightmagazine.com/news/voyager-1-low-energy-charged-particles-experiment-shut-down
+    note: Secondary source. Prefer a NASA/JPL release.
+  interstellar:
+    text: Voyager 1 entered interstellar space in 2012.
+    source: https://science.nasa.gov/mission/voyager/
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "I'm not abandoned. Just far. So far that a hello from Earth takes a whole day to reach me."

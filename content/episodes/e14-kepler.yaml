@@ -1,0 +1,30 @@
+id: e14-kepler
+num: 14
+act: beyond
+name: Kepler
+title: Goodnight, Planet Hunter
+slate: { place: Orbit around the Sun, year: 2009 }
+launched: "2009-03-06"
+draft: true
+status: { badge: drifting, where: "Orbiting the Sun, trailing behind Earth" }
+nssdca: [2009-011A]
+resource: kepler
+
+facts:
+  planets:
+    text: Kepler confirmed more than 2,600 planets beyond our solar system.
+    source: https://science.nasa.gov/mission/kepler/
+  goodnight:
+    text: Kepler received its final "goodnight" commands on Nov. 15, 2018, the anniversary of Johannes Kepler's death.
+    source: https://www.jpl.nasa.gov/news/kepler-telescope-bids-goodnight-with-final-commands/
+
+epigraph:
+  text: "Bright star, would I were stedfast as thou art."
+  author: John Keats
+  work: Bright star
+  year: 1838
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "I stared at one small patch of sky for years and watched stars blink when worlds passed in front of them."

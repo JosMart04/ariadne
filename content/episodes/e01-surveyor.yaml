@@ -1,0 +1,30 @@
+id: e01-surveyor
+num: 1
+act: moon
+name: Surveyor 1 & 3
+title: The Scouts
+slate: { place: Oceanus Procellarum, year: 1966 }
+launched: "1966-05-30"
+draft: true
+status: { badge: silent-intact, where: "Ocean of Storms, the Moon" }
+nssdca: [1966-045A, 1967-035A]
+resource: surveyor
+
+facts:
+  first-landing:
+    text: Surveyor 1 made the first US soft landing on the Moon on June 2, 1966.
+    source: https://science.nasa.gov/mission/surveyor-1/
+    note: VERIFY URL.
+  surveyor3:
+    text: Surveyor 3 landed in the Ocean of Storms on April 20, 1967.
+    source: https://science.nasa.gov/mission/surveyor-3/
+  apollo12-visit:
+    text: In November 1969, Apollo 12 landed about 155 m from Surveyor 3. The astronauts brought parts of it back to Earth.
+    source: https://science.nasa.gov/mission/surveyor-3/
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "Before anyone walked here, someone had to ask: will the ground hold? I was the question. I landed. It held."
+
+crossThreads: [e03-alsep]

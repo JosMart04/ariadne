@@ -1,0 +1,29 @@
+id: e07-spirit
+num: 7
+act: mars
+name: Spirit
+title: The Broken Wheel
+slate: { place: Gusev Crater, year: 2004 }
+launched: "2003-06-10"
+draft: true
+status: { badge: silent-stuck, where: "Troy, Gusev Crater, Mars" }
+nssdca: [2003-027A]
+resource: spirit-opportunity
+
+facts:
+  landing:
+    text: Spirit landed in Gusev Crater on Jan. 4, 2004.
+    source: https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/
+  silica:
+    text: Dragging its broken wheel, Spirit scraped up nearly pure silica near Home Plate, evidence of past hot springs or steam vents.
+    source: https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars
+  troy:
+    text: Spirit became stuck at "Troy" in 2009. Its last communication was on March 22, 2010.
+    source: https://www.jpl.nasa.gov/news/nasas-spirit-rover-completes-mission-on-mars
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "My front wheel stopped turning. So I turned around and drove backwards, dragging it like an anchor."
+
+crossThreads: [e08-opportunity]

@@ -1,0 +1,24 @@
+# Secrets: never commit
+.env
+.env.*
+env
+!.env.example
+
+# Private team documents (Spanish source docs, rival analysis): local only
+para_fable/
+
+# Build output and dependencies
+node_modules/
+dist/
+src/generated/
+*.tsbuildinfo
+
+# Raw downloaded originals (reproducible from assets-src/manifest.yaml)
+assets-src/raw/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

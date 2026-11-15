@@ -1,0 +1,59 @@
+id: prologue
+title: The Last Night
+
+beats:
+  - kind: lines
+    lines:
+      - { who: ariadne, tag: IMAGINED, text: "Good evening, Operator. You're the last one. They're shutting us down at dawn." }
+      - { who: note, tag: IMAGINED, text: "Every night at midnight, something answers. I never found out who. — R." }
+
+  - kind: special
+    name: pulse
+    text: "Midnight. The station sends one pulse of light. Two and a half seconds of silence. Then something answers with an exact copy."
+
+  - kind: clew
+    clew:
+      id: clew-0
+      title: Exact copy
+      line: "The answer has exactly the same shape as the pulse we sent."
+      teaches: Whatever answers sends back a perfect copy of our own signal.
+      rulesOut: A transmitter with a message of its own.
+
+  - kind: lines
+    lines:
+      - { who: ariadne, tag: IMAGINED, text: "My memory is damaged. But the old machines remember. If we restore them, maybe they'll tell us." }
+      - { who: ariadne, tag: IMAGINED, text: "Hold this. It is a thread. In a labyrinth, a thread is how you find your way back." }
+
+  - kind: puzzle
+    title: Tune the station
+    puzzle:
+      archetype: [F]
+      initial: listen
+      maxSteps: 5
+      hints:
+        - The answer comes after a pause.
+        - Look for the channel with a pulse, a silence, and a second pulse.
+      states:
+        listen:
+          prompt: How do you want to listen?
+          choices:
+            - { label: Put on headphones, to: tune }
+            - { label: Read captions, to: tune }
+        tune:
+          say: "Three old channels are still open."
+          prompt: Which channel carries the answer?
+          choices:
+            - { label: "Channel 1", detail: "Rough, endless static.", to: static }
+            - { label: "Channel 2", detail: "One steady hum.", to: hum }
+            - { label: "Channel 3", detail: "Pulse. Silence. Pulse.", to: tuned }
+        static:
+          wrong: true
+          say: "Only noise here. The answer has a shape."
+          next: tune
+        hum:
+          wrong: true
+          say: "A hum never changes. The answer arrives after a pause."
+          next: tune
+        tuned:
+          say: "There it is. Pulse. Two and a half seconds. Pulse. You point, and you choose. That is all you will ever need to do here."
+          next: SOLVED

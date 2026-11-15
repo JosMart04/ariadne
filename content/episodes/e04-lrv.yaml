@@ -1,0 +1,30 @@
+id: e04-lrv
+num: 4
+act: moon
+name: Lunar Roving Vehicles
+title: The Last Drive
+slate: { place: "Hadley, Descartes, Taurus-Littrow", year: 1971 }
+launched: "1971-07-26"
+draft: true
+status: { badge: parked, where: "Three Apollo landing sites, the Moon" }
+nssdca: [1971-063C, 1972-031C, 1972-096C]
+resource: lrv
+
+facts:
+  fender:
+    text: Apollo 17's rover fender was repaired with four laminated maps, tape and two clamps, a fix designed in Houston.
+    source: https://www.nasa.gov/history/alsj/a17/A17NewFender.html
+  fender-home:
+    text: The repaired fender returned to Earth and is at the Smithsonian.
+    source: https://airandspace.si.edu/stories/editorial/duct-tape-auto-repair-moon
+  tracks:
+    text: Apollo 17's rover was driven more than 35 km. Orbital images still show its tracks.
+    source: https://planetary.org/space-images/apollo-17-site-as-seen-by-lro
+  cernan:
+    text: Gene Cernan's final words on the lunar surface are recorded in the Apollo 17 Lunar Surface Journal.
+    source: https://www.nasa.gov/history/alsj/a17/a17.html
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "I drove the last humans across the Moon. Then they asked me to watch them leave."

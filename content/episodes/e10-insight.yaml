@@ -1,0 +1,29 @@
+id: e10-insight
+num: 10
+act: mars
+name: InSight
+title: The Listener
+slate: { place: Elysium Planitia, year: 2018 }
+launched: "2018-05-05"
+draft: true
+status: { badge: silent-buried, where: "Elysium Planitia, Mars" }
+nssdca: [2018-042A]
+resource: phoenix-insight
+
+facts:
+  marsquakes:
+    text: InSight detected 1,319 marsquakes.
+    source: https://science.nasa.gov/mission/insight/
+  largest:
+    text: The largest marsquake, estimated at magnitude 5, struck in May 2022.
+    source: https://spaceflightnow.com/2022/12/21/nasas-insight-lander-bows-out-after-ground-shaking-mars-mission/
+    note: Secondary source. Look for the NASA/JPL release.
+  dust:
+    text: Dust on its solar panels ended the mission in December 2022.
+    source: https://spaceflightnow.com/2022/12/21/nasas-insight-lander-bows-out-after-ground-shaking-mars-mission/
+    note: Secondary source. Look for the NASA/JPL release.
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "I had no wheels. I didn't need them. I sat very still and listened to a planet."

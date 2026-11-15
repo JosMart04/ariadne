@@ -1,0 +1,206 @@
+# REFERENCE EPISODE. Copy this file's shape for every other episode.
+# Contract: src/content/schema.ts. Run `npm run content` to validate.
+# Rules: every REAL line cites a fact; every fact has an https source;
+# sentences of 25 words or fewer; machines rest/sleep/go silent (never "die").
+id: e08-opportunity
+num: 8
+act: mars
+name: Opportunity
+title: Chasing the Sun
+slate: { place: Meridiani Planum, year: 2004 }
+launched: "2003-07-07"
+key: true
+status: { badge: silent-buried, where: "Perseverance Valley, Endeavour Crater, Mars" }
+nssdca: [2003-032A]
+resource: spirit-opportunity
+
+objectives:
+  - Explain why a solar-powered rover depends on dust and weather.
+  - Describe the evidence of ancient water that Opportunity found.
+  - Say where Opportunity is today and why it went silent.
+
+facts:
+  lifetime:
+    text: Opportunity was designed for 90 sols and drove more than 45 km over almost 15 years.
+    source: https://www.nasa.gov/news-release/nasas-record-setting-opportunity-rover-mission-on-mars-comes-to-end/
+  last-contact:
+    text: Its last communication was on June 10, 2018, during a planet-wide dust storm. The mission was declared complete on Feb. 13, 2019.
+    source: https://www.nasa.gov/news-release/nasas-record-setting-opportunity-rover-mission-on-mars-comes-to-end/
+  tau:
+    text: On its last day of contact, the dust opacity (tau) was about 10.8, compared to about 0.5 on a normal day.
+    source: https://www.planetary.org/articles/08-mer-update-opportunity-sleeps
+  last-images:
+    text: These are the last images Opportunity took.
+    source: https://www.jpl.nasa.gov/images/pia22930-last-images-opportunity-took/
+  water:
+    text: Opportunity found hematite "blueberries" and veins of gypsum, both evidence that liquid water once flowed on Mars.
+    source: https://www.nasa.gov/news-release/nasas-record-setting-opportunity-rover-mission-on-mars-comes-to-end/
+    note: VERIFY wording against the release (hematite at the landing site; gypsum vein at Endeavour).
+  wake-up:
+    text: After the storm, the team sent more than a thousand commands to try to wake the rover.
+    source: https://www.nasa.gov/news-release/nasas-record-setting-opportunity-rover-mission-on-mars-comes-to-end/
+    note: VERIFY exact phrase ("more than a thousand commands").
+  slopes:
+    text: In winter the team parked Opportunity on slopes that tilted its solar panels toward the Sun.
+    source: https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/
+    note: VERIFY and find a direct NASA/JPL source (e.g. Greeley Haven winter site).
+  cleaning:
+    text: Martian wind sometimes blew the dust off the rover's solar panels and restored its power.
+    source: https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/
+    note: VERIFY and find a direct NASA/JPL source for "cleaning events".
+  resting-place:
+    text: Opportunity's final resting place is Perseverance Valley, on the rim of Endeavour Crater.
+    source: https://www.nasa.gov/news-release/nasas-record-setting-opportunity-rover-mission-on-mars-comes-to-end/
+    note: VERIFY wording.
+
+arrival:
+  - { who: machine, tag: IMAGINED, text: "They gave me ninety days. I kept counting." }
+  - who: ariadne
+    tag: REAL
+    fact: lifetime
+    text: "Opportunity was built to work for 90 sols. It worked for almost 15 years."
+  - { who: machine, tag: IMAGINED, text: "I live on sunlight. So every day I ask the same question: how much light do I have?" }
+
+operation:
+  title: Plan three sols on solar power
+  explainer:
+    - text: Each sol, the team chose one plan for the rover. Drive, do science, or sleep to save power.
+    - text: Dust slowly covered the solar panels. Sometimes the wind blew them clean again.
+      fact: cleaning
+    - text: In winter the rover parked on a slope that tilted its panels toward the Sun.
+      fact: slopes
+    - text: In June 2018 a dust storm covered the whole planet. The sky went dark and the power ran out.
+      fact: last-contact
+  puzzle:
+    archetype: [D]
+    initial: sol1
+    maxSteps: 10
+    hints:
+      - Watch the energy gauge. Every plan changes it.
+      - A solar rover needs clean panels that face the Sun.
+    states:
+      sol1:
+        say: "Sol 1. Your panels are clean and the sky is clear."
+        prompt: What is the plan for today?
+        stage: { kind: gauge, label: Energy, value: 90, unit: "%" }
+        choices:
+          - { label: Drive, detail: "Cross the plain. Costs power.", to: sol1-drive }
+          - { label: Science, detail: "Study the rock under your wheels.", to: sol1-science }
+          - { label: Sleep, detail: "Save power for later.", to: sol1-sleep }
+      sol1-drive:
+        say: "You roll 100 meters across the plain. Driving costs power, and dust is settling on your panels."
+        stage: { kind: gauge, label: Energy, value: 55, unit: "%" }
+        next: wind
+      sol1-science:
+        say: "Your microscope finds tiny gray spheres in the rock. The team calls them blueberries. They formed in water."
+        fact: water
+        stage: { kind: gauge, label: Energy, value: 60, unit: "%" }
+        next: wind
+      sol1-sleep:
+        say: "You rest and save power. But dust keeps settling on your panels while you sleep."
+        stage: { kind: gauge, label: Energy, value: 75, unit: "%" }
+        next: wind
+      wind:
+        say: "Sol 2. Dust covers your panels and the power is low. Then a whirlwind crosses the plain and blows them clean."
+        fact: cleaning
+        stage: { kind: gauge, label: Energy, value: 100, unit: "%" }
+        next: winter
+      winter:
+        say: "Winter is coming. The Sun stays low in the sky."
+        prompt: Where do you park for the winter?
+        stage: { kind: gauge, label: Energy, value: 70, unit: "%" }
+        choices:
+          - { label: On a slope facing the Sun, to: winter-ok }
+          - { label: On flat ground, to: winter-flat }
+          - { label: In the shadow of a crater wall, to: winter-shadow }
+      winter-flat:
+        wrong: true
+        say: "On flat ground the low Sun barely reaches your panels. The real team always looked for a sunny slope."
+        fact: slopes
+        stage: { kind: gauge, label: Energy, value: 25, unit: "%" }
+        next: winter
+      winter-shadow:
+        wrong: true
+        say: "In the shadow there is no light at all. A solar rover would not wake up in spring."
+        stage: { kind: gauge, label: Energy, value: 5, unit: "%" }
+        next: winter
+      winter-ok:
+        say: "Tilted toward the Sun, your panels catch enough light. You survive the winter. You do this for 14 years."
+        fact: slopes
+        stage: { kind: gauge, label: Energy, value: 80, unit: "%" }
+        next: storm
+      storm:
+        forced: true
+        say: "June 2018. A dust storm covers the whole planet. Noon looks like night. Tau, the dust in the sky, climbs to 10.8. A normal day is 0.5."
+        fact: tau
+        stage: { kind: gauge, label: Energy, value: 4, unit: "%" }
+        next: last-power
+      last-power:
+        prompt: What do you do with your last power?
+        stage: { kind: gauge, label: Energy, value: 4, unit: "%" }
+        choices:
+          - { label: Send my data home, to: sent }
+          - { label: Take one last picture, to: sent }
+          - { label: Call Earth, to: sent }
+      sent:
+        forced: true
+        say: "Opportunity sent its last data on June 10, 2018. Nothing you chose could stop the storm."
+        fact: last-contact
+        stage: { kind: gauge, label: Energy, value: 0, unit: "%" }
+        next: SOLVED
+
+discovery:
+  headline:
+    text: "Opportunity drove more than 45 km on Mars. That is longer than a marathon."
+    fact: lifetime
+  story:
+    text: >-
+      Opportunity went to Mars to answer one question: was there ever water here?
+      The answer was under its wheels. The rover found tiny gray spheres, nicknamed blueberries,
+      made of a mineral called hematite. On Earth, hematite like this forms in water.
+      Years later, on the rim of a huge crater, it found bright veins of gypsum.
+      Gypsum is left behind when water flows through cracks in rock.
+      Together they tell us that ancient Mars was wet. A robot built for 90 sols
+      kept reading the rocks for almost 15 years.
+    facts: [water, lifetime]
+  myth:
+    claim: "Opportunity's last words were 'My battery is low and it's getting dark.'"
+    truth: "The rover never sent words. Its last data showed very low power and a very dark sky. A journalist turned those numbers into that sentence."
+    fact: tau
+
+silence:
+  epigraph:
+    text: "I had a dream, which was not all a dream.\nThe bright sun was extinguish'd."
+    author: Lord Byron
+    work: Darkness
+    year: 1816
+  last:
+    who: record
+    tag: REAL
+    fact: last-contact
+    text: "June 10, 2018. Last contact. Power very low. Sky very dark."
+  lines:
+    - { who: machine, tag: IMAGINED, text: "The sky is getting darker. I think I'll rest for a while." }
+    - who: ariadne
+      tag: REAL
+      fact: wake-up
+      text: "Its team sent more than a thousand commands to wake it. Opportunity stayed silent."
+
+statusNow:
+  text: "Opportunity rests in Perseverance Valley, on the rim of Endeavour Crater. Dust covers its panels."
+  fact: resting-place
+
+epigraph:
+  text: "To strive, to seek, to find, and not to yield."
+  author: Alfred Tennyson
+  work: Ulysses
+  year: 1842
+
+clew:
+  id: clew-2
+  title: When the Sun is gone
+  line: "Machines that need sunlight go silent when the light is gone. Whatever answers at midnight doesn't need the Sun."
+  teaches: Solar machines go silent when the light is gone.
+  rulesOut: Anything that depends on the Sun or on batteries.
+
+crossThreads: [e06-sojourner, e07-spirit]

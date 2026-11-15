@@ -1,0 +1,39 @@
+id: e02-apollo11
+num: 2
+act: moon
+name: Apollo 11 "Eagle"
+title: Magnificent Desolation
+slate: { place: Tranquility Base, year: 1969 }
+launched: "1969-07-16"
+key: true
+draft: true
+status: { badge: silent-intact, where: "Sea of Tranquility, the Moon" }
+nssdca: [1969-059C]
+resource: apollo-lm
+
+facts:
+  descent-stage:
+    text: Eagle's descent stage stayed on the Moon and served as the launch platform for the ascent stage.
+    source: https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C
+  retroreflector:
+    text: Apollo 11 left a laser retroreflector with 100 corner-cube mirrors.
+    source: https://www.jpl.nasa.gov/news/apollo-11-experiment-continues-to-return-valuable-data
+    note: VERIFY URL.
+  flags:
+    text: Orbital images show the Apollo flags still cast shadows, except Apollo 11's, which Aldrin saw fall at liftoff.
+    source: https://www.nasa.gov/history/alsj/ApolloFlags-Condition.html
+  alsj:
+    text: Transcripts, photos and audio of the landing are in the Apollo Lunar Surface Journal.
+    source: https://www.nasa.gov/history/alsj/
+
+epigraph:
+  text: "Two vast and trunkless legs of stone\nStand in the desert."
+  author: Percy Bysshe Shelley
+  work: Ozymandias
+  year: 1818
+
+arrival:
+  - who: armstrong
+    tag: REAL
+    fact: alsj
+    text: "Tranquility Base here. The Eagle has landed."

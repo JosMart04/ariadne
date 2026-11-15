@@ -1,0 +1,112 @@
+id: finale
+title: The Center of the Labyrinth
+
+facts:
+  still-working:
+    text: The laser retroreflectors left on the Moon by Apollo are the only Apollo science experiments still returning data. Observatories on Earth still bounce lasers off them.
+    source: https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving
+    note: VERIFY URL and wording.
+  receding:
+    text: Laser ranging shows the Moon is moving away from Earth by about 3.8 cm per year.
+    source: https://www.jpl.nasa.gov/news/apollo-11-experiment-continues-to-return-valuable-data
+    note: VERIFY URL.
+  arrays:
+    text: Apollo 11 left 100 corner-cube mirrors. Apollo 14 left another 100-mirror array and Apollo 15 one with 300 mirrors.
+    source: https://www.jpl.nasa.gov/news/apollo-11-experiment-continues-to-return-valuable-data
+    note: VERIFY URL.
+
+beats:
+  - kind: lines
+    lines:
+      - { who: ariadne, tag: IMAGINED, text: "You hold every clew now. Let's find out who answers at midnight." }
+
+  - kind: puzzle
+    title: Who answers at midnight?
+    puzzle:
+      archetype: [B]
+      initial: where
+      maxSteps: 6
+      hints:
+        - Open your Logbook. Each clew rules something out.
+        - It needs no power, and it is 2.5 light-seconds away, there and back.
+      states:
+        where:
+          prompt: Where is the answer coming from?
+          choices:
+            - { label: A rover on Mars, to: not-mars }
+            - { label: A satellite with batteries, to: not-battery }
+            - { label: A mirror on the Moon, to: aim }
+        not-mars:
+          wrong: true
+          say: "A signal to Mars and back takes many minutes. The answer comes in 2.5 seconds. Distance is time."
+          next: where
+        not-battery:
+          wrong: true
+          say: "Batteries run out, and solar machines go silent in the dark. This answer has never stopped."
+          next: where
+        aim:
+          say: "The telescope shows Tranquility Base, seen from orbit."
+          prompt: Where do you point the laser?
+          choices:
+            - { label: The descent stage, detail: "The dark square in the middle.", to: aim-stage }
+            - { label: The small bright panel, detail: "A few steps from the descent stage.", to: fire }
+            - { label: The long shadow, to: aim-shadow }
+        aim-stage:
+          wrong: true
+          say: "The descent stage is foil and bare metal. It scatters light in every direction."
+          next: aim
+        aim-shadow:
+          wrong: true
+          say: "Only a shadow. Nothing there can send light back."
+          next: aim
+        fire:
+          say: "You fire. Billions of photons leave the station. Only a few come home. The clock reads 2.5 seconds."
+          prompt: "Distance = speed of light × time ÷ 2. How far away is the mirror?"
+          choices:
+            - { label: "38,400 km", to: too-near }
+            - { label: "384,400 km", to: found }
+            - { label: "3,844,000 km", to: too-far }
+        too-near:
+          wrong: true
+          say: "Too close. From there, light would return in a quarter of a second."
+          next: fire
+        too-far:
+          wrong: true
+          say: "Too far. From there, light would need about 25 seconds."
+          next: fire
+        found:
+          say: "About 384,400 km. The distance to the Moon. The answer at midnight was your own light, coming home."
+          next: SOLVED
+
+  - kind: facts
+    title: A mirror from 1969
+    facts: [arrays, still-working, receding]
+
+  - kind: lines
+    lines:
+      - { who: ariadne, tag: IMAGINED, text: "I have seen a mirror return our light for fifty-seven years." }
+      - { who: ariadne, tag: IMAGINED, text: "I have felt the Moon tremble for an hour after a fall." }
+      - { who: ariadne, tag: IMAGINED, text: "I have heard a helicopter hum in air too thin to lift a feather." }
+      - { who: ariadne, tag: IMAGINED, text: "I have watched a sail of xenon light push toward a dwarf world." }
+      - { who: ariadne, tag: IMAGINED, text: "None of it will be lost. Not like tears in the rain." }
+      - { who: ariadne, tag: IMAGINED, text: "You hold the thread now." }
+
+  - kind: special
+    name: daisy-bell
+    text: "ARIADNE hums an old song, slower and slower, until her voice stops."
+
+  - kind: special
+    name: pulse
+    text: "Midnight. A pulse of light. Two and a half seconds. The pulse returns. The console keeps going, alone."
+
+  - kind: lines
+    lines:
+      - who: narrator
+        tag: IMAGINED
+        text: "Some of them went silent. Some of them are still answering. All of them are waiting for whoever comes next."
+
+  - kind: special
+    name: postcard
+
+  - kind: special
+    name: voyager-coda

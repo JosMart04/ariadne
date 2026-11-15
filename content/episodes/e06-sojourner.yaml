@@ -1,0 +1,30 @@
+id: e06-sojourner
+num: 6
+act: mars
+name: Pathfinder & Sojourner
+title: The Bounce
+slate: { place: Ares Vallis, year: 1997 }
+launched: "1996-12-04"
+draft: true
+status: { badge: silent-intact, where: "Ares Vallis, Mars" }
+nssdca: [1996-068A]
+resource: sojourner
+
+facts:
+  airbags:
+    text: Mars Pathfinder landed on July 4, 1997, using airbags for the first time.
+    source: https://www.nasa.gov/image-article/july-4-1997-sojourner-arrives-red-planet
+  lifetime:
+    text: Sojourner was designed for 7 sols and worked for 83. Contact ended on Sept. 27, 1997.
+    source: https://science.nasa.gov/mission/mars-pathfinder/
+  distance:
+    text: Sojourner drove about 100 m in total and never went more than about 12 m from the lander.
+    source: https://www.space.com/17745-mars-pathfinder-sojourner-rover.html
+    note: Secondary source. Look for a NASA equivalent.
+
+arrival:
+  - who: machine
+    tag: IMAGINED
+    text: "I was the size of a microwave oven. I arrived on the Fourth of July, 1997, bouncing across Mars inside a cluster of balloons."
+
+crossThreads: [e07-spirit, e08-opportunity]
