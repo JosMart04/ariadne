@@ -130,22 +130,29 @@ puzzle:
 - Assets by stable id: `public/assets/vo/vo_<lineId>_en.mp3`, `public/assets/img/img_<episode>_<slot>.webp`,
   `public/assets/models/mdl_<name>.glb`. Every asset has a credit and a source in content.
 
-## Who owns what (two Claude sessions work in parallel; ownership is by folder)
+## Who owns what (several AI sessions work in parallel; ownership is by folder)
 
-**Until account A returns, account B leads both fronts and may edit everything.** After that:
+These rules bind **every** agent, whatever its maker (Claude Fable, GPT Astra, or another). Lanes since Sun Nov 15, 14:50:
 
-| Front | Owns | 
+| Lane | Owns |
 |---|---|
-| **A · Cosmos, station, shell** | `src/scenes/orrery/`, `src/scenes/station/`, `src/scenes/sky/`, `src/screens/`, `src/engine/`, `src/content/schema.ts`, `scripts/build-content.ts`, `scripts/check-dist.ts`, `tests/` (except `tests/sim`, `tests/hands`), `.github/`, config files, `content/ui.yaml`, `content/prologue.yaml`, `src/styles/app.css` |
-| **B · Machines, consoles, content, assets** | `src/three/`, `src/sim/`, `src/consoles/`, `src/input/`, `src/hands/`, `src/audio/`, `src/episode/`, `src/scenes/{tranquility,telescope,meridiani,dsn,diorama}/`, `tests/sim`, `tests/hands`, `content/episodes/`, `content/finale.yaml`, `content/glossary.yaml`, `content/voices.yaml`, `public/assets/`, `assets-src/`, other `scripts/`, `docs/submission/`, `docs/captures/`, `src/styles/cinema.css` |
+| **Fable · Thread and core** | Everything not listed below: `src/**`, `tests/`, `scripts/capture.ts`, `scripts/check-dist.ts`, `package.json`, config, `.github/`, `content/ui.yaml`, `content/voices.yaml`, `src/styles/`, the Thread content (`content/prologue.yaml`, `e02-apollo11.yaml`, `e08-opportunity.yaml`, `e16-voyager1.yaml`, `content/finale.yaml`), `CLAUDE.md`, `AGENTS.md` |
+| **Fable · diorama** (only if a second Fable session is started; otherwise part of the lane above) | `src/scenes/diorama/`, the set context (`SetContext` in `src/three/host.ts`, `src/episode/Set3D.tsx`, the `Explainer` of `src/episode/CinemaEpisode.tsx`), `src/content/schema.ts`, `scripts/build-content.ts`, `scripts/prep-assets.ts`, the generic route of `scripts/capture.ts` |
+| **Astra · content** | The 13 non-Thread files in `content/episodes/` (e01, e03 to e07, e09 to e15), `content/glossary.yaml`, `docs/submission/`, new rows of `assets-src/manifest.yaml` with their files in `public/assets/{img,models}/`, `scripts/check-links.ts`, `README.md` |
 
-Need something from the other front? Write it under "Requests" in your section of `docs/HANDOFF.md`. Do not edit their files.
-Adding a dependency to `package.json`: say so in `docs/HANDOFF.md` and `git pull --rebase` first.
+- **One owner per file.** Need a change in a file you do not own? Write it under "Requests" in `docs/HANDOFF.md`. Do not edit it.
+- **Claim before you code.** Mark the task `[~] (Fable)`, `[~] (Fable-diorama)` or `[~] (Astra)` in `docs/TASKS.md` and push that line first.
+  A claim is released only by its owner, in writing. Silence, or no commits for a while, releases nothing.
+- **Do not touch what is finished** without a written reason: the sets `tranquility`, `telescope`, `dsn`, their simulations and
+  consoles, and the text of the prologue, E02, E16 and the finale.
+- Adding a dependency to `package.json`: Fable lane only; say so in `docs/HANDOFF.md`.
 
 ## Session protocol
 
-Start: `git pull --rebase` → read this file and `docs/HANDOFF.md` → take the first open task of your front in `docs/TASKS.md`.
+Start: `git pull --rebase` → read this file and `docs/HANDOFF.md` → take the first open task of your lane in `docs/TASKS.md`.
 End (always, even mid-task): `npm run check` → update **your section** of `docs/HANDOFF.md` and `docs/TASKS.md` → commit → `git pull --rebase` → push to `main`.
+Each session works in **its own clone** of the repository (two sessions in one folder break each other's build and rebase),
+and stages only the files of its lane (`git add <paths>`, never `git add -A`).
 Commit small and often. CI deploys only when the gate passes.
 
 Keep context small: do not read `src/generated/`, `node_modules/`, `dist/` or `para_fable/3_opcional/`.

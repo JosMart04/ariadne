@@ -1,10 +1,57 @@
 # Handoff: live project state
 
-Written Sun Nov 15, 10:05 UTC−5 by account B, **for account A, which takes over the whole project now.**
+Sections 1 to 8 were written Sun Nov 15, 10:05 UTC−5 by account B. **Section 0 is newer and wins where they differ.**
 Everything needed to go on is in this file, `CLAUDE.md`, `docs/TASKS.md` and `docs/DECISIONS.md`. Keep this file current:
 done / in progress / next steps / traps.
 
-**Deadlines (UTC−5): cut rule 13:00 · first submission 14:00 · text freeze 15:00 · feature freeze 17:00 · final submission 22:30.**
+**Deadlines (UTC−5): feature freeze 17:00 · final submission 22:30.** The 13:00 cut rule, the 14:00 first submission and
+the 15:00 text freeze passed while no session was running (see section 0).
+
+## 0. Parallel lanes (written Sun Nov 15, 14:50 by Fable, the session that builds E08)
+
+**What happened:** account A (Claude Fable) took over at 10:30, but its plan waited for approval until 14:45. Nothing was
+pushed between 10:02 and 14:50. The Thread is still missing one set: E08.
+
+**From now on several AI sessions may work at once.** Lanes and rules are in `CLAUDE.md`, "Who owns what". In short:
+
+| Lane | Works on now | Must not touch |
+|---|---|---|
+| **Fable · Thread and core** (this session) | E08 Opportunity in 3D (B-27), then voices, the fresh-start Thread check (F-03), lifecycle fixes (F-02) | the 13 non-Thread episode files |
+| **Fable · diorama** (a second Fable session, if the team starts one) | F-01: the set context and `src/scenes/diorama/`, proven on two files | `src/scenes/meridiani/`, `src/sim/meridiani.ts`, `src/consoles/PlanStation.tsx`, `e08-opportunity.yaml` |
+| **Astra · content** (GPT Astra) | X-01 `docs/submission/`, X-02 text and facts of the 13 files, X-03 asset candidates, X-04 link check | anything under `src/`, `tests/`, `scripts/` (except `check-links.ts`), `content/ui.yaml`, the Thread content |
+
+Rules that keep parallel work safe:
+- One owner per file. Requests for someone else's file go under "Requests" below.
+- Claim a task in `docs/TASKS.md` (`[~] (Fable)`, `[~] (Fable-diorama)`, `[~] (Astra)`) and push that line before coding.
+- Each session in its own clone. `npm run check` green, `git pull --rebase`, then push. Stage only your lane's files.
+- Shared files where two lanes append: `assets-src/manifest.yaml` (add rows at the end of a block), `scripts/capture.ts`
+  (this session only adds the `e08` routes; the diorama lane owns the generic route), `src/styles/cinema.css` (append a
+  block with a comment naming the set). Never reorder or reformat what is already there.
+
+**Start prompt for Astra (paste as is):**
+
+> You are joining ARIADNE (NASA Space Apps 2026, challenge "Abandoned but not Forgotten"), repository
+> https://github.com/JosMart04/ariadne, as the **Astra · content** lane. Another AI (Claude Fable) is building the 3D engine
+> in parallel; you never edit its files. Clone the repository into your own folder, run `npm ci` and `npm run check`
+> (must be green). Read `AGENTS.md`, `CLAUDE.md`, `docs/HANDOFF.md` section 0 and `docs/TASKS.md` ("Lane Astra").
+> Take the first open task of your lane, mark it `[~] (Astra)` in `docs/TASKS.md` and push that line before working.
+> Rules that disqualify the project if broken: English only in the repository; every REAL line cites an https source that
+> you actually opened (write the sentence you checked in `note:`; never fill `verified:`, that is for human initials);
+> no NASA logo; no copyrighted text, quotes or music; machines "rest, sleep, go silent", never "die"; no human on Mars.
+> Plain English (B1), second person, sentences of 25 words or fewer. A claim with no source is narrowed to what the source
+> says or removed; it is never relabelled IMAGINED. Keep `draft: true` on the 13 files until the diorama set exists.
+> Before every push: `npm run check`, `git pull --rebase`, and stage only files of your lane. Report to the team in Spanish.
+
+**Start prompt for a second Fable session (paste as is):**
+
+> You are the **Fable · diorama** lane of ARIADNE (https://github.com/JosMart04/ariadne). Another Fable session is building
+> E08; do not touch its files. Work in your own clone. Read `CLAUDE.md`, `docs/HANDOFF.md` (section 0, then 3 to 5) and
+> task F-01 in `docs/TASKS.md`. Mark F-01 `[~] (Fable-diorama)`, push that line, then build it: the set context, the
+> `diorama` set, the explainer as captions, the asset gates, and two proving files (E11 with the official Ingenuity model,
+> one file with a real NASA image). Every beat must pass the screenshot rule; commit its captures. Report in Spanish.
+
+**Requests** (write here; the owner answers in place):
+- (none yet)
 
 ## 1. Where the project stands
 

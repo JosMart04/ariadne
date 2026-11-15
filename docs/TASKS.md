@@ -3,8 +3,8 @@
 Status: `[ ]` open · `[~]` in progress (add who) · `[x]` done.
 IDs in brackets are requirement ids from the requirements document (v1.1).
 
-**State on Sun Nov 15, 10:10 UTC−5:** prologue, E02, E16 and the finale are done in 3D. **E08 in 3D (B-27) is the next task.**
-Account A leads the whole project from here: follow the iteration table from I3. Read `docs/HANDOFF.md` first.
+**State on Sun Nov 15, 14:50 UTC−5:** prologue, E02, E16 and the finale are done in 3D. **E08 in 3D (B-27) is being built now.**
+Several AI sessions may work at once: lanes and claim rules are in `CLAUDE.md` and in section 0 of `docs/HANDOFF.md`.
 
 ## Iterations (UTC−5)
 
@@ -17,10 +17,13 @@ Each iteration ends deployed, with the gate green, captures committed and `docs/
 | I1b | done 07:22 | E02 flown by hand in Explorer, lunar module panel, dust, rain of light, sound, voice ids | ✓ 36 captures |
 | I1c | done 09:55 | **Finale in 3D:** telescope console on the real orbital image, laser photons, measurement, monologue. Voices for ARIADNE (E02 + finale). Explorer / Hands / Accessible on the Setup screen | AC-13 on the finale |
 | I2 | done 10:05 | **E16 Voyager 1:** content complete + DSN antenna set + "Pale Blue Dot" shot. **Prologue** restaged on the telescope console (no "Tune the station") | captures |
-| I3 | **now**–13:00 | **E08 in 3D:** planning station on Meridiani, real light delay. Thread route complete | **13:00 cut rule** |
-| I4 | 13:00–14:00 | Submission build: credits, README, AI disclosure, `docs/submission/`, accessibility pass on the Thread | **14:00 first submission** |
-| I5 | 14:00–17:00 | Orrery as the map (today's real positions) · the 13 files with a model or real image on stage (text by **15:00**) · Hands basics · Look Up only if the Thread passed the cut rule | **17:00 feature freeze** |
-| I6 | 17:00–22:30 | Fixes only: performance on real hardware, final captures, video support | **22:30 final submission** |
+| I3 | 14:50–16:40 | **E08 in 3D** (Fable): planning station on Meridiani, estimated light delay of today. Thread route complete. In parallel, if started: `docs/submission/` and the text of the 13 files (Astra), the diorama contract (Fable-diorama) | captures |
+| I4 | 16:40–17:00 | Voices for E08 and E16 · the Thread played from a clean start (F-03) · deploy checked | **17:00 feature freeze** |
+| I5 | 17:00–22:30 | Fixes only: lifecycle (F-02), performance on real hardware, final captures, video support. The 13 files leave draft only if the diorama contract landed before 17:00, or if the team moves the freeze for them | **22:30 final submission** |
+
+Re-based on Sun 14:50: the plan of this session waited for approval from 10:55 to 14:45, so the 13:00 cut rule and the
+14:00 first submission passed with no work done. **Frozen now (cut ladder 2 and 3): Hands, Look Up, Gaze, every T2
+operation, the Orrery** (the card map stays).
 
 **Cut ladder (decided in advance; it never lowers the quality of what is shown):**
 1. Already applied (B-D12): Knossos Station is a console set, not a walkable room. The prologue uses the telescope console.
@@ -33,17 +36,62 @@ Each iteration ends deployed, with the gate green, captures committed and `docs/
 **A beat is done when** it plays in Explorer and in Accessible (and in Hands once B-25 exists); has a reduced-motion version;
 has a text equivalent (the cue description in `cues.json`); passes the screenshot rule; and its capture is committed.
 
-## Two lanes (when both accounts work at once)
+## Lanes (since Sun 14:50; ownership by folder is in `CLAUDE.md`)
 
-Ownership is by folder (`CLAUDE.md`). **One account alone follows the iteration table from top to bottom and may edit everything.**
+Claim a task by marking it `[~] (Fable)`, `[~] (Fable-diorama)` or `[~] (Astra)` and pushing that line before coding.
+A claim is released only by its owner, in writing. The older "Lane A" and "Lane B" lists below are history plus backlog.
 
-| Lane | Takes, in this order |
-|---|---|
-| **B · Machines** (account B if it is active) | B-23, B-24, B-04, B-28, B-27, B-29, B-05, B-25 |
-| **A · Cosmos, station, shell** (account A) | A-23, A-28, A-20, A-25, A-13, A-02, A-21, A-26, A-11 |
+### Lane Fable · Thread and core
 
-How to know if the other account is active: `git log -3 --format='%h %ad %s' --date=format:%H:%M origin/main`.
-A push in the last 45 minutes means it is. Mark your task `[~] (A)` or `[~] (B)` and push that line before coding.
+- [~] (Fable) B-27 **E08 Opportunity from Earth** (details under Lane B, I3). **"E08 complete" means:** the winter plan made
+  by hand on the planning station in Explorer + targets in the scene in Accessible + the three named phases after sending
+  (command on its way, rover drives alone, telemetry on its way back) with a wait the player can skip + the storm +
+  reduced motion + captures of both modes. Without the hand-operated station it is "E08, guided version" and this stays open.
+- [ ] F-03 **The Thread from a clean start:** a `thread` route in `scripts/capture.ts` with empty storage: title → setup →
+  prologue → E02 → E08 → E16 → finale, clews earned by playing. Today `run()` preloads progress and clews, so no capture
+  proves the progression. Its duration is a technical minimum, not AC-01: the 12 minutes are timed by people (T-06).
+- [ ] F-02 **Lifecycle, two confirmed defects.** (a) `PuzzleRunner` awaits `act('fly')`; if the WebGL context is lost during
+  an operation the promise never settles and the screen has no way forward (breaks pillar 3). Fix: close the wait when the
+  stage stops being `ready`; a cancelled hand-played operation returns to the decision without counting an error and never
+  moves the state machine. Reproduce with `WEBGL_lose_context` from the capture script. (b) `SceneHost.dispose()` calls the
+  set's `dispose` (which removes its root) before it walks the scene to free geometries, materials and textures, so nothing
+  is freed. Fix: walk first. Reproduce by mounting and leaving sets twenty times. Recapture E02 and E16 afterwards.
+- [ ] B-04b Voices for E16 and E08: `npx tsx scripts/gen-voices.ts e16-voyager1 e08-opportunity`, then `npm run content`.
+- [ ] A-13 Accessibility pass on the Thread (see Lane A).
+
+### Lane Fable · diorama (open: a second Fable session, or this one after E08)
+
+- [ ] F-01 **The diorama contract: a new file is one YAML and one manifest row, with no engine change.**
+  1. `SetFactory` becomes `(host, context?)`. `SetContext = { id, model?, images, options }`: the episode id, the hero model
+     declared in YAML (`set.model` → `models[...]`), its images, and free presentation options (`set.options`). `Set3D` takes
+     a `context` prop from `CinemaEpisode` and `ScenePlayer`. The four existing sets ignore it.
+  2. `SetRef` in `src/content/schema.ts` gains `alt` (one sentence that describes the hero model or image: the text
+     equivalent, AX-32) and `options`. Record the change in `docs/DECISIONS.md`.
+  3. `src/scenes/diorama/`: the official model on a stand, lit, turning slowly, with drag to look around; or, with no model,
+     the real NASA image as an archive plate in the scene. Cues for the seven beats.
+  4. An operation without a puzzle plays its explainer **as captions, one step at a time, with camera moves**, not as a list
+     (`Explainer` in `src/episode/CinemaEpisode.tsx`), so it passes the screenshot rule.
+  5. `scripts/prep-assets.ts` driven by `assets-src/manifest.yaml`: convert when the raw file exists, keep the committed
+     derived file when it does not, fail when both are missing. `scripts/build-content.ts` fails when a model or image named
+     in content is not in `public/assets/`.
+  6. A generic capture route by episode id, so a new file never needs an edit of `scripts/capture.ts`.
+  7. Prove it on **two different files** before the rest: E11 Ingenuity (official model `Ingenuity Mars Helicopter`) and one
+     file that only has an image. Then tell Astra, in "Requests" of `docs/HANDOFF.md`, that `set:` can be added.
+
+### Lane Astra · content
+
+- [ ] X-01 `docs/submission/` (= B-07): `summary.md`, `description.md`, `ai-disclosure.md`, `nasa-data.md`, `references.md`,
+  `video-script.md` (30 seconds maximum). Facts and sources come from `content/`; say what is built and what is not.
+- [ ] X-02 **Text and facts of the 13 files** (= the text half of B-05), in this order: E11, E09, E07, E14, E12, E01, E03, E04,
+  E05, E06, E10, E13, E15. Copy the shape of `e16-voyager1.yaml` without `set`, `cues`, `console` and `puzzle`: objectives,
+  facts (each one opened and noted), arrival, `operation.explainer` (3 to 5 steps of how it really worked), discovery,
+  silence, statusNow, epigraph only from a poem published before 1929. **Keep `draft: true`.**
+- [ ] X-03 For each of the 13 files, find the official model in `https://github.com/nasa/NASA-3D-Resources` or one NASA
+  image with its credit line and page. Write the candidates as YAML comments at the top of the episode file. Add the
+  manifest row and the file only when F-01 has landed.
+- [ ] X-04 `scripts/check-links.ts` (= B-08): report every source URL in `content/` that does not answer 200.
+- [ ] X-05 After F-01: add `set: { scene: diorama, ... }` to each file, remove `draft: true`, run the generic capture, look
+  at the pictures, commit them.
 
 ## Lane B · Machines, consoles, content, assets
 
