@@ -74,6 +74,7 @@ export function Title() {
 const PLAYS: PlayMode[] = ['explorer', 'hands', 'accessible'];
 const PLAY_READY: Record<PlayMode, boolean> = { explorer: true, hands: false, accessible: true };
 const INPUTS: InputMode[] = ['pointer', 'keyboard', 'switch', 'head'];
+const INPUT_READY: Record<InputMode, boolean> = { pointer: true, keyboard: true, switch: true, head: false };
 const SCALES = [1, 1.25, 1.5, 2];
 /** Seconds per target in one-button scanning (AX-14: 0.8 to 3 s). Radios, so the choice never needs a drag. */
 const SPEEDS: [string, number][] = [
@@ -163,7 +164,8 @@ export function Setup() {
       <fieldset>
         <legend>{t('setup.input')}</legend>
         <div className="options">
-          {INPUTS.map((m) => (
+          {/* Head movement is not ready: hidden here, kept in the code. */}
+          {INPUTS.filter((m) => INPUT_READY[m]).map((m) => (
             <label key={m} className={`option${m === 'head' ? ' option--soon' : ''}`}>
               <input type="radio" name="input" value={m} checked={settings.input === m} disabled={m === 'head'} onChange={() => set({ input: m })} />
               <span className="option__label">
