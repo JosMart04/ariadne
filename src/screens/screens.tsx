@@ -135,7 +135,8 @@ export function Setup() {
       <fieldset>
         <legend>{t('play.title')}</legend>
         <div className="options">
-          {PLAYS.map((m) => (
+          {/* A way to play that is not ready (Hands, until src/hands exists) is not offered: hidden here, kept in the code. */}
+          {PLAYS.filter((m) => PLAY_READY[m]).map((m) => (
             <label key={m} className={`option option--play${PLAY_READY[m] ? '' : ' option--soon'}`}>
               <input
                 type="radio"
