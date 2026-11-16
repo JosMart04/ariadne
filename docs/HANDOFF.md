@@ -8,7 +8,40 @@ done / in progress / next steps / traps.
 **Deadlines (UTC−5): feature freeze 17:00 · final submission 22:30.** The 13:00 cut rule, the 14:00 first submission and
 the 15:00 text freeze passed while no session was running (see section 0).
 
-## 000. Result of the integration (written Sun Nov 15, 21:55 by lane a; the newest section)
+## 0000. After the integration: AR, phone layout, Settings, voices (written Sun Nov 15, 22:40 by lane a; the newest section)
+
+The team moved the submission to **23:15** and reported, with pictures of a 360 px phone: AR that finds the floor badly,
+a placed model that drifts, a camera view that "opens and closes at once" on some phones, a crowded phone layout, and
+Settings that could not be closed without choosing. This build answers all of it. **None of the AR changes has been
+tried on a phone: they come from reading the viewer's code. The team must repeat the phone test.**
+
+| What | Where | How it was checked |
+|---|---|---|
+| **Settings can be closed.** A Close key at the top and at the bottom, and Escape. It returns to where the player was (an episode, the map, the title), not always to the map. "Start" keeps its text: the Thread check presses it | `cameFrom()` in `src/engine/router.ts`; `Setup` in `src/screens/screens.tsx` | In the browser: Close from the map returns to the map; Escape after opening Settings from a file returns to that file |
+| **Phone layout (up to 46rem).** The station bar is one row instead of three. `App.tsx` publishes its real height as `--bar`, and the map title and the Settings panel start under it. On the map the solar system keeps the upper part of the screen and the card and keys have the lower part: no marker sits under the words. The tools row no longer runs off the right edge | `src/App.tsx`, `src/styles/app.css`, `src/screens/cosmos.css` | Browser at 360×740 and 320×640: no horizontal scroll, 0 markers under the card |
+| **AR gallery on a phone:** the size choice and "View in your space" come before the reading; the hint wraps | `src/screens/ar/ar.css` | Browser at 360×740 |
+| **AR, the phone's own viewer first.** `ar-modes` was `webxr scene-viewer quick-look`: Chrome on Android drew AR inside the page, where the viewer does its own placing and tracking in JavaScript. Now Google's Scene Viewer is asked first; it finds planes and anchors far better | `ArGallery.tsx` | `npm run capture -- a3m map`: as an Android phone the viewer can start AR and the button is live |
+| **AR, "opens and closes".** When Scene Viewer cannot open, model-viewer writes `#model-viewer-no-ar-fallback` and steps back. Our router took that for an unknown address and showed the map for a moment; the gallery then started again from nothing. Now the gallery stays, keeps the machine and the size, and says "press again to try AR inside the browser" | `inGallery()` in `screens.tsx`, `BLOCKED` in `ArGallery.tsx` | Simulated in the browser by writing that address: gallery, machine and size kept, message shown |
+| **AR, a second viewer one press away.** After one try, "Try AR inside the browser instead" (or the reverse) swaps the order; the choice is remembered on the device (`ariadne-ar-via`) | `ArGallery.tsx` | Browser: the attribute changes |
+| **AR, true size always:** `ar-scale="fixed"` for the miniature too. A line of help before the camera opens (`ar.room.tips`). Coming back from the phone's viewer is noticed (`visibilitychange`) | `ArGallery.tsx`, `content/ui/shell.yaml` | By reading; needs a phone |
+| **B-54:** "See {name} in your space" on the Field File of E08 and E11 (the last beat, where leaving loses nothing). Returning to the same beat is still not solved | `FieldFile` in `src/episode/CinemaEpisode.tsx` | `npm run capture -- a3f e11` |
+| **A-34, voices:** 178 files generated for the thirteen files (280 in all, 14 MB). The browser no longer reads them | `public/assets/vo/`, `assets-src/vo-cache.json` | The gate; `a3f e11` with no console error |
+
+Gate green (310 tests). `npm run capture -- a3 thread`: 12 checks pass. `npm run capture -- a3m map`: every map and AR check passes.
+
+**Out-of-lane edits, at the team's request:** `src/screens/screens.tsx`, `src/screens/cosmos.css`, `src/screens/ar/ArGallery.tsx`,
+`src/screens/ar/ar.css`, `content/ui/shell.yaml` (lane b's, relayed in section 00). `npm run lane -- a` names them.
+
+**The phone test to repeat (B-56), five minutes:** open the gallery in Chrome on Android. (1) Miniature on a table: does
+it settle and stay when you walk? (2) Real size on the floor: same. (3) If it drifts or closes, press "Try AR inside the
+browser instead" and compare. (4) Which viewer opened: Google's (a white screen with a hand, then the room) or the
+page's own? Write the answers in section 6 of `src/screens/ar/README.md`.
+
+**Still open:** the result of that test; an iPhone (never tried; USDZ files if it fails); B-55 the playable E11;
+B-57 and A-32 the postcard; A-31 the Voyager coda; A-33 the accessibility pass; astra's request (the Field File panel
+without WebGL); phone layout inside the episodes was not reviewed in this pass.
+
+## 000. Result of the integration (written Sun Nov 15, 21:55 by lane a; the second newest section)
 
 **Verdict: submit what is deployed.** The code on the site is commit `d9643f0` (21:26). The full regression found nothing
 that stops play, so lane a pushed no code after it: only this report, the captures and two submission texts.

@@ -20,13 +20,32 @@ import './ar.css';
 /** The 3D picture: still arriving, on screen, or not possible here. */
 type Picture = 'loading' | 'ready' | 'failed';
 /** What is known about placing the machine in the room. */
-type Room = 'unknown' | 'can' | 'cannot' | 'started' | 'placed' | 'back' | 'failed';
+type Room = 'unknown' | 'can' | 'cannot' | 'started' | 'placed' | 'back' | 'failed' | 'blocked';
+/**
+ * Which AR viewer is asked first on Android. `phone` is Google's own viewer (Scene Viewer): it finds the floor and holds
+ * the model still far better than AR drawn by the page. `browser` is AR inside Chrome (WebXR), for phones without it.
+ */
+type Via = 'phone' | 'browser';
+const VIA_KEY = 'ariadne-ar-via';
+const savedVia = (): Via => {
+  try {
+    return localStorage.getItem(VIA_KEY) === 'browser' ? 'browser' : 'phone';
+  } catch {
+    return 'phone';
+  }
+};
+/**
+ * The viewer writes this address for a moment when the phone's own AR viewer could not open, then steps back.
+ * The gallery must stay on screen through it, with the same machine, and say what happened.
+ */
+const BLOCKED = '#model-viewer-no-ar-fallback';
+let lastPicked: string | undefined;
 
 const subscribe = (cb: () => void) => {
   addEventListener('hashchange', cb);
   return () => removeEventListener('hashchange', cb);
 };
-const picked = () => /^#ar-([a-z0-9]+)/i.exec(location.hash)?.[1]?.toLowerCase();
+const picked = () => (location.hash === BLOCKED ? lastPicked : (lastPicked = /^#ar-([a-z0-9]+)/i.exec(location.hash)?.[1]?.toLowerCase()));
 const fix = (v: number, digits = 2) => v.toFixed(digits);
 /** Floor a machine needs at real size: its footprint and room to walk round it, to the next half metre. */
 const floor = (m: number) => Math.ceil((m + 0.6) * 2) / 2;
@@ -38,6 +57,7 @@ export default function ArGallery() {
   const [picture, setPicture] = useState<Picture>('loading');
   const [room, setRoom] = useState<Room>('unknown');
   const [answer, setAnswer] = useState(false);
+  const [via, setVia] = useState<Via>(savedVia);
   const viewer = useRef<ModelViewerElement>(null);
   const reduceMotion = useGame((s) => s.settings.reduceMotion);
   const head = useFocusOn<HTMLHeadingElement>('ar');
@@ -97,6 +117,32 @@ export default function ArGallery() {
     };
   }, [engine, machine.id, scale]);
 
+  useEffect(() => {
+    // The phone's own viewer did not open: say so, and the next press tries AR inside the browser.
+    const onHash = () => {
+      if (location.hash === BLOCKED) setRoom('blocked');
+    };
+    // The phone's own viewer is another app: the page learns that the player is back when it is on screen again.
+    const onShow = () => {
+      if (document.visibilityState === 'visible') setRoom((was) => (was === 'started' ? 'back' : was));
+    };
+    addEventListener('hashchange', onHash);
+    document.addEventListener('visibilitychange', onShow);
+    return () => {
+      removeEventListener('hashchange', onHash);
+      document.removeEventListener('visibilitychange', onShow);
+    };
+  }, []);
+
+  const other = () => {
+    const next: Via = via === 'phone' ? 'browser' : 'phone';
+    setVia(next);
+    try {
+      localStorage.setItem(VIA_KEY, next);
+    } catch {
+      // A browser that refuses storage still gets the choice for this visit.
+    }
+  };
   const place = () => {
     const el = viewer.current;
     if (!el?.canActivateAR) return setRoom('cannot');
@@ -160,9 +206,10 @@ export default function ArGallery() {
               loading="eager"
               // A real `true`: React hands this to the element as a property, and an empty string there means "off".
               ar={true}
-              ar-modes="webxr scene-viewer quick-look"
+              ar-modes={via === 'phone' ? 'scene-viewer webxr quick-look' : 'webxr scene-viewer quick-look'}
               ar-placement="floor"
-              ar-scale={scale === 'real' ? 'fixed' : 'auto'}
+              // Both files are true to scale (1:1 and the stated miniature): the room never resizes them.
+              ar-scale="fixed"
               {...(reduceMotion ? {} : { 'auto-rotate': '', 'rotation-per-second': '10deg', 'auto-rotate-delay': '2500' })}
             >
               {/* The gallery has its own button for the room; the viewer's built-in one stays out of the picture. */}
@@ -220,8 +267,16 @@ export default function ArGallery() {
             </Btn>
           </div>
           <p className="arx__room" role="status">
-            {failed ? '' : room === 'cannot' ? t('ar.room.cannot') : room === 'started' || room === 'placed' ? t('ar.room.started') : room === 'back' ? t('ar.room.back') : room === 'failed' ? t('ar.room.failed') : untried ? t('ar.room.untried') : ''}
+            {failed ? '' : room === 'cannot' ? t('ar.room.cannot') : room === 'blocked' ? t('ar.room.blocked') : room === 'started' || room === 'placed' ? t('ar.room.started') : room === 'back' ? t('ar.room.back') : room === 'failed' ? t('ar.room.failed') : untried ? t('ar.room.untried') : room === 'can' ? t('ar.room.tips') : ''}
           </p>
+          {!failed && (room === 'back' || room === 'failed' || room === 'blocked' || room === 'started' || room === 'placed') && (
+            <div className="arx__other">
+              <p className="arx__help">{t('ar.other.why')}</p>
+              <Btn kind="ghost" onClick={other}>
+                {via === 'phone' ? t('ar.other.browser') : t('ar.other.phone')}
+              </Btn>
+            </div>
+          )}
 
           <div className="arx__task">
             <p className="arx__eyebrow">{t('ar.task')}</p>

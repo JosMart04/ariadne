@@ -84,6 +84,12 @@ ar.room.started: Point the phone at the floor and move it slowly. Then come back
 ar.room.back: Back from your room. Change the size and place it again whenever you like.
 ar.room.failed: The camera view did not start. You can still turn the machine here.
 ar.room.untried: "New: the team has not yet tried this on a real phone."
+ar.room.tips: "Before you start: use good light, and a floor or a table with some pattern. Move the phone slowly until the machine settles."
+ar.room.blocked: "The AR viewer of this phone did not open. Press the button again to try AR inside the browser."
+ar.other.why: "Did the machine drift, or did the camera view close? This phone has a second AR viewer."
+ar.other.browser: Try AR inside the browser instead
+ar.other.phone: Try the AR viewer of the phone instead
+ar.entry.file: "See {name} in your space"
 ar.task: Look for
 ar.showme: Show me
 ar.memory: "Open the memory of {name}"

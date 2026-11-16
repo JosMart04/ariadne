@@ -83,6 +83,23 @@ export function App() {
     scrollTo(0, 0);
   }, [route.name, route.name === 'episode' ? route.id : '']);
 
+  // The station bar wraps on a narrow screen or with large text: screens that sit under it read its real height (--bar).
+  useEffect(() => {
+    const shell = document.querySelector<HTMLElement>('header.shell');
+    if (!shell || typeof ResizeObserver === 'undefined') return;
+    const publish = () => document.documentElement.style.setProperty('--bar', `${shell.offsetHeight}px`);
+    const watch = new ResizeObserver(publish);
+    watch.observe(shell);
+    publish();
+    // The bar can wrap after the fonts arrive or the phone is turned; a throttled page may deliver the observer late.
+    addEventListener('resize', publish);
+    void document.fonts?.ready.then(publish);
+    return () => {
+      watch.disconnect();
+      removeEventListener('resize', publish);
+    };
+  }, []);
+
   const ep = route.name === 'episode' ? episodeById(route.id) : undefined;
   /** A 3D set fills the screen and the station bar floats over it. */
   const cinema = !!ep?.set || (route.name === 'finale' && !!content.finale.set) || (route.name === 'prologue' && !!content.prologue.set);

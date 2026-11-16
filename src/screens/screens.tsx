@@ -6,7 +6,7 @@ import { ACTS } from '../content/schema';
 import { ScenePlayer } from '../episode/ScenePlayer';
 import { useStage } from '../episode/setStore';
 import { announce } from '../engine/announce';
-import { go } from '../engine/router';
+import { cameFrom, go, parseRoute } from '../engine/router';
 import { finaleOpen, nextKeyEpisode, useGame, type InputMode, type PlayMode } from '../engine/store';
 import { Badge, Btn, useFocusOn } from '../ui/parts';
 import { Cosmos, mapDate, readouts } from './Cosmos';
@@ -20,7 +20,8 @@ const onHash = (cb: () => void) => {
   return () => removeEventListener('hashchange', cb);
 };
 /** The router sends every address it does not know to the map; `#ar` is one of them, and the map hands it to the gallery. */
-const inGallery = () => /^#ar\b/i.test(location.hash);
+/** `#model-viewer-no-ar-fallback` is written by the AR viewer for a moment when a phone's own viewer cannot open: the gallery must stay. */
+const inGallery = () => /^#(ar\b|model-viewer-no-ar-fallback)/i.test(location.hash);
 
 // ---------------------------------------------------------------- Title
 
@@ -101,14 +102,35 @@ export function Setup() {
     set({ setupDone: true });
     go(progress.prologueDone ? 'map' : 'prologue');
   };
+  /** Settings can always be left without choosing anything: back to where the player was. Every change is already saved. */
+  const close = () => {
+    const from = cameFrom();
+    go(from !== null && parseRoute(`#${from}`).name !== 'setup' ? from : progress.prologueDone ? 'map' : '');
+  };
+  const scanning = settings.play === 'accessible' && settings.input === 'switch';
+  useEffect(() => {
+    // In one-button play Escape already has a job: it returns to mouse and keyboard.
+    if (scanning) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !document.querySelector('dialog[open]')) close();
+    };
+    addEventListener('keydown', onKey);
+    return () => removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scanning, progress.prologueDone]);
   const when = useMemo(mapDate, []);
   return (
     <Cosmos cue="title" when={when} thread="whole" className="cosmos--panel">
     <section className="setup" aria-labelledby="setup-title">
+      <button type="button" className="chrome setup__close" data-scan="ghost" onClick={close}>
+        <span aria-hidden="true">✕</span> {t('setup.close')}
+      </button>
       <h1 id="setup-title" ref={head} tabIndex={-1}>
         {t('setup.title')}
       </h1>
-      <p className="note">{t('setup.intro')}</p>
+      <p className="note">
+        {t('setup.intro')} {t('setup.saved')}
+      </p>
 
       <fieldset>
         <legend>{t('play.title')}</legend>
@@ -195,6 +217,9 @@ export function Setup() {
 
       <div className="actions">
         <Btn onClick={start}>{t('setup.start')}</Btn>
+        <Btn kind="ghost" onClick={close}>
+          {t('setup.close')}
+        </Btn>
         {!confirmReset ? (
           <Btn kind="ghost" onClick={() => setConfirmReset(true)}>
             {t('setup.reset')}

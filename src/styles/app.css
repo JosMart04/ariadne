@@ -1015,10 +1015,54 @@ div:focus > .clew {
   box-shadow: 0 0 0 0.6rem rgba(255, 182, 72, 0.6) !important;
 }
 
-@media (max-width: 30rem) {
+/* A phone: the station bar is one row. The name and the clock stack on the left, the three keys sit on the right.
+   If the keys do not fit (large text), they wrap inside their own column: nothing overlaps, and --bar follows. */
+@media (max-width: 46rem) {
+  .shell {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'brand nav'
+      'dawn nav';
+    align-items: center;
+    gap: 0 0.5rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.72rem;
+  }
+  .shell__brand {
+    grid-area: brand;
+    min-height: 0;
+    padding-top: 0.2rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+  }
   .shell__dawn {
-    order: 3;
-    width: 100%;
+    grid-area: dawn;
+    margin: 0;
+    padding-bottom: 0.2rem;
+    font-size: 0.66rem;
+    white-space: nowrap;
+  }
+  .shell__nav {
+    grid-area: nav;
+    justify-content: flex-end;
+    gap: 0.25rem;
+  }
+  .shell .chrome {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0 0.45rem;
+  }
+}
+/* The narrowest phones (320 px): the three keys still share one row. */
+@media (max-width: 22rem) {
+  .shell {
+    gap: 0 0.3rem;
+    font-size: 0.64rem;
+  }
+  .shell .chrome {
+    padding: 0 0.25rem;
   }
 }
 

@@ -570,21 +570,97 @@
   display: none;
 }
 
+/* The way out of Settings, always in sight at the top of the panel. */
+.setup__close {
+  float: right;
+  margin: 0 0 0.6rem 1rem;
+  background: rgba(0, 0, 0, 0.45);
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+}
+
+/* A phone held upright: one compact card, one wide key, a row of small keys, the tools along the bottom edge. */
 @media (max-width: 46rem) {
   .omap__labels,
   .omap__look,
   .omap__today,
+  .omap__title,
+  .omap__locked,
   .ctitle__today {
     display: none;
+  }
+  /* The station bar may be taller than on a wide screen: every title starts under it. */
+  .omap__head {
+    top: calc(var(--bar, 3.6rem) + 0.2rem);
+  }
+  .omap__head h1 {
+    font-size: 1.05rem;
+  }
+  .omap__thread {
+    margin-top: 0.1rem;
+  }
+  .cosmos--panel > section {
+    padding-top: calc(var(--bar, 4rem) + 1rem);
+  }
+  /* The solar system keeps the upper part of the screen; the card and the keys have the lower part to themselves, so no
+     marker ever sits under the words. Markers are placed inside the picture, so they follow it. */
+  .cosmos--map > .set3d,
+  .cosmos--far > .set3d {
+    bottom: 16.5rem;
+  }
+  .cosmos--map::after,
+  .cosmos--far::after {
+    background: linear-gradient(to top, #02030a 0, #02030a 16.5rem, rgba(2, 3, 10, 0) 21rem);
   }
   .omap__lower {
     max-width: none;
     right: var(--pad);
-    bottom: 5.8rem;
+    bottom: 4.2rem;
+    gap: 0.45rem;
+  }
+  .omap__name {
+    font-size: 1.35rem;
+  }
+  .omap__meta {
+    padding-top: 0.1rem;
+    font-size: 0.78rem;
+  }
+  .omap__lower .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+  .omap__lower .actions > .btn {
+    min-height: 2.75rem;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.82rem;
+  }
+  .omap__lower .actions > .btn:first-child,
+  .omap__lower .actions > .btn:only-of-type,
+  .omap__lower .actions > .confirm {
+    grid-column: 1 / -1;
   }
   .omap__tools {
     left: var(--pad);
-    right: auto;
+    right: var(--pad);
+    bottom: 0.8rem;
+    gap: 0.3rem;
+  }
+  .omap__tools .tool {
+    flex: 0 0 2.75rem;
+    min-width: 0;
+    padding: 0;
+  }
+  .omap__tools .tool--text {
+    flex: 1 1 0;
+    padding: 0 0.25rem;
+    font-size: 0.62rem;
+    line-height: 1.15;
+    letter-spacing: 0.04em;
+  }
+  .omap__trip {
+    right: var(--pad);
+    bottom: 1.2rem;
   }
 }
 

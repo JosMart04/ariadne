@@ -196,6 +196,15 @@
   font-size: 0.9rem;
   color: var(--dim);
 }
+.arx__other {
+  margin: 0.2rem 0 0.4rem;
+  display: grid;
+  gap: 0.4rem;
+  justify-items: start;
+}
+.arx__other > p {
+  margin: 0;
+}
 .arx__task {
   margin: 0.8rem 0;
   padding: 0.7rem 0 0;
@@ -238,5 +247,27 @@
   }
   .arx__intro {
     display: none;
+  }
+  .arx__hint {
+    width: 92%;
+    white-space: normal;
+    text-align: center;
+  }
+  /* On a phone the size choice and "View in your space" come first; the reading comes after them. */
+  .arx__panel {
+    display: flex;
+    flex-direction: column;
+  }
+  .arx__size {
+    order: 1;
+  }
+  .arx__task {
+    order: 2;
+  }
+  .arx__out {
+    order: 3;
+  }
+  .arx__name {
+    font-size: 1.4rem;
   }
 }

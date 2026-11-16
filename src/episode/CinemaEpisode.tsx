@@ -23,6 +23,7 @@ import { RainOfLight } from './RainOfLight';
 import { Set3D, SetLabels } from './Set3D';
 import { showCue, useStage } from './setStore';
 import type { SetContext } from '../three/host';
+import { CATALOG } from '../screens/ar/catalog';
 
 type BeatId = 'passage' | 'arrival' | 'operation' | 'discovery' | 'silence' | 'clew' | 'status' | 'file';
 
@@ -453,8 +454,20 @@ function FieldFile({ ep }: { ep: EpisodeC }) {
   const region = useFocusOn<HTMLDivElement>(ep.id);
   const model = ep.set?.model ? ep.models[ep.set.model] : undefined;
   const image = ep.set?.image ? ep.images[ep.set.image] : undefined;
+  /** A machine of the AR gallery can be set down in the player's room from here: the last beat, where leaving loses nothing. */
+  const ar = CATALOG.find((m) => m.episode === ep.id);
   return (
-    <Frame onNext={() => go('map')} nextLabel={t('ep.toMap')}>
+    <Frame
+      onNext={() => go('map')}
+      nextLabel={t('ep.toMap')}
+      extra={
+        ar && (
+          <Btn kind="ghost" onClick={() => go(`ar-${ar.id}`)}>
+            {t('ar.entry.file', { name: ep.name })}
+          </Btn>
+        )
+      }
+    >
       <div className="sheet" ref={region} tabIndex={-1}>
         <h2 className="sheet__title">
           {t('beat.file')}: {ep.name}

@@ -50,7 +50,7 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 - [ ] A-32 **Postcard** (was A-11): three fragments, three options each, drawn on a canvas, saved as a PNG. `src/extras/postcard/`.
 - [ ] A-33 **Accessibility pass on the Thread** (was A-13, A-02): keyboard only, one button, 200 % text, high contrast, screen-reader
   labels of the planning station and the diorama. Fix what fails; list what a person must still try.
-- [ ] A-34 (**waiting for the team: 178 lines, 15,931 characters**; counted Sun 21:40, nothing generated) **20:00:** voice files for every line that changed or is new (`npx tsx scripts/gen-voices.ts --dry-run` first), then `npm run content`.
+- [x] A-34 (done Sun 22:28 after the team said to go on: 178 files generated, 280 in all) **20:00:** voice files for every line that changed or is new (`npx tsx scripts/gen-voices.ts --dry-run` first), then `npm run content`.
 - [x] A-35 (Sun 21:54, all green, no code pushed after it: `docs/HANDOFF.md`, section 000) **20:30:** the full regression: `npm run capture -- final`, `... final thread`, `... final lifecycle`, `... final reduce`,
   every file of lane astra, the public URL. Write the result in `docs/HANDOFF.md`.
 
@@ -83,9 +83,9 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 - [x] (Sun 20:45; `ArGallery.tsx`, `catalog.ts`; checked in a real Chrome by `npm run capture -- b4 map`) B-51 One shared viewer (`src/screens/ar/`): miniature and real size, 3D inspection when there is no AR, an observation task with "Show me", every way out when something fails.
 - [x] (Sun 20:45; live at `…/ariadne/?ar#ar`; the entries show only with `?ar`) B-52 The gallery and its entries: a direct link (`#ar`), the map and the title. Hidden behind `?ar` until B-53 passes.
 - [x] (Sun 21:10, Android only: both machines placed, miniature and real size; first try failed on three phones because of a bug of the page, fixed in `1ec2281`. **Open: an iPhone, a tape measure, the way back.**) B-53 (team, 5 minutes, **needs a phone**) Open the gallery on an Android phone and on an iPhone, place both machines, check the real size against a tape measure, come back to the game. Steps and result table in `src/screens/ar/README.md`.
-- [ ] B-56 (lane a, needs a phone) From the team's phone test: the miniature does not stay fixed on the table and keeps its size when the player walks closer (real size behaves). What was seen and four things to try: `src/screens/ar/README.md`, section 6.
+- [~] B-56 (lane a; code changed Sun 22:40, see `docs/HANDOFF.md` section 0000; **waiting for the team's phone test**) From the team's phone test: the miniature does not stay fixed on the table and keeps its size when the player walks closer (real size behaves). What was seen and four things to try: `src/screens/ar/README.md`, section 6.
 - [ ] B-57 (lane a, with A-32, only if cheap) A postcard of the machine to share, with a delay, framed with the name ARIADNE. What a web page can and cannot photograph: same section.
-- [ ] B-54 (lane a) "View in your space" inside an episode's menu, with the scene paused and the place in the story kept on return. Touches `src/episode/`.
+- [x] B-54 (lane a, Sun 22:40: an entry on the Field File of E08 and E11; returning to the same beat is not solved) "View in your space" inside an episode's menu, with the scene paused and the place in the story kept on return. Touches `src/episode/`.
 - [ ] B-55 (lane a + lane astra) The playable story of E11: script and contract proposed by lane b in `src/screens/ar/README.md`; the puzzle, the simulation and the set are not started.
 - [x] (Sun 20:35) B-48 "Follow the thread" from the Orrery in Explorer play, never run end to end before: now part of `npm run capture -- <name> map` (it flies to the Moon and opens E02).
 - [ ] B-47 Deferred, needs a phone to judge: frame the Orrery for upright screens; pinch to zoom.

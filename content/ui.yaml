@@ -74,6 +74,8 @@ setup.story: Story mode
 setup.story.help: Hints from the start, and a "Show me" button on every operation.
 setup.contrast: High contrast
 setup.start: Start
+setup.close: Close
+setup.saved: Every change is saved at once.
 setup.reset: Reset progress
 setup.reset.confirm: Erase all restored memories on this device?
 setup.reset.done: Progress erased.
