@@ -68,9 +68,18 @@ export default function ArGallery() {
   useEffect(() => {
     const el = viewer.current;
     if (!el) return;
+    // The viewer may still be asking the phone what it can do when the model arrives: ask again for a few seconds
+    // before telling the player that this device cannot place the machine.
+    let asking = 0;
     const onLoad = () => {
       setPicture('ready');
-      setRoom(el.canActivateAR ? 'can' : 'cannot');
+      let tries = 0;
+      const ask = () => {
+        if (el.canActivateAR) return setRoom('can');
+        if (++tries > 12) return setRoom('cannot');
+        asking = window.setTimeout(ask, 300);
+      };
+      ask();
     };
     const onError = () => setPicture('failed');
     const onRoom = (e: Event) => {
@@ -81,6 +90,7 @@ export default function ArGallery() {
     el.addEventListener('error', onError);
     el.addEventListener('ar-status', onRoom);
     return () => {
+      clearTimeout(asking);
       el.removeEventListener('load', onLoad);
       el.removeEventListener('error', onError);
       el.removeEventListener('ar-status', onRoom);
@@ -145,10 +155,11 @@ export default function ArGallery() {
               interaction-prompt="none"
               shadow-intensity="1"
               shadow-softness="0.9"
-              exposure="1.15"
+              exposure={1.15}
               camera-orbit="35deg 68deg auto"
               loading="eager"
-              ar=""
+              // A real `true`: React hands this to the element as a property, and an empty string there means "off".
+              ar={true}
               ar-modes="webxr scene-viewer quick-look"
               ar-placement="floor"
               ar-scale={scale === 'real' ? 'fixed' : 'auto'}

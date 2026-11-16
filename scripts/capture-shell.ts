@@ -150,6 +150,8 @@ async function gallery(page: Page, kit: Kit) {
   await kit.sleep(600);
   const real = await size();
   expect(Math.abs(Math.max(mini[0], mini[2]) / Math.max(real[0], real[2]) - 0.25) < 0.01, `the miniature of Ingenuity is a quarter of its real size (${real.map((v) => v.toFixed(2)).join(' x ')} m)`);
+  // The screen asks the viewer for a few seconds before it says no.
+  await page.waitForFunction("document.querySelector('.arx__room').textContent.includes('cannot place')", { timeout: 10_000 }).catch(() => undefined);
   expect(((await page.evaluate(`document.querySelector('.arx__room').textContent`)) as string).includes('cannot place'), 'a desktop is told it cannot place the machine, and can still turn it');
   await kit.press(page, 'Show me');
   await shot('ingenuity-real-size-show-me', 2200);
@@ -167,6 +169,20 @@ async function gallery(page: Page, kit: Kit) {
   await page.reload({ waitUntil: 'networkidle2' });
   await loaded();
   await shot('phone-upright', 2200);
+
+  // The same window, now saying it is Chrome on an Android phone: the viewer must offer the room, and the button must
+  // be live. (Added after three real phones showed it greyed out: the AR switch reached the viewer as "off".)
+  const desktop = await page.browser().userAgent();
+  await page.setUserAgent('Mozilla/5.0 (Linux; Android 13; SM-A307G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36');
+  await page.reload({ waitUntil: 'networkidle2' });
+  await loaded();
+  await page.waitForFunction("document.querySelector('model-viewer').canActivateAR === true", { timeout: 8000 }).catch(() => undefined);
+  const android = (await page.evaluate(
+    `(() => { const v = document.querySelector('model-viewer'); const b = [...document.querySelectorAll('.arx__panel button')].find((x) => x.textContent.includes('View in your space')); return { can: v.canActivateAR, live: !b.disabled }; })()`,
+  )) as { can: boolean; live: boolean };
+  expect(android.can && android.live, 'on an Android phone the viewer can start AR and "View in your space" is live');
+  await shot('android-phone-button-live', 600);
+  await page.setUserAgent(desktop);
   await page.setViewport({ width: 1280, height: 720, deviceScaleFactor: 1 });
 
   // The model is missing: the words still tell what the machine is. On a page of its own, because the failed download

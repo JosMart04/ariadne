@@ -86,7 +86,15 @@ Open `https://josmart04.github.io/ariadne/?ar#ar` on the phone, in Chrome (Andro
 
 | Phone, system, browser | 1 | 2 | 3 (measured) | 4 | 5 | Notes |
 |---|---|---|---|---|---|---|
+| Xiaomi Redmi Note 11 Pro+, Samsung A30s, Moto g06 (Sun 20:50, build `bb45023`) | yes | **no** | | | | "View in your space" was greyed out on all three: "This device cannot place it in your room". **Cause: a bug in the page, not the phones** (see below). Fixed in the next build; to be tried again |
 | | | | | | | |
+
+**What that first test found (Sun 20:55).** The viewer was given `ar=""`. React 19 hands a prop to a custom element as a
+property when the element has one of that name, and `ar` is a boolean property: the empty string switched AR off on every
+device. A desktop cannot start AR either way, so the desktop check could not see it. Now `ar={true}`, the screen asks the
+viewer for a few seconds before saying no, and `npm run capture -- <name> map` reloads the gallery as Chrome on an
+Android phone and fails if the viewer cannot start AR or the button is not live. That check proves the button, **not**
+the camera view: only a phone proves that.
 
 When a row passes, set `tried` for that platform in `catalog.ts` (the "not yet tried" line goes away) and decide on `OPEN_TO_ALL`.
 
