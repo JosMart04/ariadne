@@ -42,7 +42,7 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 
 ### Lane a · machine A (Fable): integration and the ending
 
-- [ ] A-30 **Integration duty, the whole phase.** At every commit read "Requests" in `docs/HANDOFF.md`; answer within 15 minutes.
+- [x] A-30 (Sun 21:55, once, for all 28 commits at the same time: `docs/HANDOFF.md`, section 000) **Integration duty, the whole phase.** At every commit read "Requests" in `docs/HANDOFF.md`; answer within 15 minutes.
   When lane astra pushes a file: `npm run capture -- a<n> e<NN>`, look at every picture, fix the engine or write back.
   The first file out of draft (E11) is the proof that Discovery and Silence play on the diorama: check it before anything else.
 - [ ] A-31 **Voyager coda of the finale** (was A-24, A-10): the last beat, on the `dsn` set, with copy that is right before, on
@@ -50,8 +50,8 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
 - [ ] A-32 **Postcard** (was A-11): three fragments, three options each, drawn on a canvas, saved as a PNG. `src/extras/postcard/`.
 - [ ] A-33 **Accessibility pass on the Thread** (was A-13, A-02): keyboard only, one button, 200 % text, high contrast, screen-reader
   labels of the planning station and the diorama. Fix what fails; list what a person must still try.
-- [ ] A-34 **20:00:** voice files for every line that changed or is new (`npx tsx scripts/gen-voices.ts --dry-run` first), then `npm run content`.
-- [ ] A-35 **20:30:** the full regression: `npm run capture -- final`, `... final thread`, `... final lifecycle`, `... final reduce`,
+- [ ] A-34 (**waiting for the team: 178 lines, 15,931 characters**; counted Sun 21:40, nothing generated) **20:00:** voice files for every line that changed or is new (`npx tsx scripts/gen-voices.ts --dry-run` first), then `npm run content`.
+- [x] A-35 (Sun 21:54, all green, no code pushed after it: `docs/HANDOFF.md`, section 000) **20:30:** the full regression: `npm run capture -- final`, `... final thread`, `... final lifecycle`, `... final reduce`,
   every file of lane astra, the public URL. Write the result in `docs/HANDOFF.md`.
 
 ### Lane b · machine B (Fable): cosmos and shell

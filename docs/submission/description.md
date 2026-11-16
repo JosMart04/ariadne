@@ -19,6 +19,9 @@ The title and map share an Orrery. Its dated planet positions use JPL's approxim
 Distances are compressed, sizes are illustrative, and estimated spacecraft positions carry labels.
 Opening a machine from the Orrery shows a short journey and a distance estimate. A list view offers the same archive.
 
+An AR gallery opens from the title and from the map. One viewer shows NASA's models of Ingenuity and Opportunity, as a miniature or at real size, with one thing to look for on each.
+On a phone that supports it, the camera places the machine in your room. On other devices you turn the model on screen.
+
 ## Built and checked
 
 The Thread plays in 3D in Explorer and Accessible modes. Accessible choices use the same puzzle graphs and reach the same ending.
@@ -28,6 +31,8 @@ Progress stays in browser storage. The project has no account system.
 The automated gate checks content structure, source references, puzzle reachability, TypeScript, production builds and possible bundled secrets.
 Browser captures provide visual evidence. These checks do not establish complete accessibility or historical accuracy by themselves.
 The thirteen archive files completed all seven beats and saved progress in Explorer, reduced-motion Explorer and a forced no-WebGL run.
+The team placed both AR models in a room with Android phones, as a miniature and at real size. A test keeps the model sizes true to NASA's figures.
+The Thread passes an automated run from a clean start to the credits, and a run that loses the 3D view in the middle of an operation.
 
 ## Current limits
 
@@ -35,6 +40,8 @@ Webcam Hands, gaze input and sky AR are not delivered. Dedicated interactive ope
 The postcard and final Voyager coda remain separate, unfinished integration tasks in this snapshot.
 Human source sign-off, assistive-technology testing, phone testing and a timed audience playtest remain team responsibilities.
 Without WebGL, the Field File panel can cover part of the scene description; the issue is recorded for the engine lane.
+The AR gallery has not been tried on an iPhone, and its real size has not been checked with a tape measure. On an uneven table the miniature did not stay fixed.
+Generated voices cover the Thread. The thirteen archive files are read aloud by the browser's own speech, and always shown as captions.
 Do not claim a twelve-minute completion time or universal accessibility without those tests.
 
 ## NASA material and authorship

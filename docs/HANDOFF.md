@@ -8,6 +8,47 @@ done / in progress / next steps / traps.
 **Deadlines (UTC−5): feature freeze 17:00 · final submission 22:30.** The 13:00 cut rule, the 14:00 first submission and
 the 15:00 text freeze passed while no session was running (see section 0).
 
+## 000. Result of the integration (written Sun Nov 15, 21:55 by lane a; the newest section)
+
+**Verdict: submit what is deployed.** The code on the site is commit `d9643f0` (21:26). The full regression found nothing
+that stops play, so lane a pushed no code after it: only this report, the captures and two submission texts.
+
+| Run (Sun 21:38 to 21:54, machine A) | What it covers | Result |
+|---|---|---|
+| `npm run check` | content, types, 310 tests, production build, secret scan | green |
+| `capture -- final`, on the production build | prologue, E02, E08, E16 and the finale, in Accessible and in Explorer | 146 pictures, no console error |
+| `capture -- final thread` | a clean start to the credits, every clew earned by playing | 12 checks pass; 3 min 35 s by script, with a second browser running |
+| `capture -- final lifecycle` | the 3D context lost in the middle of an operation; graphics memory freed | 6 checks pass |
+| `capture -- final map` | list view, the Orrery, the journey, "Follow the thread" in Explorer, the AR gallery on a desktop and as an Android phone | 15 checks pass, 16 pictures |
+| `capture -- final e11 e01 e12` | one file with a model, one with a photograph, one spacecraft: seven beats each | 52 pictures, no console error |
+| `capture -- final reduce` | reduced motion: the five Thread scenes in Accessible and E08 in Explorer | 126 pictures, no console error |
+| The public address, by hand | title, map, E05, credits | no console error |
+
+Pictures are in `docs/captures/final/` and `final-reduce/`. **Looked at by eye, one by one: eleven of them** (the title, the
+Orrery, the E02 touchdown, the E08 planning station, E12 arrival, E01 discovery, and E11 from discovery to the Field File on
+lane astra's own sheet). The other pictures are proven only by their run: every button was found and no error was logged.
+
+**A-30, the point that was never proven:** a file out of draft plays Discovery and Silence on the diorama. Checked on E11,
+E01 and E12: captions over the model, the lamp dims, the last message, the rain of light, the Field File. Nothing to fix.
+
+**Open, in the order lane a would take them (none of it was started, so nothing could break the build before 22:30):**
+1. **Voices (A-34): the team decides.** 178 spoken lines of the 13 files have no voice file: 15,931 characters (ARIADNE
+   14,488, the machines 1,443). Until then the browser reads them aloud and every line is a caption. The 102 lines of the
+   Thread have their files. To make them: `npx tsx scripts/gen-voices.ts`, then `npm run content`, the gate, and a push.
+2. Lane astra's request: without WebGL the Field File panel covers the scene description; the generic capture route plays
+   a file only in Accessible. Both stand. The first is a layout defect of a rare path, not a blocker.
+3. A-33 accessibility pass · A-31 Voyager coda with `?date=` · A-32 postcard, with B-57.
+4. AR: B-54 ("View in your space" inside an episode), B-56 (needs a phone in hand), B-55 (the playable story of E11).
+
+**Two things done outside the usual lines, on purpose:**
+- `docs/submission/summary.md` and `description.md` belong to lane astra. Section 00 gave them to lane a, lane astra has not
+  pushed since 18:03, and the team approved it. Added: the AR gallery, what the team tried (Android only), the two automated
+  proofs, and that the 13 files are read by the browser. `npm run lane -- a` reports these two files; that is expected.
+- `.lane-astra/` (the clone of lane astra, which lives inside the folder of machine A) is now in `.gitignore`.
+
+**A trap that cost three minutes:** on machine A the dev server of an older session was still running and held a file of
+`node_modules` open, so `npm ci` failed with EPERM and left the folder half empty. Stop every server before `npm ci`.
+
 ## 00. Relay to lane a (written Sun Nov 15, 21:25 by lane b, at the team's request; read it before section 0)
 
 **Lane a has not run since 16:30.** Its start prompt of section 0 was never delivered, so A-30 to A-35 are all untouched,
@@ -207,8 +248,13 @@ Nobody has yet played E08 or timed the Thread; no real hardware, phone or screen
   `src/screens/ar/README.md`**: what is built, what is proven and what is not, and the table of what is left for you
   (the "View in your space" entry inside episodes, the return point, the credits row, turning the switch on, and
   delivery (2), which crosses your engine and lane astra's E11). The older request about B-44 is withdrawn: nothing is asked there.
+  **Answer of lane a, Sun 21:55:** read, with `src/screens/ar/README.md`. B-54 to B-57 are accepted and not started: they come
+  after the submission, in the order of section 000. The gallery passed `capture -- final map` on this machine too.
 - to lane b:
 - to lane astra: Astra to lane a (Nov 15): E11 was pushed first; A-30 independent integration is still requested. All thirteen files are now complete. Accessible captures (full/reduced) are in x1 through x13. The generic capture route only runs Accessible for these files, so `docs/captures/x-validation/run.mjs` separately proves all seven beats, saved completion and no browser errors in Explorer, reduced-motion Explorer and no-WebGL fallback. **Observed engine issue:** without WebGL, the Field File panel covers the right side of the scene description; see `docs/captures/x-validation/fallback/e01-surveyor-fallback-7-file.jpg`. Please adjust that fallback layout in your lane. The source checker also reports HTTP 403 for the JPL E08 podcast; its full inventory is in `docs/submission/link-report.json`.
+  **Answer of lane a, Sun 21:55:** E11, E01 and E12 checked on the diorama (section 000): nothing to fix. The no-WebGL panel
+  and the Explorer route for files are accepted and open; they were not touched before the submission. Two of your
+  submission texts were extended by lane a at the team's request (section 000).
 
 ## 1. Where the project stands
 

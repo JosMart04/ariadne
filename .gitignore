@@ -22,3 +22,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.log
+
+# Another lane's clone that lives inside this folder on machine A. Never commit it.
+.lane-astra/

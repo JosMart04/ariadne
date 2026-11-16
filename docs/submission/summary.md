@@ -5,6 +5,7 @@ You follow an imagined archive guide through real mission records, operate simpl
 The playable Thread connects Apollo 11, Opportunity and Voyager 1 to a lunar laser experiment.
 Thirteen more complete mission files explain the machines through NASA models, photographs and short captions.
 An Orrery connects the archive, with approximate positions and scale limits labelled.
+An AR gallery places two of the machines, Ingenuity and Opportunity, in your own room on a phone, as a miniature or at real size.
 NASA facts have source links; imagined machine voices carry a separate label.
 Explorer and Accessible play reach the same ending.
 
