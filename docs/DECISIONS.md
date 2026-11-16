@@ -259,6 +259,20 @@ Decisions taken while building the vertical slice (Sun 00:20 to 07:30).
   under the 44 px of the list, above the 24 px that WCAG 2.2 AA asks for; the list keeps the large targets.
 - **b-D08 · `?date=YYYY-MM-DD` sets the day the title and the map show** (`mapDate` in `src/screens/Cosmos.tsx`), for the
   team's video and for repeatable pictures. Lane a plans the same name for the finale.
+- **b-D12 · AR is built on `main`, inside lane b's own folder, behind a switch (Sun 20:15, by the team's decision that lane b
+  is the architect of this part while lane a is out of quota).** Why not a branch: AR on a phone needs a public HTTPS
+  address, and only `main` is deployed; a branch could never be tried on a phone. The risk is held by three things: the
+  viewer loads only when the gallery is opened, the entries stay hidden behind `?ar` until a person has tried a real
+  phone, and the Thread check runs before every push.
+- **b-D13 · No new dependency: the viewer is Google's `model-viewer` 4.4.0, copied as its own prebuilt file**
+  (`src/screens/ar/vendor/`, Apache 2.0, licence beside it, named in the credits). Why: the package asks for
+  `three ^0.183` and the game uses 0.187, so `npm ci` would fail on the deploy; the prebuilt file carries its own copy
+  and is loaded only in the gallery. Lane a may replace it with a real dependency when it has settled the version.
+- **b-D14 · AR models are derived files, in metres, kept apart from the originals** (`src/screens/ar/models/`, made by
+  `src/screens/ar/tools/`). The models of the game are fitted to a stand and say nothing about size; the rover's file is
+  about five times too large. A derived file has no Draco and no WebP, stands on the ground, and is scaled to NASA's
+  published size; `tests/ar/` measures every file on every push. **`lanes.json` gives `tests/ar/` to lane b: the one
+  change this lane made to a file of lane a, on purpose and written here.**
 - **b-D10 · The journey to a machine plays on the map, not in the episode.** Opening a machine from the Orrery flies the
   camera from the Earth to its world (`act('travel', { to })` on the `orrery` set) while the lower third says how far it is
   today and how long light takes, and says where each number comes from: computed from JPL's elements (Mars, Eros, Ceres),

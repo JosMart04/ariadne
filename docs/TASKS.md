@@ -78,6 +78,14 @@ New work and new text stop at **20:00**. Each lane writes only under its own hea
   every button text is the same.
 - [ ] B-45 (team, 5 minutes) **Try the map on real hardware:** the public URL on a laptop with integrated graphics with
   `?fps` (target: 30 or more), and on a phone (drag with one finger, the + and − keys, the List key). Claude cannot do this.
+- **AR, a new assignment from the team (Sun 20:10; FR-55 brought back). Lane b is its architect for now; lane a takes it over. Full notes: `src/screens/ar/README.md`.**
+- [~] (Fable-b, Sun 20:20) B-50 Real-size models for AR: Ingenuity and Opportunity in metres, measured against NASA's figures, no Draco, no WebP; a test keeps the scale true.
+- [~] (Fable-b, Sun 20:20) B-51 One shared viewer (`src/screens/ar/`): miniature and real size, 3D inspection when there is no AR, an observation task with "Show me", every way out when something fails.
+- [~] (Fable-b, Sun 20:20) B-52 The gallery and its entries: a direct link (`#ar`), the map and the title. Hidden behind `?ar` until B-53 passes.
+- [ ] B-53 (team, 5 minutes, **needs a phone**) Open the gallery on an Android phone and on an iPhone, place both machines, check the real size against a tape measure, come back to the game. Steps and result table in `src/screens/ar/README.md`.
+- [ ] B-54 (lane a) "View in your space" inside an episode's menu, with the scene paused and the place in the story kept on return. Touches `src/episode/`.
+- [ ] B-55 (lane a + lane astra) The playable story of E11: script and contract proposed by lane b in `src/screens/ar/README.md`; the puzzle, the simulation and the set are not started.
+- [ ] B-47 Deferred, needs a phone to judge: frame the Orrery for upright screens; pinch to zoom.
 - Rules of this lane: strings in `content/ui/shell.yaml`; styles in a `.css` beside the component; routes in
   `scripts/capture-shell.ts`; `npm run capture -- b<n> thread` green before every push.
 

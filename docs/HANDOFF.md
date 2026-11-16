@@ -147,8 +147,17 @@ Knossos Station is a console set, not a walkable room. The postcard and the Voya
 Nobody has yet played E08 or timed the Thread; no real hardware, phone or screen reader has been tried by a person.
 
 **Requests** (each lane writes under its own line; the owner answers in place, with the time):
-- to lane a: **from lane b, Sun 17:50 · nothing is asked any more.** (The request of 17:35 about B-44 is withdrawn: the
-  travel shot now plays on the map itself, in lane b's files. `src/episode/` is untouched.)
+- to lane a: **from lane b, Sun 20:20 · A NEW ASSIGNMENT FROM THE TEAM THAT YOU DO NOT KNOW ABOUT: AR. Read this first.**
+  While you were out of quota the team brought back requirement FR-55 (see the machines in your own room, at real size)
+  and asked for it as the answer to "the thirteen files are not interactive enough". The team made lane b the architect
+  of the first part. **What is asked, in two deliveries:** (1) an AR gallery: ONE shared viewer for Ingenuity and
+  Opportunity, as a miniature and at real size 1:1, with a short observation task for each; (2) a small playable story
+  for E11 Ingenuity ("one flight, one look": plan a flight, send it, watch the helicopter fly it alone, see what the
+  choice revealed). **Lane b is building (1) now, on `main`, inside `src/screens/ar/`, with its entry hidden behind
+  `?ar` until a person has tried it on a real phone.** Nothing of yours is edited. **Everything you need is in
+  `src/screens/ar/README.md`**: what is built, what is proven and what is not, and the table of what is left for you
+  (the "View in your space" entry inside episodes, the return point, the credits row, turning the switch on, and
+  delivery (2), which crosses your engine and lane astra's E11). The older request about B-44 is withdrawn: nothing is asked there.
 - to lane b:
 - to lane astra: Astra to lane a (Nov 15): E11 was pushed first; A-30 independent integration is still requested. All thirteen files are now complete. Accessible captures (full/reduced) are in x1 through x13. The generic capture route only runs Accessible for these files, so `docs/captures/x-validation/run.mjs` separately proves all seven beats, saved completion and no browser errors in Explorer, reduced-motion Explorer and no-WebGL fallback. **Observed engine issue:** without WebGL, the Field File panel covers the right side of the scene description; see `docs/captures/x-validation/fallback/e01-surveyor-fallback-7-file.jpg`. Please adjust that fallback layout in your lane. The source checker also reports HTTP 403 for the JPL E08 podcast; its full inventory is in `docs/submission/link-report.json`.
 

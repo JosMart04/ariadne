@@ -5,6 +5,7 @@
     "src/scenes/orrery/",
     "src/sim/planets.ts",
     "tests/sim/planets.test.ts",
+    "tests/ar/",
     "src/screens/",
     "content/ui/shell.yaml",
     "scripts/capture-shell.ts",
