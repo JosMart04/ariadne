@@ -1,0 +1,69 @@
+{
+  "ingenuity": {
+    "source": "public/assets/models/mdl_ingenuity.glb",
+    "sourceSha256": "9e5a5398ab335eae7d46335085301ce46fb7de052300b645debe8bac6d39f2b5",
+    "reference": {
+      "kind": "span",
+      "part": "rotors",
+      "metres": 1.2,
+      "says": "Total length of rotors: approximately 4 feet (approximately 1.2 meters) tip to tip",
+      "url": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/"
+    },
+    "unitInMetres": 0.989985,
+    "files": {
+      "ingenuity-1to1.glb": {
+        "scale": 1,
+        "metres": [
+          0.9765,
+          0.55641,
+          1.09528
+        ],
+        "bytes": 1231176,
+        "triangles": 9124
+      },
+      "ingenuity-mini.glb": {
+        "scale": 0.25,
+        "metres": [
+          0.24412,
+          0.1391,
+          0.27382
+        ],
+        "bytes": 1231180,
+        "triangles": 9124
+      }
+    }
+  },
+  "opportunity": {
+    "source": "public/assets/models/mdl_mer_b.glb",
+    "sourceSha256": "95c852efb385b55bea3104a0fca2730cd2ef25353af4d38273d3f0bda5c68c31",
+    "reference": {
+      "kind": "width",
+      "metres": 2.3,
+      "says": "Quick Facts, rover dimensions: 4.9 feet high by 7.5 feet (2.3 meters) wide by 5.2 feet long",
+      "url": "https://www.jpl.nasa.gov/news/press_kits/merlandings.pdf"
+    },
+    "unitInMetres": 0.180985,
+    "files": {
+      "opportunity-1to1.glb": {
+        "scale": 1,
+        "metres": [
+          1.57288,
+          1.32216,
+          2.3
+        ],
+        "bytes": 213368,
+        "triangles": 3845
+      },
+      "opportunity-mini.glb": {
+        "scale": 0.1,
+        "metres": [
+          0.15729,
+          0.13222,
+          0.23
+        ],
+        "bytes": 213372,
+        "triangles": 3845
+      }
+    }
+  }
+}
