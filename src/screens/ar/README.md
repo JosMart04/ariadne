@@ -3,6 +3,12 @@
 **For lane a, who was out of quota when this was asked for. Read this whole file before touching AR.**
 Written by lane b on Sun Nov 15, 2026, 20:40 UTC−5. Lane b was made the architect of this part by the team.
 
+> **UPDATE, Sun 21:25. This paragraph wins over any sentence below that says "not tried on a phone" or "hidden".**
+> The team tried it on Android phones: the camera opens and **both machines are placed, as a miniature and at real size**.
+> The entries are now open to everybody (`OPEN_TO_ALL = true`, `tried.android = true`). Still not proven: an iPhone, the
+> real size against a tape measure, the way back from the camera view, performance. What the team saw and asked for is
+> in section 6 and became tasks B-56 and B-57 in section 7.
+
 ## 1. What the team asked for, and why
 
 The thirteen files that are not on the Thread tell their story but let the player do almost nothing. The team brought
@@ -87,7 +93,26 @@ Open `https://josmart04.github.io/ariadne/?ar#ar` on the phone, in Chrome (Andro
 | Phone, system, browser | 1 | 2 | 3 (measured) | 4 | 5 | Notes |
 |---|---|---|---|---|---|---|
 | Xiaomi Redmi Note 11 Pro+, Samsung A30s, Moto g06 (Sun 20:50, build `bb45023`) | yes | **no** | | | | "View in your space" was greyed out on all three: "This device cannot place it in your room". **Cause: a bug in the page, not the phones** (see below). Fixed in the next build; to be tried again |
+| The team's Android phones, second test (Sun 21:10, build `1ec2281`; the team did not say which of the three) | yes | **yes** | placed at real size; **not measured** | not reported | **yes**, both machines | See "What the second test found" |
 | | | | | | | |
+
+**What the second test found (Sun 21:10), in the team's words, and what it became:**
+- "The models do not stay quite fixed on the surface, at least the miniature, probably because the surface is not very
+  even. A first look around the space before placing would be interesting, if the library has it." → **B-56**.
+- "When I walk closer to the miniature or away from it, it stays the same size; at real size it does not: there, walking
+  closer works like a zoom, and that is the magic." → **B-56**. Not diagnosed. A model that keeps its size on screen and
+  slides is usually a model that was never anchored to a surface (the viewer is still looking for one and holds the
+  model in front of the camera), which would explain both remarks at once; a miniature on a small or plain table gives
+  the phone little to recognise. To find out, on a phone: (1) which path ran, AR inside Chrome (WebXR) or Google's own
+  viewer (Scene Viewer): change the order in `ar-modes` and compare; (2) `ar-scale="fixed"` for the miniature too;
+  (3) a larger miniature (`MINIATURE` in `sizes.ts`, then the tool); (4) a line of help before the camera opens:
+  "move the phone slowly over the table until the machine settles". Both viewers already scan before placing; neither
+  lets the page add a scanning step of its own.
+- "A secondary idea, only if it is cheap: take a photo and share it at that moment, with a delay option, as a postcard,
+  perhaps framed with the name ARIADNE." → **B-57**. Limit to know first: a web page cannot read the camera picture of
+  the phone's AR viewers, so it cannot take that photo itself (the phone's own screenshot can). What the page can do
+  cheaply: a postcard of the machine as the 3D view shows it (`toBlob()` of the viewer), drawn on a canvas with a frame
+  and the word ARIADNE, shared with the Web Share API, with a 3-second delay. It belongs with A-32 (the postcard).
 
 **What that first test found (Sun 20:55).** The viewer was given `ar=""`. React 19 hands a prop to a custom element as a
 property when the element has one of that name, and `ar` is a boolean property: the empty string switched AR off on every
@@ -103,7 +128,10 @@ When a row passes, set `tried` for that platform in `catalog.ts` (the "not yet t
 | Task | Where | Notes |
 |---|---|---|
 | **B-54 · "View in your space" inside an episode** | `src/episode/CinemaEpisode.tsx` (a menu entry, not a floating button), for episodes whose id is in `CATALOG` | `go('ar-ingenuity')` is enough to open the viewer. **Not solved:** returning to the same beat. The store keeps progress, not the place inside an episode, so today the player comes back to the start of the file. Needs a return point (`route + beat`) kept before leaving, and the scene paused. The 3D set must be unmounted while the gallery is open (it is: the route changes), so two renderers never run at once |
-| Open the entries to everybody | `catalog.ts`: `OPEN_TO_ALL` | After section 6 |
+| ~~Open the entries to everybody~~ | `catalog.ts`: `OPEN_TO_ALL` | **Done Sun 21:25** after the Android test |
+| **B-56 · the miniature does not settle and does not change size when the player walks** | `ArGallery.tsx`, `sizes.ts` | Section 6 has the team's words and four things to try. Needs a phone in hand |
+| **B-57 · a postcard of the machine, to share** | with A-32 | Section 6: what a web page can and cannot photograph |
+| iPhone | section 6 | Never tried. If "View in your space" fails there, prepare `.usdz` files (`ios-src`) |
 | Credits file | `assets-src/manifest.yaml` (`code:` row for model-viewer, Apache 2.0) → `CREDITS.md` | The Credits screen already says it; the generated file does not. Lane astra's files |
 | Submission texts | `docs/submission/` | Say "3D gallery with experimental AR" unless section 6 passed |
 | More machines | `catalog.ts`, `sizes.ts`, `shell.yaml`, the tool | Ten official models are in `public/assets/models/`; each needs one published dimension with its page |

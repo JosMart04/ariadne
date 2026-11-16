@@ -4,8 +4,57 @@ Sections 1 to 8 were written Sun Nov 15, 10:05 UTC−5 by account B. **Section 0
 Everything needed to go on is in this file, `CLAUDE.md`, `docs/TASKS.md` and `docs/DECISIONS.md`. Keep this file current:
 done / in progress / next steps / traps.
 
+**Lane a: read section 00 first (the relay of Sun 21:25).**
 **Deadlines (UTC−5): feature freeze 17:00 · final submission 22:30.** The 13:00 cut rule, the 14:00 first submission and
 the 15:00 text freeze passed while no session was running (see section 0).
+
+## 00. Relay to lane a (written Sun Nov 15, 21:25 by lane b, at the team's request; read it before section 0)
+
+**Lane a has not run since 16:30.** Its start prompt of section 0 was never delivered, so A-30 to A-35 are all untouched,
+and the clock of section 0 (stop at 20:00, final build 21:15) has passed. The team submits by **22:30**. This section is
+what changed while lane a was away; where it differs from section 0 on facts, this one is newer.
+
+**What the other two lanes did since 16:30 (all on `main`, deployed, gate green):**
+
+| Lane | Done | Where to read |
+|---|---|---|
+| **astra** | The submission texts (X-01). **All 13 files out of draft**, each with sourced facts, seven beats, a model or photograph on stage and captures (`docs/captures/x1` to `x13`, `x-validation/`). The link checker (X-04): 75 of 85 sources answer 200, ten JPL addresses answer 403 | "Requests → to lane astra" below, "Lane astra" in section 8, `docs/submission/link-report.json` |
+| **b** | **The map is the Orrery** (B-40 to B-43): today's real planet positions, sixteen machines as buttons in the scene, the golden thread, the card list kept as list view (first in Accessible play, fallback without WebGL). **The title, Setup and Credits** sit on the same solar system. **The journey** from the Earth to a machine with today's distance, played on the map (B-44; nothing in `src/episode/` was touched). **A new assignment you have never seen: the AR gallery** (B-50 to B-53), built, deployed and tried by the team on Android phones | lane b notes in section 8; **`src/screens/ar/README.md`** for AR; decisions b-D01 to b-D14 |
+
+**State at 21:25:** 310 tests; the Thread from a clean start passes in 3 min 6 s by script
+(`npm run capture -- <name> thread`); the last deploy is green. Captures of lane b: `docs/captures/b1` to `b5`.
+
+**Nobody has done lane a's part.** In the order that protects the submission:
+
+1. **Regression before anything new (A-35, A-30).** Three sessions pushed for five hours and their owner has integrated none
+   of it. `npm run capture -- final`, `... final thread`, `... final lifecycle`, `... final reduce`, `... final map`
+   (the map route also plays the Orrery in Explorer and the AR gallery), three of astra's files in Explorer
+   (`... final e11`, one with a photograph, one spacecraft), and the public address. Fix only what fails.
+2. **Astra's open request** (under "Requests"): without WebGL the Field File panel covers the scene description
+   (`docs/captures/x-validation/fallback/e01-surveyor-fallback-7-file.jpg`); the generic capture route plays files only
+   in Accessible.
+3. **Voices (A-34).** The 13 files brought new spoken lines; until they have files the browser reads them aloud.
+   `npx tsx scripts/gen-voices.ts --dry-run` says how many characters; the team decides whether to spend them.
+4. **The submission texts** (`docs/submission/`, lane astra's, written at 16:48) do not know the Orrery, the journey or the
+   AR gallery. Say what is built and what is not: AR was placed by the team on Android only.
+5. **Only if the team moves the clock, or after the submission:** A-31 (Voyager coda), A-32 (postcard), A-33
+   (accessibility pass), then the AR tasks **B-54, B-55, B-56, B-57** (`src/screens/ar/README.md`, sections 6 to 8).
+
+**One file of yours was edited on purpose:** `lanes.json` gives `tests/ar/` to lane b (decision b-D14).
+**Requests waiting for you:** the two lines under "Requests" in section 0 (`to lane a`, `to lane astra`).
+
+### Start prompt · machine A · Sun 21:25 (replaces the start prompt of section 0)
+
+> You are **lane a** of ARIADNE (https://github.com/JosMart04/ariadne), the integrator. You have not run since 16:30 and
+> the other two lanes pushed for five hours. Run `git pull --rebase`, `npm ci`, `npm run check` (must be green),
+> `npm run dev`. Open `docs/HANDOFF.md` and read **section 00** completely, then section 0 and "Lane a" in
+> `docs/TASKS.md`, then `src/screens/ar/README.md` (a new assignment from the team that you have never seen: AR).
+> Follow the order of section 00: the full regression first (A-35), then fixes only, then astra's open request, the
+> voices and the submission texts. In your first answer tell the team the time, what fits before the 22:30 submission
+> and what does not; start nothing new that could break the build before it. After the submission, or if the team
+> moves the clock: A-31, A-32, A-33 and the AR tasks B-54 to B-57. You are the only lane that may edit the shared
+> engine, `scripts/capture.ts`, `content/ui.yaml` and `package.json`. Before every push: `npm run check`,
+> `npm run capture -- a<n> thread`, `git pull --rebase`, `npm run lane -- a`. Report in Spanish.
 
 ## 0. Three lanes at once (written Sun Nov 15, 16:30 by Fable on machine A; it wins over everything below)
 
@@ -378,12 +427,13 @@ accessibility pass (A-13), the submission texts (X-01). Also done at 16:06: cred
 woven thread, captures with reduced motion (`docs/captures/b2-reduce/`). Latest pictures: `docs/captures/b3/`.
 
 **AR, added Sun 20:20 to 20:45 (the team's new assignment; lane a has never seen it):** the gallery and its one shared
-viewer are built and deployed behind `?ar`: `https://josmart04.github.io/ariadne/?ar#ar`. **Everything about it is in
+viewer are built, deployed and, since the team placed both machines with Android phones at 21:10, open to everybody:
+`https://josmart04.github.io/ariadne/#ar`. **Everything about it is in
 `src/screens/ar/README.md`:** what was asked and why, what is built, every decision and what lane a may want to change,
 what is proven and what is not (no phone has been used), the phone test for the team (B-53), the table of what is left
 for lane a (B-54, B-55, opening the entries, credits), and the proposal for the playable story of E11.
 
-**Start prompt · machine A · AR (paste it when lane a has quota again, after its own integration duties):**
+**(Superseded by the start prompt of section 00, which includes this.)** Start prompt · machine A · AR:
 
 > You are lane a of ARIADNE. While you were out of quota the team gave a new assignment that you have never seen: AR
 > (requirement FR-55 brought back) and a playable story for E11, as the answer to "the thirteen files are not interactive

@@ -43,7 +43,7 @@ export const CATALOG: ArMachine[] = [
     metres: measured('ingenuity'),
     miniature: `1:${Math.round(1 / MINIATURE.ingenuity)}`,
     look: '25deg 48deg 1.6m',
-    tried: { android: false, ios: false },
+    tried: { android: true, ios: false },
   },
   {
     id: 'opportunity',
@@ -53,16 +53,16 @@ export const CATALOG: ArMachine[] = [
     metres: measured('opportunity'),
     miniature: `1:${Math.round(1 / MINIATURE.opportunity)}`,
     look: '-35deg 70deg 3.2m',
-    tried: { android: false, ios: false },
+    tried: { android: true, ios: false },
   },
 ];
 
 export const machineById = (id: string | undefined) => CATALOG.find((m) => m.id === id);
 
 /**
- * The entries of the gallery (on the map and on the title) stay hidden until a person has tried a real phone
- * (task B-53). `?ar` in the address shows them; the direct link `#ar` always opens the gallery.
- * To open the gallery to everybody, make this `true`.
+ * The entries of the gallery (on the map, the list and the title). Open to everybody since Sun Nov 15, 21:25: the team
+ * placed both machines, miniature and real size, with Android phones (task B-53; iPhone not tried).
+ * `false` hides them again except with `?ar` in the address; the direct link `#ar` always opens the gallery.
  */
-const OPEN_TO_ALL = false;
+const OPEN_TO_ALL = true;
 export const arEntryVisible = () => OPEN_TO_ALL || (typeof location !== 'undefined' && /[?&]ar\b/.test(location.search));
