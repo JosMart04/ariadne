@@ -258,6 +258,10 @@
     display: flex;
     flex-direction: column;
   }
+  /* The panel scrolls: nothing in it may be squeezed to fit, or its words spill over the next block. */
+  .arx__panel > * {
+    flex-shrink: 0;
+  }
   .arx__size {
     order: 1;
   }

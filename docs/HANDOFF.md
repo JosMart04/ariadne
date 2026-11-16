@@ -47,6 +47,23 @@ not started because it repeatedly failed to be acquired (5 attempts)" while the 
 incident. Re-running the failed job did not help. A fresh run did: `gh workflow run "Check and deploy" --ref main`.
 The public site keeps the last good build while a deploy fails.
 
+**Sun 23:15, a defect of that build, found by the team on a phone and fixed:** in the AR gallery the help line under
+"View in your space" was printed over the size sentence. Cause: the phone layout made the panel a flex column inside a
+box that scrolls, and `.arx__room` has a `min-height`, so it was squeezed to one line and its words spilled. Fix:
+`.arx__panel > * { flex-shrink: 0 }` in `ar.css`. Measured in the browser at 360 px: no block of the panel overlaps the next.
+
+**Asked by the team at 23:05, and answered: what is plausible of the new requirements.**
+- *AR models for the other machines.* The viewer needs no code per machine, and official models of nine more machines
+  are in `public/assets/models/` (Apollo 11, Viking, Spirit, InSight, Pioneer, NEAR, Kepler, Dawn, Voyager 1; the other
+  five files have only a photograph, so no AR). Not done: each machine needs one published dimension **read on its NASA
+  page**, the axis of the model that dimension belongs to, an observation task with its source, a run of the tool, and a
+  person with a phone. Six to ten minutes each. Suggested order: InSight, Viking, Kepler, Apollo 11, NEAR, Voyager 1,
+  Pioneer, Dawn, Spirit. Dawn (19.7 m of solar panels) and Voyager (a 13 m boom) fit no room at real size: miniature only.
+- *An interactive AR game for E11.* Not plausible in an evening without a phone: "View in your space" hands the camera to
+  the phone's own viewer, where the page runs no code. A game needs a WebXR session of our own (floor detection,
+  anchors, touch, an interface over the camera); Safari on iPhone has none. The on-screen playable E11 (B-55, section 8
+  of `src/screens/ar/README.md`) is the version that fits the engine: two to three hours.
+
 ## 000. Result of the integration (written Sun Nov 15, 21:55 by lane a; the second newest section)
 
 **Verdict: submit what is deployed.** The code on the site is commit `d9643f0` (21:26). The full regression found nothing
