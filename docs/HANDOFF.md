@@ -41,6 +41,12 @@ page's own? Write the answers in section 6 of `src/screens/ar/README.md`.
 B-57 and A-32 the postcard; A-31 the Voyager coda; A-33 the accessibility pass; astra's request (the Field File panel
 without WebGL); phone layout inside the episodes was not reviewed in this pass.
 
+**Deployed Sun 22:46 (`d5e5c32`) and checked on the public address** at 360 px: the Close key, the phone layout, the new
+AR order and two of the new voice files. **A trap met on the way:** the `deploy` job failed three times with "The job was
+not started because it repeatedly failed to be acquired (5 attempts)" while the build was green and GitHub reported no
+incident. Re-running the failed job did not help. A fresh run did: `gh workflow run "Check and deploy" --ref main`.
+The public site keeps the last good build while a deploy fails.
+
 ## 000. Result of the integration (written Sun Nov 15, 21:55 by lane a; the second newest section)
 
 **Verdict: submit what is deployed.** The code on the site is commit `d9643f0` (21:26). The full regression found nothing
