@@ -460,6 +460,7 @@
 /* The list view keeps its page; this is the way back to the map. */
 .map__views {
   display: flex;
+  gap: 0.5rem;
   justify-content: flex-end;
   margin: 0 0 0.5rem;
 }

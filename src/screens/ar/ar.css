@@ -1,0 +1,242 @@
+/* ARIADNE — the AR gallery and its shared viewer. Owner: lane b.
+   Same rules as app.css: rem units, AA contrast, state never by colour alone, targets >= 44px.
+   On a phone the picture is on top and the words scroll under it; on a wide screen they sit side by side. */
+
+.cosmos--ar::after {
+  background: none;
+}
+.arx {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(27rem, 42vw);
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    'head panel'
+    'stage panel';
+  /* The top padding is set by the screen: the height of the station bar. */
+  padding-top: 3.6rem;
+  color: var(--ink);
+}
+.arx__head {
+  grid-area: head;
+  padding: 0.6rem var(--pad) 0.4rem;
+}
+.arx__head h1 {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: clamp(1.2rem, 1rem + 1.1vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.arx__head h1:focus {
+  outline: none;
+}
+.arx__intro {
+  margin: 0.2rem 0 0.6rem;
+  max-width: 40rem;
+  color: var(--dim);
+}
+.arx__pick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.arx__machine {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 0.09rem solid var(--line);
+  border-radius: 0.25rem;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.arx__machine[aria-pressed='true'] {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: inset 0 -0.2rem 0 var(--gold);
+}
+.arx__machine:hover,
+.arx__machine:focus-visible {
+  border-color: var(--gold);
+}
+
+.arx__stage {
+  grid-area: stage;
+  position: relative;
+  min-height: 0;
+  margin: 0 0 0 var(--pad);
+  border-radius: 0.4rem;
+  /* A lit floor in the dark: the machine reads against it from every side. */
+  background: radial-gradient(60% 55% at 50% 62%, rgba(96, 104, 128, 0.42) 0%, rgba(30, 34, 48, 0.3) 45%, rgba(4, 5, 12, 0) 75%);
+  overflow: hidden;
+}
+.arx__viewer {
+  display: block;
+  width: 100%;
+  height: 100%;
+  --poster-color: transparent;
+  --progress-bar-color: #f5c96a;
+  background: transparent;
+}
+.arx__wait,
+.arx__hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.arx__wait {
+  top: 46%;
+}
+.arx__hint {
+  bottom: 0.7rem;
+}
+.arx__plain {
+  position: absolute;
+  inset: 12% 8% auto;
+  display: grid;
+  gap: 0.7rem;
+  text-align: center;
+  justify-items: center;
+}
+.arx__alt {
+  margin: 0;
+  max-width: 36rem;
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+  color: var(--ink);
+}
+
+.arx__panel {
+  grid-area: panel;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.8rem var(--pad) 2rem 1.4rem;
+  background: linear-gradient(to left, rgba(3, 4, 11, 0.92) 0%, rgba(3, 4, 11, 0.82) 80%, rgba(3, 4, 11, 0) 100%);
+}
+.arx__panel > p {
+  margin: 0 0 0.5rem;
+}
+.arx__eyebrow {
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.arx__name {
+  margin: 0.1rem 0 0.4rem;
+  font-family: var(--f-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.2rem);
+  line-height: 1.15;
+}
+.arx__size {
+  color: var(--ink);
+}
+.arx__scale {
+  margin: 0.6rem 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.arx__scale legend {
+  padding: 0;
+  margin-bottom: 0.3rem;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.arx__option {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.7rem;
+  border: 0.09rem solid var(--line);
+  border-radius: 0.25rem;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+.arx__option:has(input:checked) {
+  border-color: var(--gold);
+}
+.arx__option input {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0.2rem;
+  accent-color: var(--amber);
+}
+.arx__help {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--dim);
+}
+.arx__panel .actions {
+  margin: 0.6rem 0 0.3rem;
+}
+.arx__room {
+  min-height: 1.4rem;
+  font-size: 0.9rem;
+  color: var(--dim);
+}
+.arx__task {
+  margin: 0.8rem 0;
+  padding: 0.7rem 0 0;
+  border-top: 0.06rem solid var(--line);
+  display: grid;
+  gap: 0.4rem;
+  justify-items: start;
+}
+.arx__task > p {
+  margin: 0;
+}
+.arx__answer {
+  color: var(--ink);
+  border-left: 0.2rem solid var(--gold);
+  padding-left: 0.7rem;
+}
+.arx__out {
+  padding-top: 0.6rem;
+  border-top: 0.06rem solid var(--line);
+}
+:root[data-contrast='high'] .arx__panel {
+  background: #000;
+}
+
+@media (max-width: 52rem) {
+  .arx {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(11rem, 34vh) minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'stage'
+      'panel';
+  }
+  .arx__stage {
+    margin: 0 var(--pad);
+  }
+  .arx__panel {
+    padding: 0.8rem var(--pad) 2.4rem;
+    background: rgba(3, 4, 11, 0.9);
+  }
+  .arx__intro {
+    display: none;
+  }
+}

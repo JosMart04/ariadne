@@ -377,6 +377,25 @@ accessibility pass (A-13), the submission texts (X-01). Also done at 16:06: cred
 `Cosmos.tsx`, `fromEarthKm` in `planets.ts`), Setup and Credits over the sky of the title (B-46), lights running along the
 woven thread, captures with reduced motion (`docs/captures/b2-reduce/`). Latest pictures: `docs/captures/b3/`.
 
+**AR, added Sun 20:20 to 20:45 (the team's new assignment; lane a has never seen it):** the gallery and its one shared
+viewer are built and deployed behind `?ar`: `https://josmart04.github.io/ariadne/?ar#ar`. **Everything about it is in
+`src/screens/ar/README.md`:** what was asked and why, what is built, every decision and what lane a may want to change,
+what is proven and what is not (no phone has been used), the phone test for the team (B-53), the table of what is left
+for lane a (B-54, B-55, opening the entries, credits), and the proposal for the playable story of E11.
+
+**Start prompt · machine A · AR (paste it when lane a has quota again, after its own integration duties):**
+
+> You are lane a of ARIADNE. While you were out of quota the team gave a new assignment that you have never seen: AR
+> (requirement FR-55 brought back) and a playable story for E11, as the answer to "the thirteen files are not interactive
+> enough". Lane b was made its architect and built the first part on `main`. Do this, in order: (1) `git pull --rebase`,
+> `npm ci`, `npm run check`; (2) read `src/screens/ar/README.md` from top to bottom, then "Requests → to lane a" and the
+> lane b notes in `docs/HANDOFF.md`, tasks B-50 to B-55 in `docs/TASKS.md` and decisions b-D12 to b-D14; (3) open
+> `http://localhost:5173/?ar#ar` and `npm run capture -- a<n> map` to see what is proven; (4) ask the team for the result
+> of the phone test (B-53, section 6 of the README) and record it; only if it passed, set `tried` and `OPEN_TO_ALL` in
+> `src/screens/ar/catalog.ts`; (5) then take B-54 ("View in your space" inside an episode, with a return point) and B-55
+> (the playable story of E11, section 8 of the README; it crosses your engine and lane astra's file). Do not claim AR
+> works on a phone until a person has tried it. Report in Spanish.
+
 **Not done:** not tried on real hardware or on a phone (B-45, for the team). Touch has drag and the + and − keys, no
 pinch. The Orrery is not tried with a screen reader. The journey is not offered from the list view (it opens the file
 directly), by design.

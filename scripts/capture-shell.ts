@@ -106,4 +106,83 @@ export async function map(page: Page, kit: Kit) {
   await kit.waitFor(page, 'Orrery');
   expect((await page.$('.cosmos')) === null, 'the list is one click away');
   await page.evaluate(`localStorage.removeItem('ariadne-map-view')`);
+
+  await explorerFollowsTheThread(page, kit);
+  await gallery(page, kit);
+}
+
+/** An Explorer player after the prologue: the Orrery is the map, and "Follow the thread" flies to the Moon and opens E02. */
+async function explorerFollowsTheThread(page: Page, kit: Kit) {
+  const shot = kit.shooter(page, 'map-explorer');
+  await page.evaluate(
+    `localStorage.setItem('ariadne-v1', JSON.stringify({ state: { settings: { setupDone: true, play: 'explorer' }, progress: { prologueDone: true, done: {}, clews: ['clew-0'], finaleDone: false } }, version: 0 }))`,
+  );
+  await page.goto(`${kit.base}?q=high&dev#map`, { waitUntil: 'networkidle2' });
+  await page.reload({ waitUntil: 'networkidle2' });
+  await ready(page);
+  expect((await placed(page)) === 16, 'Explorer play opens the map as the Orrery');
+  await kit.waitFor(page, 'Follow the thread');
+  await shot('new-player', 2200);
+  await kit.press(page, 'Follow the thread');
+  await shot('journey-to-the-moon', 1200);
+  await page.waitForFunction("location.hash === '#e02-apollo11'", { timeout: 12_000 });
+  expect(true, '"Follow the thread" on the Orrery flies to the Moon and opens E02');
+}
+
+/** The AR gallery: one viewer, two machines, two sizes. A desktop cannot place a model in a room, and the screen says so. */
+async function gallery(page: Page, kit: Kit) {
+  const shot = kit.shooter(page, 'ar');
+  const outside: string[] = [];
+  page.on('request', (r) => {
+    const host = new URL(r.url()).hostname;
+    if (r.url().startsWith('http') && host !== new URL(kit.base).hostname) outside.push(r.url());
+  });
+  const loaded = () => page.waitForSelector('.arx__stage--ready', { timeout: 60_000 });
+  /** Width, height and depth of what the viewer shows, metres. */
+  const size = () => page.evaluate(`(() => { const d = document.querySelector('model-viewer').getDimensions(); return [d.x, d.y, d.z]; })()`) as Promise<number[]>;
+
+  await page.goto(`${kit.base}?q=high&dev&ar#ar`, { waitUntil: 'networkidle2' });
+  await loaded();
+  await shot('ingenuity-miniature', 2500);
+  const mini = await size();
+  await page.click('input[name="ar-scale"][value="real"]');
+  await loaded();
+  await kit.sleep(600);
+  const real = await size();
+  expect(Math.abs(Math.max(mini[0], mini[2]) / Math.max(real[0], real[2]) - 0.25) < 0.01, `the miniature of Ingenuity is a quarter of its real size (${real.map((v) => v.toFixed(2)).join(' x ')} m)`);
+  expect(((await page.evaluate(`document.querySelector('.arx__room').textContent`)) as string).includes('cannot place'), 'a desktop is told it cannot place the machine, and can still turn it');
+  await kit.press(page, 'Show me');
+  await shot('ingenuity-real-size-show-me', 2200);
+
+  await kit.press(page, 'Opportunity');
+  await loaded();
+  await kit.sleep(600);
+  expect(((await page.evaluate(`location.hash`)) as string) === '#ar-opportunity', 'each machine has its own address');
+  const rover = await size();
+  expect(Math.abs(Math.max(rover[0], rover[2]) - 2.3) < 0.03, `Opportunity is 2.3 m wide at real size (${rover.map((v) => v.toFixed(2)).join(' x ')} m)`);
+  await shot('opportunity-real-size', 2200);
+
+  // A phone held upright.
+  await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await page.reload({ waitUntil: 'networkidle2' });
+  await loaded();
+  await shot('phone-upright', 2200);
+  await page.setViewport({ width: 1280, height: 720, deviceScaleFactor: 1 });
+
+  // The model is missing: the words still tell what the machine is. On a page of its own, because the failed download
+  // it provokes is written to the console, and the main page must stay free of errors.
+  const lone = await page.browser().newPage();
+  await lone.setViewport({ width: 1280, height: 720, deviceScaleFactor: 1 });
+  await lone.setRequestInterception(true);
+  lone.on('request', (r) => void (r.url().endsWith('.glb') ? r.abort() : r.continue()));
+  await lone.goto(`${kit.base}?q=high&dev&ar#ar-opportunity`, { waitUntil: 'networkidle2' });
+  await lone.waitForSelector('.arx__stage--failed', { timeout: 60_000 });
+  expect(true, 'a model that cannot be downloaded leaves the description, the size and the task on screen');
+  await kit.shooter(lone, 'ar-fallback')('model-could-not-load', 600);
+  await lone.close();
+
+  await page.goto(`${kit.base}?q=high&dev&ar#ar`, { waitUntil: 'networkidle2' });
+  await kit.press(page, 'Back to the labyrinth');
+  expect(((await page.evaluate(`location.hash`)) as string) === '#map', 'the gallery leads back to the map');
+  expect(outside.length === 0, `the gallery asks nothing of any other site (${outside.slice(0, 2).join(', ') || 'none'})`);
 }

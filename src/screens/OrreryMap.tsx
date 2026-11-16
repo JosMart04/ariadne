@@ -12,6 +12,7 @@ import { finaleOpen, nextKeyEpisode, useGame } from '../engine/store';
 import { APPROXIMATE, placeOf } from '../scenes/orrery/places';
 import { Badge, Btn, useFocusOn } from '../ui/parts';
 import { Cosmos, Pin, journey, mapDate, readouts } from './Cosmos';
+import { arEntryVisible } from './ar/catalog';
 
 /** Worlds that carry a name on the map. The three probes are their own marker: their name hangs from it. */
 const WORLDS = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon', 'eros', 'ceres'] as const;
@@ -181,6 +182,11 @@ export function OrreryMap({ onList }: { onList: () => void }) {
           <button type="button" className="tool tool--text" data-scan="ghost" onClick={onList}>
             {t('map.view.list')}
           </button>
+          {arEntryVisible() && (
+            <button type="button" className="tool tool--text" data-scan="ghost" onClick={() => go('ar')}>
+              {t('ar.entry.short')}
+            </button>
+          )}
         </div>
 
         <p className="omap__today">

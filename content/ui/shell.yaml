@@ -64,3 +64,36 @@ travel.kind.average: "This is the average: the Moon comes closer and goes farthe
 travel.kind.nasa: "Estimated for today from NASA's figure for Nov. 18, 2026."
 travel.kind.approximate: "An approximate figure."
 travel.skip: "Open {name} now"
+# The AR gallery (src/screens/ar/). Sizes: src/screens/ar/sizes.ts, each with its NASA page. {h} and {w} are measured on the model.
+ar.entry: Explore machines in your space
+ar.entry.short: In your space
+ar.title: Machines in your space
+ar.intro: Turn a machine with your finger. On a phone, set it down in your own room.
+ar.pick: Choose a machine
+ar.loading: "Bringing {name} out of the archive…"
+ar.turn: "Drag to turn · pinch or wheel to come closer"
+ar.no3d: This device cannot show the 3D model. The size and the task below still tell its story.
+ar.scale: How large
+ar.scale.mini: Miniature
+ar.scale.mini.help: "Scale {ratio}, about {cm} cm wide. It fits on a table."
+ar.scale.real: Real size
+ar.scale.real.help: "As large as the real machine. Clear about {a} by {b} meters of floor."
+ar.place: View in your space
+ar.room.cannot: This device cannot place it in your room. Open this page on a phone to try. You can still turn the machine here.
+ar.room.started: Point the phone at the floor and move it slowly. Then come back here.
+ar.room.back: Back from your room. Change the size and place it again whenever you like.
+ar.room.failed: The camera view did not start. You can still turn the machine here.
+ar.room.untried: "New: the team has not yet tried this on a real phone."
+ar.task: Look for
+ar.showme: Show me
+ar.memory: "Open the memory of {name}"
+ar.back: Back to the labyrinth
+ar.credit: "3D and AR viewer: model-viewer by Google, Apache License 2.0. The AR models are NASA's, resized to their real size."
+ar.ingenuity.alt: "The Ingenuity helicopter: a small box on four thin legs, two rotors one above the other, and a solar panel on top."
+ar.ingenuity.size: "Real size: its rotors measure 1.2 meters from tip to tip. This model stands {h} meters tall."
+ar.ingenuity.task: The solar panel. Where is it, and what did it do?
+ar.ingenuity.answer: "It sits on top, above both rotors. NASA: the solar panel charged the batteries with enough energy for one 90-second flight per Martian day."
+ar.opportunity.alt: "The Opportunity rover: a flat deck of solar panels on six wheels, with a camera mast standing at the front. A simplified NASA model, without fine detail."
+ar.opportunity.size: "Real size: {w} meters wide. This is a simplified model: its camera mast stands {h} meters, and NASA gives 1.5."
+ar.opportunity.task: The camera mast. How high were its cameras?
+ar.opportunity.answer: "NASA: the mast-mounted cameras were about 1.5 meters off the ground, to see the terrain all around. In this simplified model the mast is lower, {h} meters."

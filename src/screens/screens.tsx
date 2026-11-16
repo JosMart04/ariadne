@@ -1,5 +1,5 @@
 /** Top-level screens: Title, Setup ("How do you want to play?"), Map, Prologue, Finale, Credits. */
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
 import { content, episodes, keyEpisodes, t } from '../content';
 import type { Act, EpisodeC } from '../content/schema';
 import { ACTS } from '../content/schema';
@@ -11,6 +11,16 @@ import { finaleOpen, nextKeyEpisode, useGame, type InputMode, type PlayMode } fr
 import { Badge, Btn, useFocusOn } from '../ui/parts';
 import { Cosmos, mapDate, readouts } from './Cosmos';
 import { OrreryMap } from './OrreryMap';
+import { arEntryVisible } from './ar/catalog';
+
+/** The AR gallery (`#ar`, `#ar-<machine>`). Its code and its 3D engine load only when it is opened. */
+const ArGallery = lazy(() => import('./ar/ArGallery'));
+const onHash = (cb: () => void) => {
+  addEventListener('hashchange', cb);
+  return () => removeEventListener('hashchange', cb);
+};
+/** The router sends every address it does not know to the map; `#ar` is one of them, and the map hands it to the gallery. */
+const inGallery = () => /^#ar\b/i.test(location.hash);
 
 // ---------------------------------------------------------------- Title
 
@@ -38,6 +48,11 @@ export function Title() {
           <Btn kind="ghost" onClick={() => go('map')}>
             {t('title.labyrinth')}
           </Btn>
+          {arEntryVisible() && (
+            <Btn kind="ghost" onClick={() => go('ar')}>
+              {t('ar.entry')}
+            </Btn>
+          )}
         </div>
       </section>
       <p className="ctitle__today">
@@ -245,6 +260,7 @@ function savedView(): MapView | null {
 export function MapScreen() {
   const play = useGame((s) => s.settings.play);
   const status = useStage((s) => s.status);
+  const gallery = useSyncExternalStore(onHash, inGallery, () => false);
   const [view, setView] = useState<MapView>(() => savedView() ?? (play === 'accessible' ? 'list' : 'orrery'));
   const choose = (v: MapView) => {
     setView(v);
@@ -259,6 +275,12 @@ export function MapScreen() {
     setView('list');
     announce(t('map.view.stopped'));
   }, [view, status]);
+  if (gallery)
+    return (
+      <Suspense fallback={null}>
+        <ArGallery />
+      </Suspense>
+    );
   return view === 'orrery' ? <OrreryMap onList={() => choose('list')} /> : <MapList onOrrery={() => choose('orrery')} />;
 }
 
@@ -274,6 +296,11 @@ function MapList({ onOrrery }: { onOrrery: () => void }) {
   return (
     <section className="map" aria-labelledby="map-title">
       <div className="map__views" role="group" aria-label={t('map.view')}>
+        {arEntryVisible() && (
+          <Btn kind="ghost" onClick={() => go('ar')}>
+            {t('ar.entry')}
+          </Btn>
+        )}
         <Btn kind="ghost" onClick={onOrrery}>
           {t('map.view.orrery')}
         </Btn>
@@ -417,6 +444,7 @@ export function Credits() {
       <p>{t('credits.voices.note', { names: content.credits.voices.map((v) => v.name).join(', ') })}</p>
       <h2>{t('credits.fonts')}</h2>
       <p>{t('credits.fonts.note')}</p>
+      <p>{t('ar.credit')}</p>
       <h2>{t('source.button')}</h2>
       <ul className="credits__hosts">
         {hosts.map((h) => (
